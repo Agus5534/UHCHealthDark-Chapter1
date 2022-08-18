@@ -1,0 +1,6 @@
+main: io.github.wickeddroidmx.plugin.Main
+name: UHCHealthDark
+version: 1.17
+api-version: 1.13
+description: Plugin oficial de HealthDark
+author: WickedDroid

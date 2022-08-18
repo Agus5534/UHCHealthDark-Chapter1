@@ -1,0 +1,55 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.0'
+}
+
+group 'io.github.wickeddroidmx'
+version '1.0-SNAPSHOT'
+
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+
+    maven { url = 'https://repo.codemc.io/repository/nms/' }
+    maven { url = 'https://oss.sonatype.org/content/groups/public/' }
+    maven { url = 'https://repo.unnamed.team/repository/unnamed-public/' }
+    maven { url = 'https://repo.unnamed.team/repository/unnamed-snapshots/' }
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper:1.17-R0.1-SNAPSHOT"
+    implementation 'me.fixeddev:commandflow-bukkit:0.5.2'
+    implementation 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+
+    implementation 'team.unnamed.gui:core:2.3.3-SNAPSHOT'
+    implementation "org.jdbi:jdbi3-core:3.30.0"
+    implementation 'mysql:mysql-connector-java:8.0.30'
+    implementation "com.zaxxer:HikariCP:5.0.1"
+}
+
+shadowJar {
+    archivesBaseName = "uhchealthdark"
+
+    relocate "me.fixeddev", "io.github.wickeddroidmx.dependencies.commandflow"
+    relocate "me.yushust.inject", "io.github.wickeddroidmx.dependencies.trew"
+}
+
+processResources {
+    duplicatesStrategy = 'exclude'
+
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}
