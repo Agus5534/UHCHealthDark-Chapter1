@@ -9,6 +9,7 @@ import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.services.Loader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.chat.Donator;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
 import me.yushust.inject.Injector;
@@ -42,6 +43,8 @@ public class Main extends JavaPlugin {
 
     private WorldGenerator worldGenerator;
 
+    private Donator donator;
+
     @Override
     public void onEnable() {
         Injector.create(new MainModule(this))
@@ -58,6 +61,10 @@ public class Main extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, () -> cache.values().forEach(uhcScoreboard -> uhcScoreboard.update(modeManager, gameManager, playerManager, teamManager)), 0L, 20L);
 
         createScoreboard();
+
+        donator = new Donator();
+
+        donator.registerRanks();
     }
 
     @Override
