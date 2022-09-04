@@ -8,12 +8,14 @@ import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
+import java.util.*;
 
 public class DeathListMode extends Modality {
 
@@ -39,10 +41,32 @@ public class DeathListMode extends Modality {
     private void givePaper(Player player) {
         var uhcTeam = teamManager.getPlayerTeam(player.getUniqueId());
 
-        if (uhcTeam != null)
-            Bukkit.getOnlinePlayers()
+        if (uhcTeam != null) {
+            var pl = Bukkit.getOnlinePlayers().stream().toList();
+
+            for(Player p : pl) {
+                if(p.getGameMode() == GameMode.SPECTATOR || uhcTeam.getTeamPlayers().contains(p.getUniqueId())) {
+                    pl.remove(p);
+                }
+            }
+
+            if(pl.size() <= 1) {
+                return;
+            }
+
+            var randomPlayer = pl.get(new Random().nextInt(pl.size()));
+
+            player.getInventory().addItem(
+                    ItemBuilder
+                            .newBuilder(Material.PAPER)
+                            .setName(ChatUtils.format("&cDeath List"))
+                            .setLore(ChatColor.GRAY + randomPlayer.getName())
+                            .build());
+        }
+           /* Bukkit.getOnlinePlayers()
                     .stream()
                     .filter(randomPlayer -> !uhcTeam.getTeamPlayers().contains(randomPlayer.getUniqueId()))
+                    .filter(randomPlayer -> randomPlayer.getGameMode() != GameMode.SPECTATOR)
                     .findAny()
                     .ifPresent(randomPlayer -> {
                         player.getInventory().addItem(
@@ -51,6 +75,6 @@ public class DeathListMode extends Modality {
                                         .setName(ChatUtils.format("&cDeath List"))
                                         .setLore(ChatColor.GRAY + randomPlayer.getName())
                                         .build());
-                    });
+                    });*/
     }
 }

@@ -154,7 +154,7 @@ public class StaffGameCommands implements CommandClass  {
     )
     public void uhcIDCommand(@Sender Player sender, int uhcId) {
         if (uhcId < 0) {
-            sender.sendMessage(ChatUtils.PREFIX + "No es valido ese número.");
+            sender.sendMessage(ChatUtils.PREFIX + "No es válido ese número.");
             return;
         }
 
