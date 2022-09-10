@@ -3,8 +3,7 @@ package io.github.wickeddroidmx.plugin.listeners.chat;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.utils.chat.Donator;
-import io.papermc.paper.event.player.AsyncChatEvent;
+import io.github.wickeddroidmx.plugin.utils.chat.Rank;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,7 +26,7 @@ public class AsyncChatListener implements Listener {
         var uhcPlayer = playerManager.getPlayer(player.getUniqueId());
         var uhcTeam = teamManager.getPlayerTeam(player.getUniqueId());
 
-        e.setFormat(ChatUtils.format(Donator.getRank(player) + "&7%1$s: &r%2$s"));
+        e.setFormat(ChatUtils.format(Rank.getRank(player) + "&7%1$s: &r%2$s"));
 
         if (uhcPlayer == null)
             return;
@@ -43,7 +42,7 @@ public class AsyncChatListener implements Listener {
 
             e.setCancelled(true);
 
-            teamManager.sendMessage(player.getUniqueId(), ChatUtils.format(String.format("%s%s &8» &7%s", Donator.getRank(player), player.getName(), e.getMessage())));
+            teamManager.sendMessage(player.getUniqueId(), ChatUtils.format(String.format("%s%s &8» &7%s", Rank.getRank(player), player.getName(), e.getMessage())));
         }
     }
 }

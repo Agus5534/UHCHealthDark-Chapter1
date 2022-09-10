@@ -9,7 +9,7 @@ import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.services.Loader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.utils.chat.Donator;
+import io.github.wickeddroidmx.plugin.utils.chat.Rank;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
 import me.yushust.inject.Injector;
@@ -21,7 +21,6 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.RenderType;
 import org.bukkit.scoreboard.Team;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 import java.util.UUID;
@@ -43,7 +42,7 @@ public class Main extends JavaPlugin {
 
     private WorldGenerator worldGenerator;
 
-    private Donator donator;
+    private Rank rank;
 
     @Override
     public void onEnable() {
@@ -62,9 +61,9 @@ public class Main extends JavaPlugin {
 
         createScoreboard();
 
-        donator = new Donator();
+        rank = new Rank();
 
-        donator.registerRanks();
+        rank.registerRanks();
     }
 
     @Override
