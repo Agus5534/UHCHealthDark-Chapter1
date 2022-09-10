@@ -20,6 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UltraDropsRandomMode extends Modality {
     private final Material[] blockedMaterials;
+
+    private final List<Material> possibleDrops = new ArrayList<>();
     public UltraDropsRandomMode() {
         super(ModalityType.MODE, "ultra_drops_random","&6Ultra Drops Random", Material.BEDROCK,
                 ChatUtils.format("&7- Todos los drops serán aleatorios"));
@@ -32,6 +34,12 @@ public class UltraDropsRandomMode extends Modality {
                  Material.END_GATEWAY,
                  Material.DEBUG_STICK
         };
+
+         for(Material m : Material.values()) {
+             if(!m.isLegacy() || !m.isAir() || !Arrays.asList(blockedMaterials).contains(m)) {
+                 possibleDrops.add(m);
+             }
+         }
     }
 
 
@@ -68,15 +76,6 @@ public class UltraDropsRandomMode extends Modality {
 
             if(!drop) { return; }
 
-            List<Material> possibleDrops = new ArrayList<>();
-
-            for(Material m : Material.values()) {
-                if(!m.isLegacy() || !m.isAir() || !Arrays.asList(blockedMaterials).contains(m)) {
-                    possibleDrops.add(m);
-                }
-            }
-
-
             Location loc = event.getBlock().getLocation();
 
             ItemStack item = new ItemStack(possibleDrops.get(new Random().nextInt(possibleDrops.size())), 1);
@@ -87,14 +86,6 @@ public class UltraDropsRandomMode extends Modality {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        List<Material> possibleDrops = new ArrayList<>();
-
-        for(Material m : Material.values()) {
-            if(!m.isLegacy() || !m.isAir() || !Arrays.asList(blockedMaterials).contains(m)) {
-                possibleDrops.add(m);
-            }
-        }
-
         ItemStack item = new ItemStack(possibleDrops.get(new Random().nextInt(possibleDrops.size())),1);
 
         if(!(event.getEntity() instanceof Player)) {
