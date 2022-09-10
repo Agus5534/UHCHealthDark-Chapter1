@@ -30,6 +30,8 @@ public class ModeManager {
     private DeathListMode deathListMode;
     private UhcSpainMode uhcSpainMode;
 
+    private UltraDropsRandomMode ultraDropsRandomMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -92,7 +94,8 @@ public class ModeManager {
                 doggosMode,
                 deathListMode,
                 uhcSpainMode,
-                cobwebLess
+                cobwebLess,
+                ultraDropsRandomMode
         );
     }
 
