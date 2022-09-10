@@ -8,24 +8,24 @@ import java.util.UUID;
 
 public class Donator {
 
-    private static HashMap<UUID, Integer> donations = new HashMap<>();
+    private static HashMap<String, Integer> donations = new HashMap<>();
 
     public final void registerRanks() {
-        donations.put(UUID.fromString("ba996c11-b594-4994-9500-a197890f4fc2"),12); //FELIPEPUDIN
+        donations.put("Felipepudin",12); //FELIPEPUDIN
 
-        donations.put(UUID.fromString("95e12737-c97b-430c-a428-66266e17f4f2"),1); //AGUS5534
+        donations.put("Agus5534",1); //AGUS5534
 
-        donations.put(UUID.fromString("5fdeb5fb-aec2-41bc-8404-2ca1e038424b"),5); //PAPAS
+        donations.put("abnercc_",5); //PAPAS
     }
 
 
     public static String getRank(Player player) {
-        if(!donations.containsKey(player.getUniqueId())) {
+        if(!donations.containsKey(player.getName())) {
             return "";
         }
 
 
-        switch (donations.get(player.getUniqueId())) {
+        switch (donations.get(player.getName())) {
             case 1: case 2: case 3:
                 return Rank.DONATOR_BASIC.getPrefix();
             case 4: case 5: case 6: case 7:
