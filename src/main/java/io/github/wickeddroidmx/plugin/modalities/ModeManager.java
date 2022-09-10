@@ -32,6 +32,8 @@ public class ModeManager {
 
     private UltraDropsRandomMode ultraDropsRandomMode;
 
+    private DropsRandomMode dropsRandomMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -95,7 +97,8 @@ public class ModeManager {
                 deathListMode,
                 uhcSpainMode,
                 cobwebLess,
-                ultraDropsRandomMode
+                ultraDropsRandomMode,
+                dropsRandomMode
         );
     }
 
