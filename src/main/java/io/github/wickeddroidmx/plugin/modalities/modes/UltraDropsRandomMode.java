@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
@@ -32,11 +33,32 @@ public class UltraDropsRandomMode extends Modality {
                  Material.VOID_AIR,
                  Material.END_CRYSTAL,
                  Material.END_GATEWAY,
-                 Material.DEBUG_STICK
+                 Material.DEBUG_STICK,
+                 Material.MOVING_PISTON,
+                 Material.DEAD_TUBE_CORAL,
+                 Material.DEAD_TUBE_CORAL_FAN,
+                 Material.DEAD_TUBE_CORAL_WALL_FAN,
+                 Material.WHITE_WALL_BANNER,
+                 Material.ATTACHED_MELON_STEM,
+                 Material.ATTACHED_PUMPKIN_STEM,
+                 Material.BEETROOTS,
+                 Material.LAVA_CAULDRON,
+                 Material.LAVA,
+                 Material.WATER,
+                 Material.WATER_CAULDRON,
+                 Material.POWDER_SNOW_CAULDRON,
+                 Material.TRIPWIRE,
+                 Material.POTATOES,
+                 Material.BAMBOO_SAPLING,
+                 Material.COCOA,
+                 Material.PISTON_HEAD,
+                 Material.REDSTONE_WIRE,
+                 Material.FROSTED_ICE,
+                 Material.CAVE_VINES
         };
 
          for(Material m : Material.values()) {
-             if(!m.isLegacy() || !m.isAir() || !Arrays.asList(blockedMaterials).contains(m)) {
+             if(!m.isLegacy() && !m.isAir() && !Arrays.asList(blockedMaterials).contains(m) && !m.getKey().getKey().contains("wall") && !m.getKey().getKey().contains("potted") && !m.getKey().getKey().contains("candle_cake") && !m.getKey().getKey().contains("plant") && !m.getKey().getKey().contains("stem") && !m.getKey().getKey().contains("bush")) {
                  possibleDrops.add(m);
              }
          }
@@ -78,7 +100,9 @@ public class UltraDropsRandomMode extends Modality {
 
             Location loc = event.getBlock().getLocation();
 
-            ItemStack item = new ItemStack(possibleDrops.get(new Random().nextInt(possibleDrops.size())), 1);
+            Material choosen = possibleDrops.get(new Random().nextInt(possibleDrops.size()));
+
+            ItemStack item = new ItemStack(choosen, 1);
 
             loc.getWorld().dropItem(loc, item);
         }

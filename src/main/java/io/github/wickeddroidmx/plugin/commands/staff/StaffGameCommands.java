@@ -125,7 +125,7 @@ public class StaffGameCommands implements CommandClass  {
                             ) +
                             String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup()))+
                             String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
-                            "> **IP:** ||healthdark.minecraft.best||\\n\\n"+
+                            "> **IP:** ||uhchealthdark.minecraft.best||\\n\\n"+
                             "<@&892533124083384361> <@&896190893558751282>");
 
             hook.execute();

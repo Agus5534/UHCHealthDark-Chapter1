@@ -39,7 +39,7 @@ public class GameManager {
 
     public GameManager() {
         this.host = null;
-        this.uhcId = 50;
+        this.uhcId = 82;
 
         this.gameState = GameState.WAITING;
         this.scatteredPlayers = false;

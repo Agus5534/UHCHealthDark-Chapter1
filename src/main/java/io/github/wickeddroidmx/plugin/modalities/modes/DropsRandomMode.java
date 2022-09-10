@@ -29,11 +29,31 @@ public class DropsRandomMode extends Modality {
                 Material.VOID_AIR,
                 Material.END_CRYSTAL,
                 Material.END_GATEWAY,
-                Material.DEBUG_STICK
+                Material.DEBUG_STICK,
+                Material.MOVING_PISTON,
+                Material.DEAD_TUBE_CORAL,
+                Material.DEAD_TUBE_CORAL_FAN,
+                Material.DEAD_TUBE_CORAL_WALL_FAN,
+                Material.ATTACHED_MELON_STEM,
+                Material.ATTACHED_PUMPKIN_STEM,
+                Material.BEETROOTS,
+                Material.LAVA_CAULDRON,
+                Material.POWDER_SNOW_CAULDRON,
+                Material.WATER_CAULDRON,
+                Material.LAVA,
+                Material.WATER,
+                Material.TRIPWIRE,
+                Material.POTATOES,
+                Material.BAMBOO_SAPLING,
+                Material.COCOA,
+                Material.PISTON_HEAD,
+                Material.REDSTONE_WIRE,
+                Material.FROSTED_ICE,
+                Material.CAVE_VINES
         };
 
         for(Material m : Material.values()) {
-            if(!m.isLegacy() || !m.isAir() || !Arrays.asList(blockedMaterials).contains(m)) {
+            if(!m.isLegacy() && !m.isAir() && !Arrays.asList(blockedMaterials).contains(m) && !m.getKey().getKey().contains("wall") && !m.getKey().getKey().contains("potted") && !m.getKey().getKey().contains("candle_cake") && !m.getKey().getKey().contains("plant") && !m.getKey().getKey().contains("stem") && !m.getKey().getKey().contains("bush")) {
                 possibleDrops.add(m);
             }
         }
