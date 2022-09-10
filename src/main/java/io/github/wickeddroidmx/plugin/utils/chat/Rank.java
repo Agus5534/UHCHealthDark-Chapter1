@@ -7,16 +7,16 @@ import java.util.HashMap;
 
 public class Rank {
 
-    private static HashMap<String, Integer> donations = new HashMap<>();
+    private static HashMap<String, RankList> donations = new HashMap<>();
 
     private static HashMap<String, RankList> ranks = new HashMap<>();
 
     public final void registerRanks() {
-        donations.put("Felipepudin",12); //FELIPEPUDIN
+        donations.put("Felipepudin",RankList.DONATOR_HIGH); //FELIPEPUDIN / 12
 
-        donations.put("Agus5534",1); //AGUS5534
+        donations.put("Agus5534",RankList.DONATOR_BASIC); //AGUS5534 / 1
 
-        donations.put("abnercc_",5); //PAPAS
+        donations.put("abnercc_",RankList.DONATOR_NORMAL); //PAPAS / 5
 
         // STAFF
 
@@ -51,16 +51,7 @@ public class Rank {
         }
 
         if(donations.containsKey(player.getName())) {
-            switch (donations.get(player.getName())) {
-                case 1: case 2: case 3:
-                    s += RankList.DONATOR_BASIC.getPrefix();
-                case 4: case 5: case 6: case 7:
-                    s += RankList.DONATOR_NORMAL.getPrefix();
-                case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15:
-                    s += RankList.DONATOR_HIGH.getPrefix();
-                default:
-                    s += RankList.DONATOR_PRO.getPrefix();
-            }
+           s+= donations.get(player.getName()).getPrefix();
         }
 
 
