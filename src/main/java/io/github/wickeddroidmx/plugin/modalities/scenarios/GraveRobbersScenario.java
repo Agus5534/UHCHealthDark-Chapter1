@@ -45,9 +45,9 @@ public class GraveRobbersScenario extends Modality {
                 if (drop != null && drop.getType() != Material.AIR) {
                     chest.getInventory().addItem(drop);
                 }
-
-                createHolo(new Location(location.getWorld(), location.getBlockX() + 0.5D, location.getBlockY() + 0.5D, location.getBlockZ() + 1), ChatUtils.format("&6Tumba de " + player.getName()));
             }
+
+            createHolo(new Location(location.getWorld(), location.getBlockX() + 0.5D, location.getBlockY() + 0.5D, location.getBlockZ() + 1), ChatUtils.format("&6Tumba de " + player.getName()));
         }, 1L);
     }
 
