@@ -29,7 +29,6 @@ public class UhcTeam {
     private NamedTextColor[] textColors = {
             NamedTextColor.AQUA,
             NamedTextColor.BLUE,
-            NamedTextColor.BLACK,
             NamedTextColor.DARK_AQUA,
             NamedTextColor.DARK_BLUE,
             NamedTextColor.DARK_GRAY,
