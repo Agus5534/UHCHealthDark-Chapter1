@@ -22,6 +22,10 @@ public class Rank {
 
         donations.put("_Light999", RankList.DONATOR_NORMAL); //LIGHT / 4 DLS de 2 BOOSTS
 
+        donations.put("HellSinky_29", RankList.DONATOR_BASIC); //HELLSINKY / 2 DLS de 1 BOOST
+
+        donations.put("SasuMC", RankList.DONATOR_BASIC); //SASUMC / 2 DLS de 1 BOOST
+
         // STAFF
 
         ranks.put("Agus5534", RankList.OWNER);
