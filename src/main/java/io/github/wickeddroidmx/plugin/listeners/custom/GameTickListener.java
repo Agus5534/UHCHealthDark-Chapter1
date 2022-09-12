@@ -76,9 +76,9 @@ public class GameTickListener implements Listener {
 
 
         if (seconds == gameManager.getTimeForMeetup()) {
-            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(150, 300, false)));
-
             gameManager.setGameState(GameState.MEETUP);
+
+            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(150, 300, false)));
         }
 
         if (gameManager.getGameState() == GameState.FINISHING) {
