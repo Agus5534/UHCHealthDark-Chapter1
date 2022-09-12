@@ -42,11 +42,12 @@ public class DeathListMode extends Modality {
         var uhcTeam = teamManager.getPlayerTeam(player.getUniqueId());
 
         if (uhcTeam != null) {
-            var pl = Bukkit.getOnlinePlayers().stream().toList();
+            List<Player> pl = new ArrayList<>();
 
-            for(Player p : pl) {
-                if(p.getGameMode() == GameMode.SPECTATOR || uhcTeam.getTeamPlayers().contains(p.getUniqueId())) {
-                    pl.remove(p);
+
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                if(p.getGameMode() != GameMode.SPECTATOR && !uhcTeam.getTeamPlayers().contains(p.getUniqueId())) {
+                    pl.add(p);
                 }
             }
 
