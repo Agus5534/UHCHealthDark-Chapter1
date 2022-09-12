@@ -54,6 +54,8 @@ public class ModeManager {
     private RegretFulWolfsScenario regretFulWolfsScenario;
     private DoggosMode doggosMode;
     private NuggetsScenario nuggetsScenario;
+
+    private StarterBookScenario starterBookScenario;
     private TradeParanoia tradeParanoia;
     private CobwebLess cobwebLess;
 
@@ -98,7 +100,8 @@ public class ModeManager {
                 uhcSpainMode,
                 cobwebLess,
                 ultraDropsRandomMode,
-                dropsRandomMode
+                dropsRandomMode,
+                starterBookScenario
         );
     }
 
