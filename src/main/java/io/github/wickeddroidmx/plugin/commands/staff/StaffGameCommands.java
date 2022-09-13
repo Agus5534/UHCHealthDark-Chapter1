@@ -26,9 +26,11 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 import java.util.Date;
@@ -58,6 +60,17 @@ public class StaffGameCommands implements CommandClass  {
             names = "start"
     )
     public void startCommand() {
+
+        Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getOnlinePlayers().forEach(player -> {
+            var uhcPlayer = playerManager.getPlayer(player.getUniqueId());
+
+            if(uhcPlayer != null) {
+                if(uhcPlayer.isSpect()) {
+                    uhcPlayer.getPlayer().kickPlayer(ChatUtils.format("&4¡Espera a que inicie la partida!"));
+                }
+            }
+        }));
+
         var delayForTeam = 0;
         var random = new Random();
 
@@ -168,6 +181,41 @@ public class StaffGameCommands implements CommandClass  {
     )
     public void configCommand(@Sender Player sender) {
         sender.openInventory(uhcStaffMenu.getTimeInventory());
+    }
+
+    @Command(
+            names = "spectate"
+    )
+    public void spectateCommand(@Sender Player sender) {
+        var player = playerManager.getPlayer(sender.getUniqueId());
+
+        if(player == null) {
+            playerManager.createPlayer(sender,false);
+
+            player = playerManager.getPlayer(sender.getUniqueId());
+        }
+
+        if(teamManager.getPlayerTeam(sender.getUniqueId()) != null) {
+            sender.sendMessage(ChatUtils.format("&7¡Ya tienes un equipo!"));
+
+            return;
+        }
+
+        if(player.isSpect()) {
+            player.setSpect(false);
+
+            sender.sendMessage(ChatUtils.format("&7¡Ya no eres espectador!"));
+
+            gameManager.getSpectatorTeam().removeEntry(sender.getName());
+        } else {
+            player.setSpect(true);
+
+            sender.sendMessage(ChatUtils.format("&7¡Ahora eres espectador!"));
+
+            sender.setGameMode(GameMode.SPECTATOR);
+
+            gameManager.getSpectatorTeam().addEntry(sender.getName());
+        }
     }
 
     private String formatTime(int totalSecs) {

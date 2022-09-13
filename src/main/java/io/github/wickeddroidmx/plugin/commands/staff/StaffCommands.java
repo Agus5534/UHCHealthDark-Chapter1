@@ -54,6 +54,11 @@ public class StaffCommands implements CommandClass {
 
 
         if (uhcPlayer != null) {
+            if(uhcPlayer.isSpect()) {
+                sender.sendMessage(ChatUtils.PREFIX + "El usuario es espectador");
+                return;
+            }
+
             if (uhcPlayer.isAlive()){
                 sender.sendMessage(ChatUtils.PREFIX + "El usuario ya esta vivo.");
                 return;

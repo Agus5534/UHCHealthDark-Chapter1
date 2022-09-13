@@ -14,7 +14,8 @@ public class UhcPlayer {
                     death,
                     scattered,
                     cobbleOnly,
-                    chat;
+                    chat,
+                    spect;
 
     private int kills,
                 enemyRecon;
@@ -29,6 +30,7 @@ public class UhcPlayer {
         this.cobbleOnly = false;
         this.chat = false;
         this.death = false;
+        this.spect = false;
 
         this.scattered = false;
     }
@@ -39,6 +41,10 @@ public class UhcPlayer {
 
     public void setChat(boolean chat) {
         this.chat = chat;
+    }
+
+    public void setSpect(boolean spect) {
+        this.spect = spect;
     }
 
     public void setAlive(boolean alive) {
@@ -75,6 +81,10 @@ public class UhcPlayer {
 
     public boolean isChat() {
         return chat;
+    }
+
+    public boolean isSpect() {
+        return spect;
     }
 
     public boolean isScattered() {

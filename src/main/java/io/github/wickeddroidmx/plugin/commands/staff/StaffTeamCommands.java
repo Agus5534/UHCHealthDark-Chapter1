@@ -7,6 +7,7 @@ import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;
+import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -40,6 +41,9 @@ public class StaffTeamCommands implements CommandClass {
 
     @Inject
     private UhcTeamMenu uhcTeamMenu;
+
+    @Inject
+    private PlayerManager playerManager;
 
     @Command(
             names = "create"
@@ -155,6 +159,10 @@ public class StaffTeamCommands implements CommandClass {
         for (var player : Bukkit.getOnlinePlayers()) {
             if (teamManager.getPlayerTeam(player.getUniqueId()) != null)
                 Bukkit.getPluginManager().callEvent(new TeamDeleteEvent(teamManager.getPlayerTeam(player.getUniqueId())));
+
+            if(playerManager.getPlayer(player.getUniqueId()) != null) {
+                if(playerManager.getPlayer(player.getUniqueId()).isSpect()) { continue; }
+            }
 
             teamManager.createTeam(player);
 

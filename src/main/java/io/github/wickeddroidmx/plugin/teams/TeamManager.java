@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.teams;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
+import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,6 +18,9 @@ public class TeamManager  {
 
     @Inject
     private Main plugin;
+
+    @Inject
+    private PlayerManager playerManager;
 
     private final HashMap<UUID, UhcTeam> uhcTeams = new HashMap<>();
     private final List<TeamInvite> teamInvites = new ArrayList<>();
@@ -107,7 +111,15 @@ public class TeamManager  {
 
             try {
                 for (int i = 0;i<teamsNeeded;i++) {
+
                     var leader = playersWithoutTeam.remove(0);
+
+                    var uhcPlayer = playerManager.getPlayer(leader.getUniqueId());
+
+                    if(uhcPlayer != null) {
+                        if(uhcPlayer.isSpect()) { continue; }
+                    }
+
                     createTeam(leader);
 
                     var team = getPlayerTeam(leader.getUniqueId());
@@ -117,6 +129,12 @@ public class TeamManager  {
 
                         for (int j = 0;j<teamSize - 1;j++) {
                             var member = playersWithoutTeam.remove(0);
+
+                            var uPlayer = playerManager.getPlayer(leader.getUniqueId());
+
+                            if(uPlayer != null) {
+                                if(uPlayer.isSpect()) { continue; }
+                            }
 
                             Bukkit.getPluginManager().callEvent(new PlayerJoinedTeamEvent(team, member));
                         }
