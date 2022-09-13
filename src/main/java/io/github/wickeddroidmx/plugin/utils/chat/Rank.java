@@ -26,11 +26,14 @@ public class Rank {
 
         donations.put("SasuMC", RankList.DONATOR_BASIC); //SASUMC / 2 DLS de 1 BOOST
 
+        donations.put("darkyutu", RankList.DONATOR_BASIC); //DARKYUTU / 2 DLS de 1 BOOST
+
+
         // STAFF
 
         ranks.put("Agus5534", RankList.OWNER);
 
-        ranks.put("Guaichamama", RankList.OWNER);
+        ranks.put("GuaichaMama", RankList.OWNER);
 
         ranks.put("axolotl_BPK", RankList.OWNER);
 
