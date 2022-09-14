@@ -31,11 +31,11 @@ public class SuperHeroesMode extends Modality {
     public SuperHeroesMode() {
         super(ModalityType.MODE, "super_heroes", "&bSuper Heroes", Material.NETHER_STAR,
                 ChatUtils.format("&7Al aparecer en el UHC recibiras un efecto de estos 5:"),
-                ChatUtils.format("&7- Speed II"),
-                ChatUtils.format("&7- Jump Boost III"),
+                ChatUtils.format("&7- Speed II & Night Vision"),
+                ChatUtils.format("&7- Jump Boost III & Speed I & Haste I"),
                 ChatUtils.format("&7- Double Health"),
-                ChatUtils.format("&7- Resistance III & Fire Resistance"),
-                ChatUtils.format("&7- Dolphin's Grace & Water Breathing & Luck III & Haste I"));
+                ChatUtils.format("&7- Resistance I & Fire Resistance"),
+                ChatUtils.format("&7- Dolphin's Grace & Water Breathing & Luck II & Haste I"));
     }
 
     @EventHandler
@@ -57,15 +57,16 @@ public class SuperHeroesMode extends Modality {
         switch (integer) {
             case 1 -> {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, true, true, true));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true, true, true));
             }
             case 2 -> {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, Integer.MAX_VALUE, 0, true, true, true));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, Integer.MAX_VALUE, 0, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, Integer.MAX_VALUE, 2, true, true, true));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, Integer.MAX_VALUE, 1, true, true, true));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 1, true, true, true));
             }
             case 3 -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 3, true, true, true));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 2, true, true, true));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, true, true, true));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 0, true, true, true));
             }
@@ -75,7 +76,7 @@ public class SuperHeroesMode extends Modality {
             }
             default -> {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1, true, true, true));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, true, true, true));
             }
         }
     }
