@@ -18,7 +18,11 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.yushust.inject.InjectAll;
 import net.kyori.adventure.text.Component;
 import net.kyori.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Statistic;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -44,6 +48,8 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
+
+
         var player = e.getPlayer();
         var uhcPlayer = playerManager.getPlayer(player.getUniqueId());
         var uuid = player.getUniqueId().toString();
@@ -51,6 +57,33 @@ public class PlayerJoinListener implements Listener {
 
         if (!userCache.exists(player.getUniqueId()) && sqlPlayer == null) {
             userCache.add(player.getUniqueId(), new DefaultUser(uuid, player.getName()));
+        }
+
+        if(gameManager.getGameState() == GameState.WAITING && player.getWorld().equals(Bukkit.getWorlds().get(0))) {
+            var world = player.getWorld();
+            var advancements = Bukkit.getServer().advancementIterator();
+
+            player.getInventory().clear();
+            player.teleport(world.getSpawnLocation());
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+            player.setHealth(20.0);
+            player.setGameMode(Bukkit.getDefaultGameMode());
+            player.setExp(0);
+            player.setTotalExperience(0);
+            player.setStatistic(Statistic.SLEEP_IN_BED,0);
+            player.setStatistic(Statistic.KILL_ENTITY, EntityType.PLAYER, 0);
+            player.setFlying(false);
+            player.getActivePotionEffects().forEach(ef -> player.removePotionEffect(ef.getType()));
+
+            while (advancements.hasNext()) {
+                var progress = player.getAdvancementProgress(advancements.next());
+
+                if(progress.isDone()) {
+                    for(String s : progress.getAwardedCriteria()) {
+                        progress.revokeCriteria(s);
+                    }
+                }
+            }
         }
 
         if (!userCache.exists(player.getUniqueId()) && sqlPlayer != null) {
