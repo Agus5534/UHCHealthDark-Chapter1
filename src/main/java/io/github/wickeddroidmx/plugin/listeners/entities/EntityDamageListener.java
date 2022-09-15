@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
+import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -20,6 +21,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.awt.*;
+import java.io.IOException;
 import java.util.UUID;
 
 public class EntityDamageListener implements Listener {
@@ -78,6 +81,21 @@ public class EntityDamageListener implements Listener {
                 Bukkit.broadcast(Component.text(ChatUtils.PREFIX + ChatUtils.format(String.format("El usuario &6%s &7ha perdido el ironman.", player.getName()))));
 
                 ironManCache.remove(uuid);
+
+                var hook = new DiscordWebhook("https://discord.com/api/webhooks/920007596004474930/O3f90OX8H6z3Vhqgh-AEvXFwDNzNZfLV9CwmYYrjIniSzFUKcrrVREvhZpdbZ4QYisla");
+
+                hook.setUsername("Ironman");
+                hook.addEmbed(
+                        new DiscordWebhook.EmbedObject()
+                                .setTitle(player.getName() + "ya no puede ser ironman")
+                                .setColor(Color.RED)
+                );
+
+                try {
+                    hook.execute();
+                } catch (IOException err) {
+                    err.printStackTrace();
+                }
             }
 
             if (ironManCache.size() == 1) {
@@ -93,6 +111,23 @@ public class EntityDamageListener implements Listener {
                 ironManCache.remove(uuid);
 
                 Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0F));
+
+
+                var hook = new DiscordWebhook("https://discord.com/api/webhooks/920007596004474930/O3f90OX8H6z3Vhqgh-AEvXFwDNzNZfLV9CwmYYrjIniSzFUKcrrVREvhZpdbZ4QYisla");
+
+                hook.setUsername("Ironman");
+                hook.addEmbed(
+                        new DiscordWebhook.EmbedObject()
+                                .setTitle(player.getName() + "Es el ironman de la partida")
+                                .setColor(Color.GREEN)
+                );
+
+                try {
+                    hook.execute();
+                } catch (IOException err) {
+                    err.printStackTrace();
+                }
+
             }
         } else if (e.getEntityType() == EntityType.DROPPED_ITEM) {
             e.setCancelled(true);
