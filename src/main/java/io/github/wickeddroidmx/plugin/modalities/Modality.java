@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 
 public abstract class Modality implements Listener  {
 
@@ -32,6 +33,20 @@ public abstract class Modality implements Listener  {
         this.name = name;
         this.material = material;
         this.lore = lore;
+    }
+
+    public Modality(String... lore) throws IllegalClassFormatException {
+        if(this.getClass().isAnnotationPresent(GameModality.class)) {
+            var annotation = this.getClass().getAnnotation(GameModality.class);
+
+            this.name = annotation.name();
+            this.key = annotation.key();
+            this.lore = lore;
+            this.material = annotation.material();
+            this.modalityType = annotation.modalityType();
+        } else {
+            throw new IllegalClassFormatException("Missing @GameModality argument or constructor");
+        }
     }
 
     public void activeMode() {

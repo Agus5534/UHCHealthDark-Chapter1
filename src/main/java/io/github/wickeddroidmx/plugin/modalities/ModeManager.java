@@ -20,7 +20,7 @@ public class ModeManager {
     private NoNetherMode noNetherMode;
     private NoAchievementsMode noAchievementsMode;
     private NoNameTagMode noNametagMode;
-    private HealthDarkStartMode healthDarkStartMode;
+    // private HealthDarkStartMode healthDarkStartMode;
     private AdvancedTacticsMode advancedTacticsMode;
     private KingMode kingMode;
     private NoVillagesMode noVillagesMode;

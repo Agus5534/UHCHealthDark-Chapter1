@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
@@ -15,11 +16,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+@GameModality(name = "&4Moles",
+              key = "moles",
+              material = Material.IRON_SWORD,
+              modalityType = ModalityType.MODE)
 public class MolesMode extends Modality {
 
     @Inject
@@ -31,14 +37,13 @@ public class MolesMode extends Modality {
 
     List<Player> molesList;
     HashMap<Player, Player> molesTeams;
-    public MolesMode() {
-        super(ModalityType.MODE, "moles", "&4Moles", Material.IRON_SWORD,
-                ChatUtils.format("&7- Equipos de 3"),
+    public MolesMode() throws IllegalClassFormatException {
+        super(ChatUtils.format("&7- Equipos de 3"),
                 ChatUtils.format("&7- Un impostor por equipo"),
                 ChatUtils.format("&7- La partida termina siendo To2"),
                 ChatUtils.format("&7- No tiene función de momento, solo &bvisual"));
 
-        teamManager.setTeamSize(3);
+       // teamManager.setTeamSize(3);
         molesList = new ArrayList<>();
 
         molesTeams = new HashMap<>();
