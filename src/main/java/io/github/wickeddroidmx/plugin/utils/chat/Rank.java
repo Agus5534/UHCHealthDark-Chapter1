@@ -49,7 +49,7 @@ public class Rank {
 
         ranks.put("RiosDeSal", RankList.MOD);
 
-        ranks.put("Simpde9zlucas", RankList.MOD);
+        ranks.put("AlbertiwizZ", RankList.MOD);
 
     }
 
