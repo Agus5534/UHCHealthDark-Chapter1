@@ -231,6 +231,6 @@ public class StaffGameCommands implements CommandClass  {
     }
 
     private String removeColors(String s) {
-        return s.replaceAll("&[0-9a-z]","");
+        return s.replaceAll("&[0-9a-z]","").replaceAll("§[0-9a-z]","");
     }
 }
