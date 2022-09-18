@@ -36,6 +36,8 @@ public class ModeManager {
 
     private SecondLifeMode secondLifeMode;
 
+    private MolesMode molesMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -104,7 +106,8 @@ public class ModeManager {
                 ultraDropsRandomMode,
                 dropsRandomMode,
                 starterBookScenario,
-                secondLifeMode
+                secondLifeMode,
+                molesMode
         );
     }
 
