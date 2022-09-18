@@ -84,6 +84,7 @@ public class StaffCommands implements CommandClass {
             uhcPlayer.setAlive(true);
             uhcPlayer.setScattered(true);
             uhcPlayer.setDeath(false);
+            uhcPlayer.getPlayer().setFlying(false);
         }
     }
 
