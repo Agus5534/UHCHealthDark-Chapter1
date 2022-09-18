@@ -34,6 +34,8 @@ public class ModeManager {
 
     private DropsRandomMode dropsRandomMode;
 
+    private SecondLifeMode secondLifeMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -84,7 +86,7 @@ public class ModeManager {
                 tradeParanoia,
                 siphonScenario,
                 teamInventoryScenario,
-                healthDarkStartMode,
+              //healthDarkStartMode,
                 superHeroesMode,
                 ultraAggressiveMode,
                 jumperMode,
@@ -101,7 +103,8 @@ public class ModeManager {
                 cobwebLess,
                 ultraDropsRandomMode,
                 dropsRandomMode,
-                starterBookScenario
+                starterBookScenario,
+                secondLifeMode
         );
     }
 
