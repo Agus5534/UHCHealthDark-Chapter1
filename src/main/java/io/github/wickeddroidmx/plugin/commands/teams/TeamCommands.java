@@ -149,7 +149,7 @@ public class TeamCommands implements CommandClass {
         }
 
         if(uhcTeam.getTeam().getPrefix() != null) {
-            if(teamPrefixes.contains(ChatColor.stripColor(uhcTeam.getTeam().getPrefix()))) {
+            if(teamPrefixes.contains(ChatColor.stripColor(text))) {
                 sender.sendMessage(ChatUtils.TEAM + "Ya hay un team con ese prefix.");
                 return;
             }

@@ -1,5 +1,8 @@
 package io.github.wickeddroidmx.plugin;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
@@ -23,6 +26,10 @@ import org.bukkit.scoreboard.Team;
 
 import javax.inject.Named;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.UUID;
 
 @InjectAll
@@ -64,6 +71,18 @@ public class Main extends JavaPlugin {
         rank = new Rank();
 
         rank.registerRanks();
+
+        try {
+            int id = getRootObject("https://agus5534.tech/hd-uhcid.json").get("id").getAsInt();
+            String date = getRootObject("https://agus5534.tech/hd-uhcid.json").get("last_update").getAsString();
+            gameManager.setUhcId(id);
+
+            Bukkit.getLogger().info(String.format("Utilizando UHC ID %s que fue actualizado por última vez en %s", id, date));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -95,4 +114,15 @@ public class Main extends JavaPlugin {
 
 
     }
+
+    private JsonObject getRootObject(String url) throws Exception{
+        URL link = new URL(url);
+        URLConnection request = link.openConnection();
+        request.connect();
+
+        JsonParser jp = new JsonParser();
+        JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+        return root.getAsJsonObject();
+    }
+
 }

@@ -5,6 +5,7 @@ import io.github.wickeddroidmx.plugin.modalities.scenarios.*;
 import io.github.wickeddroidmx.plugin.modalities.teams.ChosenMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.LoveAtFirstSightMode;
 import io.github.wickeddroidmx.plugin.modalities.uhc.UhcRunMode;
+import io.github.wickeddroidmx.plugin.modalities.uhc.UhcSkyHighMode;
 import me.yushust.inject.InjectAll;
 
 import javax.inject.Singleton;
@@ -69,6 +70,8 @@ public class ModeManager {
     //UHC
     private UhcRunMode uhcRunMode;
 
+    private UhcSkyHighMode uhcSkyHighMode;
+
     private final HashMap<String, Modality> modeMap = new HashMap<>();
 
     public void     registerModes() {
@@ -111,7 +114,8 @@ public class ModeManager {
                 starterBookScenario,
                 secondLifeMode,
                 molesMode,
-                chosenMode
+                chosenMode,
+                uhcSkyHighMode
         );
     }
 

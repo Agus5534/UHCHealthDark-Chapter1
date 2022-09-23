@@ -81,6 +81,15 @@ public class GameTickListener implements Listener {
             Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(150, 300, false)));
         }
 
+        if(seconds == gameManager.getTimeForMeetup() + 300 || seconds == gameManager.getTimeForMeetup() + 900 || seconds == gameManager.getTimeForMeetup() + 1200 || seconds == gameManager.getTimeForMeetup() + 1800) {
+            var world = Bukkit.getWorld("uhc_world");
+
+            int wb = (int) (world.getWorldBorder().getSize() / 2);
+
+            Bukkit.getScheduler().runTask(plugin, ()->Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(wb-35,300,false)));
+
+        }
+
         if (gameManager.getGameState() == GameState.FINISHING) {
             cache.clear();
 

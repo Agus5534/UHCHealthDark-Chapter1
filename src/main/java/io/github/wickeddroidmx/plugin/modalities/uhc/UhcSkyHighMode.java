@@ -85,10 +85,6 @@ public class UhcSkyHighMode extends Modality {
 
     @EventHandler
     public void onTick(GameTickEvent e) {
-        if(e.getTime() % (60 * 65) == 0) {
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()->reduceBorder(25),1L,6000L);
-        }
-
         if(e.getTime() % (60 * 67) == 0) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()->addCape(15),1L,8400);
         }
@@ -100,14 +96,5 @@ public class UhcSkyHighMode extends Modality {
         tid = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()->cape++, 1L, 40L);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->Bukkit.getScheduler().cancelTask(tid), 20*capes*2);
-    }
-
-    public void reduceBorder(int s) {
-        if(gameManager.getWorldBorder()-s <= 0) {
-            Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(5, 120, false));
-
-            return;
-        }
-        Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(gameManager.getWorldBorder()-s, 120, false));
     }
 }
