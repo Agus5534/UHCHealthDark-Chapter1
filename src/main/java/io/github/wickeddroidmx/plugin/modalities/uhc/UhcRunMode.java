@@ -77,6 +77,7 @@ public class UhcRunMode extends Modality {
         gameManager.setTimeForPvP(1800);
         gameManager.setTimeForMeetup(3600);
 
+        gameManager.setSkyHighMode(false);
         gameManager.setScenarioLimit(false);
         gameManager.setRunMode(true);
     }

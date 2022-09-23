@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.commands.staff;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.menu.PlayerInventoryMenu;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -86,6 +87,35 @@ public class StaffCommands implements CommandClass {
             uhcPlayer.setDeath(false);
             uhcPlayer.getPlayer().setFlying(false);
         }
+    }
+    @Command(
+            names = {"inv","inventory","invsee"}, permission = "healthdark.staff"
+    )
+    public void inventoryCommand(@Sender Player sender, Player target) {
+        var senderUhcPlayer = playerManager.getPlayer(sender.getUniqueId());
+
+        if(senderUhcPlayer != null) {
+            if(senderUhcPlayer.isAlive()) {
+                sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "Eres un jugador de la partida."));
+                return;
+            }
+        }
+
+        var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
+
+        if(uhcPlayer == null) {
+            sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "Ese jugador no juega la partida."));
+            return;
+        }
+
+        if(!uhcPlayer.isAlive() || uhcPlayer.isSpect()) {
+            sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "Ese jugador no tiene inventario para ver"));
+            return;
+        }
+
+        var playerInv = new PlayerInventoryMenu(target);
+
+        playerInv.openInv(sender);
     }
 
 }

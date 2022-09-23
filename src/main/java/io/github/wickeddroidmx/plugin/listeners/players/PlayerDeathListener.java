@@ -83,6 +83,10 @@ public class PlayerDeathListener implements Listener {
         if (uhcPlayer != null) {
             uhcPlayer.setAlive(false);
 
+            uhcPlayer.getUhcInventory().setInventory(e.getEntity().getInventory());
+
+            uhcPlayer.getUhcInventory().setLocation(e.getEntity().getLocation());
+
             Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0F, 1.0F));
 
             player.setGameMode(GameMode.SPECTATOR);

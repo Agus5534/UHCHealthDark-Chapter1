@@ -7,6 +7,7 @@ import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;
+import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
@@ -25,9 +26,8 @@ import team.unnamed.gui.core.gui.type.GUIBuilder;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Command(
@@ -44,6 +44,9 @@ public class StaffTeamCommands implements CommandClass {
 
     @Inject
     private PlayerManager playerManager;
+
+    @Inject
+    private ModeManager modeManager;
 
     @Command(
             names = "create"
@@ -201,6 +204,42 @@ public class StaffTeamCommands implements CommandClass {
 
 
         sender.sendMessage(ChatUtils.PREFIX + "Se ha hecho el double dates correctamente");
+    }
+
+    @Command(names = "chosen")
+    public void chosenCommand(@Sender Player sender) {
+        int teamSize = teamManager.getTeamSize();
+        int toSelect = Bukkit.getOnlinePlayers().size() / teamSize;
+
+        if(!modeManager.isActiveMode("chosen")) {
+            sender.sendMessage(ChatUtils.PREFIX + "No está activo el modo Chosen");
+            return;
+        }
+
+        List<Player> players = new ArrayList<>();
+
+        Bukkit.getOnlinePlayers().forEach(p -> players.add(p));
+
+        Collections.shuffle(players, new Random(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE)));
+
+        for(int i = 0; i < toSelect; i++) {
+            Player player = players.get(i);
+
+            teamManager.createTeam(player);
+
+            Bukkit.getPluginManager().callEvent(new TeamCreateEvent(teamManager.getPlayerTeam(player.getUniqueId()), player));
+
+            player.sendMessage(ChatUtils.TEAM + "Has sido elegido para elegir a tu team. Para invitar usa &6/team invite");
+        }
+
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            var uhcTeam = teamManager.getPlayerTeam(p.getUniqueId());
+
+            if(uhcTeam == null) {
+                p.sendMessage(ChatUtils.PREFIX + "Ya han sido seleccionados los anfitriones, estos los estaran invitando a ustedes. Para aceptar una invitación usar &6/team accept");
+            }
+        });
+
     }
 
 

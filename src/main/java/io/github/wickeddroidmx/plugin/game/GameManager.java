@@ -34,6 +34,8 @@ public class GameManager {
     private boolean pvpEnabled;
     private boolean gameStart;
     private boolean runMode;
+
+    private boolean skyHighMode;
     private boolean scenarioLimit;
     private boolean scatteredPlayers;
 
@@ -46,6 +48,7 @@ public class GameManager {
 
         this.gameStart = false;
         this.runMode = false;
+        this.skyHighMode = false;
         this.scenarioLimit = true;
 
         this.teamWin = null;
@@ -80,6 +83,10 @@ public class GameManager {
 
     public void setRunMode(boolean runMode) {
         this.runMode = runMode;
+    }
+
+    public void setSkyHighMode(boolean skyHighMode) {
+        this.skyHighMode = skyHighMode;
     }
 
     public void setCurrentTime(int currentTime) {
@@ -172,6 +179,10 @@ public class GameManager {
 
     public boolean isRunMode() {
         return runMode;
+    }
+
+    public boolean isSkyHighMode() {
+        return skyHighMode;
     }
 
     public boolean isPvpEnabled() {

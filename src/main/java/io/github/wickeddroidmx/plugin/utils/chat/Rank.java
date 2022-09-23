@@ -18,7 +18,7 @@ public class Rank {
 
         donations.put("abnercc_",RankList.DONATOR_HIGH); //PAPAS / (9) 5 DLS + 4 DLS de 2 BOOSTS
 
-        donations.put("Polleruda",RankList.DONATOR_NORMAL); //EVE / 4 DLS de 2 BOOSTS
+        donations.put("largesocks",RankList.DONATOR_NORMAL); //EVE / 4 DLS de 2 BOOSTS
 
         donations.put("_Light999", RankList.DONATOR_NORMAL); //LIGHT / 4 DLS de 2 BOOSTS
 
@@ -35,19 +35,19 @@ public class Rank {
 
         ranks.put("GuaichaMama", RankList.OWNER);
 
-        ranks.put("axolotl_BPK", RankList.OWNER);
+        ranks.put("Joaxolotl_BPK", RankList.HOST);
 
-        ranks.put("DRAGONNNNNNNNNNN", RankList.HEAD_ADMIN);
+        ranks.put("DRAGONNNNNNNNNNN", RankList.OWNER);
 
-        ranks.put("rufk_", RankList.ADMIN);
+        ranks.put("rufk_", RankList.HEAD_ADMIN);
 
-        ranks.put("Polleruda", RankList.MOD);
+        ranks.put("largesocks", RankList.MOD);
 
         ranks.put("abnercc_", RankList.MOD);
 
         ranks.put("Carpincho06", RankList.MOD);
 
-        ranks.put("RiosDeSal", RankList.MOD);
+        ranks.put("JackyLol1512", RankList.MOD);
 
         ranks.put("AlbertiwizZ", RankList.MOD);
 
@@ -75,6 +75,7 @@ public class Rank {
         ADMIN("&9[A]&r "),
         HEAD_ADMIN("&a[A+]&r "),
         OWNER("&c[O]&r "),
+        HOST("&2[Me&7xHo&cst]&r "),
         DONATOR_BASIC("&b[D]&r "), //<= 3 DLS
         DONATOR_NORMAL("&b[D+]&r "), //<= 7 DLS
         DONATOR_HIGH("&b[D&c+&b]&r "), //<= 11 DLS

@@ -87,7 +87,7 @@ public class EntityDamageListener implements Listener {
                 hook.setUsername("Ironman");
                 hook.addEmbed(
                         new DiscordWebhook.EmbedObject()
-                                .setTitle(player.getName() + "ya no puede ser ironman")
+                                .setTitle(player.getName() + " ya no puede ser ironman")
                                 .setColor(Color.RED)
                 );
 
@@ -118,7 +118,7 @@ public class EntityDamageListener implements Listener {
                 hook.setUsername("Ironman");
                 hook.addEmbed(
                         new DiscordWebhook.EmbedObject()
-                                .setTitle(player.getName() + "Es el ironman de la partida")
+                                .setTitle(player.getName() + " Es el ironman de la partida")
                                 .setColor(Color.GREEN)
                 );
 

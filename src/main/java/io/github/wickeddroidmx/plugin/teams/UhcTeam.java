@@ -113,6 +113,10 @@ public class UhcTeam {
         --this.playersAlive;
     }
 
+    public void incrementPlayersAlive() {
+        ++this.playersAlive;
+    }
+
     public void setMole(Player mole) {
         this.mole = mole;
     }

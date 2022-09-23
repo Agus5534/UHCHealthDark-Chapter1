@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamScatteredEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
 import io.github.wickeddroidmx.plugin.hooks.discord.DiscordManager;
 import io.github.wickeddroidmx.plugin.hooks.discord.HookType;
@@ -29,6 +30,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -196,7 +199,7 @@ public class StaffGameCommands implements CommandClass  {
         }
 
         if(teamManager.getPlayerTeam(sender.getUniqueId()) != null) {
-            sender.sendMessage(ChatUtils.format("&7¡Ya tienes un equipo!"));
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ya tienes un equipo!"));
 
             return;
         }
@@ -204,18 +207,92 @@ public class StaffGameCommands implements CommandClass  {
         if(player.isSpect()) {
             player.setSpect(false);
 
-            sender.sendMessage(ChatUtils.format("&7¡Ya no eres espectador!"));
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ya no eres espectador!"));
 
             gameManager.getSpectatorTeam().removeEntry(sender.getName());
         } else {
             player.setSpect(true);
 
-            sender.sendMessage(ChatUtils.format("&7¡Ahora eres espectador!"));
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ahora eres espectador!"));
 
             sender.setGameMode(GameMode.SPECTATOR);
 
             gameManager.getSpectatorTeam().addEntry(sender.getName());
         }
+    }
+
+    @Command(names = "revive")
+    public void reviveCommand(@Sender Player sender, Player target, Boolean setInv) {
+        var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
+        var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
+
+        if(gameManager.getGameState() == GameState.WAITING) {
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7La partida no ha iniciado."));
+            return;
+        }
+
+        if(gameManager.getGameState() == GameState.MEETUP) {
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7Este comando no se puede utilizar durante el Meetup."));
+            return;
+        }
+
+        if(uhcPlayer == null) {
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7Esta persona no juega la partida."));
+            return;
+        }
+
+        if(uhcTeam == null) {
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7La data de esta persona ha sido eliminada (Equipo eliminado definitivamente)."));
+            return;
+        }
+
+        var uhcInv = uhcPlayer.getUhcInventory();
+        var inv = uhcInv.getInventory();
+        var loc = uhcInv.getLocation();
+
+        if(inv == null || loc == null) {
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7Esta persona nunca ha muerto."));
+            return;
+        }
+
+        uhcTeam.incrementPlayersAlive();
+        target.getInventory().clear();
+
+        var killer = target.getKiller();
+        if(killer != null) {
+            var killerPlayer = playerManager.getPlayer(killer.getUniqueId());
+            var teamKiller = teamManager.getPlayerTeam(killer.getUniqueId());
+
+            if(killerPlayer != null) {
+                killerPlayer.setKills(killerPlayer.getKills()-1);
+            }
+
+            if(teamKiller != null) {
+                teamKiller.setKills(teamKiller.getKills()-1);
+            }
+
+        }
+
+        uhcPlayer.setAlive(true);
+        uhcPlayer.setDeath(false);
+        target.setGameMode(GameMode.SURVIVAL);
+        uhcTeam.getTeam().addEntry(target.getName());
+
+
+        if(setInv) {
+            for(var i : inv.keySet()) {
+                if(inv.get(i) == null) { continue; }
+
+                target.getInventory().setItem(i, inv.get(i));
+            }
+
+        }
+
+        target.teleport(loc);
+
+        target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 400, 10, false,false,false));
+
+        Bukkit.broadcastMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha revivido al jugador &6"+target.getName()));
     }
 
     private String formatTime(int totalSecs) {

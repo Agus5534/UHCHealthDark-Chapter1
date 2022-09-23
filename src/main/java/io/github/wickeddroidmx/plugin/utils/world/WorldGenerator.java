@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.BitSet;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WorldGenerator {
 
@@ -30,10 +31,14 @@ public class WorldGenerator {
         WorldCreator worldCreator = new WorldCreator("uhc_world");
         worldCreator.environment(World.Environment.NORMAL);
         worldCreator.type(WorldType.NORMAL);
+        long seed = randomSeed();
+        worldCreator.seed(seed);
+
+        Bukkit.getLogger().info("Seed: " + seed);
 
         var uhcWorld = worldCreator.createWorld();
 
-        if (list.size() > 0) {
+        /*if (list.size() > 0) {
             var seed = list.get(0);
 
             worldCreator.seed(seed);
@@ -48,7 +53,7 @@ public class WorldGenerator {
 
         } else {
             Bukkit.getLogger().info("No hay seeds.");
-        }
+        }*/
 
         if (uhcWorld != null) {
             uhcWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
@@ -62,6 +67,10 @@ public class WorldGenerator {
             world.setDifficulty(Difficulty.HARD);
             world.setGameRule(GameRule.NATURAL_REGENERATION, false);
         }
+    }
+
+    private long randomSeed() {
+        return ThreadLocalRandom.current().nextLong(-Long.MAX_VALUE,Long.MAX_VALUE);
     }
 
     public void deleteWorlds() throws IOException {

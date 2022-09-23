@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.chat.Rank;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,6 +44,7 @@ public class AsyncChatListener implements Listener {
             e.setCancelled(true);
 
             teamManager.sendMessage(player.getUniqueId(), ChatUtils.format(String.format("%s%s &8» &7%s", Rank.getRank(player), player.getName(), e.getMessage())));
+            Bukkit.getLogger().info(String.format("[%s] %s » %s", uhcTeam.getName(), player.getName(), e.getMessage()));
         }
     }
 }

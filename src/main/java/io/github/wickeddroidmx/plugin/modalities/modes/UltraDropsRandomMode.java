@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +24,8 @@ public class UltraDropsRandomMode extends Modality {
     private final Material[] blockedMaterials;
 
     private final List<Material> possibleDrops = new ArrayList<>();
+
+    List<String> errors = new ArrayList<>();
     public UltraDropsRandomMode() {
         super(ModalityType.MODE, "ultra_drops_random","&6Ultra Drops Random", Material.BEDROCK,
                 ChatUtils.format("&7- Todos los drops serán aleatorios"));
@@ -54,8 +57,16 @@ public class UltraDropsRandomMode extends Modality {
                  Material.PISTON_HEAD,
                  Material.REDSTONE_WIRE,
                  Material.FROSTED_ICE,
-                 Material.CAVE_VINES
-        };
+                 Material.CAVE_VINES,
+                 Material.FIRE,
+                 Material.BUBBLE_COLUMN,
+                 Material.SOUL_FIRE,
+                 Material.TALL_SEAGRASS,
+                 Material.NETHER_PORTAL,
+                 Material.END_PORTAL,
+                 Material.CARROTS,
+                 Material.POWDER_SNOW
+         };
 
          for(Material m : Material.values()) {
              if(!m.isLegacy() && !m.isAir() && !Arrays.asList(blockedMaterials).contains(m) && !m.getKey().getKey().contains("wall") && !m.getKey().getKey().contains("potted") && !m.getKey().getKey().contains("candle_cake") && !m.getKey().getKey().contains("plant") && !m.getKey().getKey().contains("stem") && !m.getKey().getKey().contains("bush")) {
@@ -68,6 +79,7 @@ public class UltraDropsRandomMode extends Modality {
     @EventHandler
     public void onDestroy(BlockBreakEvent event) {
         if(event.isDropItems()) {
+
             event.setDropItems(false);
 
             boolean drop = true;
@@ -100,11 +112,29 @@ public class UltraDropsRandomMode extends Modality {
 
             Location loc = event.getBlock().getLocation();
 
-            Material choosen = possibleDrops.get(new Random().nextInt(possibleDrops.size()));
+            Material chosen = possibleDrops.get(new Random().nextInt(possibleDrops.size()));
 
-            ItemStack item = new ItemStack(choosen, 1);
+            ItemStack item = new ItemCreator(chosen).canHaveEnchants();
 
-            loc.getWorld().dropItem(loc, item);
+            try {
+                loc.getWorld().dropItem(loc, item);
+            } catch (Exception e) {
+
+                if(errors.contains("Material."+chosen.getKey().getKey().toUpperCase())){
+                    return;
+                }
+
+                errors.add("Material."+chosen.getKey().getKey().toUpperCase());
+
+                String s = "";
+
+                for(String string : errors) {
+                    s+= string + ", ";
+                }
+
+                Bukkit.getLogger().warning(s);
+            }
+
         }
     }
 

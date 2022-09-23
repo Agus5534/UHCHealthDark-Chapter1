@@ -13,9 +13,12 @@ import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Text;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 @Command(
         names="team"
@@ -36,6 +39,12 @@ public class TeamCommands implements CommandClass {
     )
     public void teamInviteCommand(@Sender Player sender, Player target) {
         var targetTeam = teamManager.getPlayerTeam(target.getUniqueId());
+        var senderTeam = teamManager.getPlayerTeam(sender.getUniqueId());
+
+        if(senderTeam == null) {
+            sender.sendMessage(ChatUtils.PREFIX + "No tienes un equipo.");
+            return;
+        }
 
         if (sender == target) {
             sender.sendMessage(ChatUtils.PREFIX + "No te puedes invitar a ti mismo.");
@@ -127,9 +136,23 @@ public class TeamCommands implements CommandClass {
     public void prefixCommand(@Sender Player sender, @Text String text) {
         var uhcTeam = teamManager.getPlayerTeam(sender.getUniqueId());
 
+        List<String> teamPrefixes = new ArrayList<>();
+
+        for(var uhcT : teamManager.getUhcTeams().values()) {
+            if(uhcT.getTeam().getPrefix() == null) { continue; }
+            teamPrefixes.add(ChatColor.stripColor(uhcT.getTeam().getPrefix()));
+        }
+
         if (uhcTeam == null) {
             sender.sendMessage(ChatUtils.PREFIX + "No tienes un equipo.");
             return;
+        }
+
+        if(uhcTeam.getTeam().getPrefix() != null) {
+            if(teamPrefixes.contains(ChatColor.stripColor(uhcTeam.getTeam().getPrefix()))) {
+                sender.sendMessage(ChatUtils.TEAM + "Ya hay un team con ese prefix.");
+                return;
+            }
         }
 
         if (text.length() > 16) {

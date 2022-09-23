@@ -20,6 +20,8 @@ public class UhcPlayer {
     private int kills,
                 enemyRecon;
 
+    private UhcInventory uhcInventory;
+
     public UhcPlayer(Player player) {
         this.uuid = player.getUniqueId();
 
@@ -33,6 +35,7 @@ public class UhcPlayer {
         this.spect = false;
 
         this.scattered = false;
+        this.uhcInventory = new UhcInventory(player);
     }
 
     public void setCobbleOnly(boolean cobbleOnly) {
@@ -105,5 +108,9 @@ public class UhcPlayer {
 
     public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
+    }
+
+    public UhcInventory getUhcInventory() {
+        return uhcInventory;
     }
 }

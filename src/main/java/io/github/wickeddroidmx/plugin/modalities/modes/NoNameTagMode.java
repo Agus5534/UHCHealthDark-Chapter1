@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
+import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -25,5 +26,15 @@ public class NoNameTagMode extends Modality {
         teamManager.getUhcTeams()
                 .values()
                 .forEach(uhcTeam -> uhcTeam.getTeam().setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS));
+    }
+
+
+    @EventHandler
+    public void onLaterScatter(PlayerLaterScatterEvent event) {
+        var uhcTeam = teamManager.getPlayerTeam(event.getPlayer().getUniqueId());
+
+        if(uhcTeam != null) {
+            uhcTeam.getTeam().setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
+        }
     }
 }
