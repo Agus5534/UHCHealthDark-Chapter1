@@ -65,9 +65,6 @@ public class ListenerLoader implements Loader {
     private WorldBorderSetListener worldBorderSetListener;
     private WorldBorderMoveListener worldBorderMoveListener;
 
-    // Chunk Events
-
-    private ChunkLoadListener chunkLoadListener;
 
 
     @Override
@@ -97,7 +94,6 @@ public class ListenerLoader implements Loader {
                 playerPreLoginListener,
                 teamWinListener,
                 changeGameTimeListener,
-                chunkLoadListener,
                 blockPlaceListener
         );
     }
