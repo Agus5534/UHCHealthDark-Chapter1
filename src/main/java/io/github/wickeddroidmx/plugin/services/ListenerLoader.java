@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.services;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.team.TeamWinEvent;
 import io.github.wickeddroidmx.plugin.listeners.block.BlockBreakListener;
+import io.github.wickeddroidmx.plugin.listeners.block.BlockPlaceListener;
 import io.github.wickeddroidmx.plugin.listeners.chat.AsyncChatListener;
 import io.github.wickeddroidmx.plugin.listeners.chunk.ChunkLoadListener;
 import io.github.wickeddroidmx.plugin.listeners.custom.*;
@@ -36,6 +37,8 @@ public class ListenerLoader implements Loader {
     // Block Events
     private BlockBreakListener blockBreakListener;
 
+    private BlockPlaceListener blockPlaceListener;
+
     //Entity Events
     private EntityDamageByEntityListener entityDamageByEntityListener;
     private EntityDamageListener entityDamageListener;
@@ -66,6 +69,7 @@ public class ListenerLoader implements Loader {
 
     private ChunkLoadListener chunkLoadListener;
 
+
     @Override
     public void load() {
         registerListeners(
@@ -93,7 +97,8 @@ public class ListenerLoader implements Loader {
                 playerPreLoginListener,
                 teamWinListener,
                 changeGameTimeListener,
-                chunkLoadListener
+                chunkLoadListener,
+                blockPlaceListener
         );
     }
 
