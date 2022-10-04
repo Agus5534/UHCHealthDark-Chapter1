@@ -20,7 +20,7 @@ public class AnvilDiscountsScenario extends Modality {
     HashMap<ItemStack, Integer> itemsHash;
 
     public AnvilDiscountsScenario() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Todos los yunques tendrán hasta 60% de descuento"));
+        super(ChatUtils.format("&7- Todos los yunques tendrán hasta 55% de descuento"));
     }
 
     @EventHandler
@@ -35,7 +35,7 @@ public class AnvilDiscountsScenario extends Modality {
             return;
         }
 
-        double toDiscount = ThreadLocalRandom.current().nextDouble(0.40, 1.0);
+        double toDiscount = ThreadLocalRandom.current().nextDouble(0.45, 1.0);
 
         int newRepairCost = (int) Math.round(repairCost*toDiscount);
 
