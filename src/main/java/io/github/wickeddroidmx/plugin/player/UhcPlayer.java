@@ -18,7 +18,8 @@ public class UhcPlayer {
                     spect;
 
     private int kills,
-                enemyRecon;
+                enemyRecon,
+                cobwebs;
 
     private UhcInventory uhcInventory;
 
@@ -27,6 +28,7 @@ public class UhcPlayer {
 
         this.name = player.getName();
         this.kills = 0;
+        this.cobwebs = 0;
 
         this.alive = false;
         this.cobbleOnly = false;
@@ -70,6 +72,8 @@ public class UhcPlayer {
         ++this.kills;
     }
 
+    public void incrementCobwebs() { ++this.cobwebs; }
+
     public boolean isAlive() {
         return alive;
     }
@@ -104,6 +108,14 @@ public class UhcPlayer {
 
     public int getKills() {
         return kills;
+    }
+
+    public int getCobwebs() {
+        return cobwebs;
+    }
+
+    public void setCobwebs(int cobwebs) {
+        this.cobwebs = cobwebs;
     }
 
     public Player getPlayer() {

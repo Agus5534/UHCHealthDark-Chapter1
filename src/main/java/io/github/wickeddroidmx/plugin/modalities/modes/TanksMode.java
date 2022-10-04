@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
+import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
@@ -22,6 +23,14 @@ public class TanksMode extends Modality {
     @EventHandler
     public void onPlayerScatter(PlayerScatteredEvent e) {
         var player = e.getPlayer();
+
+        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(40.0D);
+        player.setHealth(40.0D);
+    }
+
+    @EventHandler
+    public void onLaterScatter(PlayerLaterScatterEvent event) {
+        var player = event.getPlayer();
 
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(40.0D);
         player.setHealth(40.0D);

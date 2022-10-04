@@ -62,8 +62,10 @@ public class ModeManager {
     private RegretFulWolfsScenario regretFulWolfsScenario;
     private DoggosMode doggosMode;
     private NuggetsScenario nuggetsScenario;
-
     private StarterBookScenario starterBookScenario;
+    private AnvilDiscountsScenario anvilDiscountsScenario;
+
+    private NoBurnScenario noBurnScenario;
     private TradeParanoia tradeParanoia;
     private CobwebLess cobwebLess;
 
@@ -115,7 +117,9 @@ public class ModeManager {
                 secondLifeMode,
                 molesMode,
                 chosenMode,
-                uhcSkyHighMode
+                uhcSkyHighMode,
+                anvilDiscountsScenario,
+                noBurnScenario
         );
     }
 

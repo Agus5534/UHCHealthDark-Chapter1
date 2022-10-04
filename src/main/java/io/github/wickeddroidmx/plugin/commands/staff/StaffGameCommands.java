@@ -123,8 +123,16 @@ public class StaffGameCommands implements CommandClass  {
             hook.setContent(String.format("> **UHCHealthDark | #%d**\\n\\n", gameManager.getUhcId()) +
                             String.format("> **Host:** %s\\n", sender.getName()) +
                             String.format("> **Inicia en:** <t:%s:R>\\n\\n", new Date(timeToStart).getTime()) +
-                            String.format("> **Teams:** %s\\n", teamManager.getFormatTeamSize()) +
-                            String.format("> **UHC:** %s\\n", removeColors(modeManager.getModesActive(ModalityType.UHC).stream().findFirst().orElse(uhcVanillaMode).getName())) +
+                            String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.isActiveMode("chosen")
+                                 ? "Chosen"
+                                 : "Random"
+                            ) +
+                            String.format("> **UHC:** %s\\n", removeColors(modeManager.getModesActive(ModalityType.UHC).size() == 0
+                                ? uhcVanillaMode.getName()
+                                : modeManager.getModesActive(ModalityType.UHC)
+                                .stream()
+                                .map(modality -> removeColors(modality.getName()))
+                                .collect(Collectors.joining(", ")))) +
                             String.format("> **Scenarios:** %s\\n", modeManager.getModesActive(ModalityType.SCENARIO).size() == 0
                                     ? "No hay scenarios activos."
                                     : modeManager.getModesActive(ModalityType.SCENARIO)
@@ -139,10 +147,57 @@ public class StaffGameCommands implements CommandClass  {
                                     .map(modality -> removeColors(modality.getName()))
                                     .collect(Collectors.joining(", "))
                             ) +
+                            String.format("> **Cobweb limit:** %s\\n\\n",gameManager.getCobwebLimit()) +
                             String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup()))+
                             String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
                             "> **IP:** ||uhchealthdark.minecraft.best||\\n\\n"+
                             "<@&892533124083384361> <@&896190893558751282>");
+
+            hook.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Command(
+            names="devpostuhc"
+    )
+    public void postUHCDevCommand(@Sender Player sender, int minutes) {
+        var timeConverted = (minutes * 60);
+        var timeToStart = (System.currentTimeMillis() + (timeConverted * 1000L)) / 1000L;
+
+        try {
+            var hook = discordManager.getDiscordHook(HookType.POST_UHC);
+
+            hook.setContent(String.format("> **UHCHealthDark | #%d**\\n\\n", gameManager.getUhcId()) +
+                    String.format("> **Host:** %s\\n", sender.getName()) +
+                    String.format("> **Inicia en:** <t:%s:R>\\n\\n", new Date(timeToStart).getTime()) +
+                    String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.isActiveMode("chosen")
+                            ? "Chosen"
+                            : "Random"
+                    ) +
+                    String.format("> **UHC:** %s\\n", removeColors(modeManager.getModesActive(ModalityType.UHC).size() == 0
+                            ? uhcVanillaMode.getName()
+                            : modeManager.getModesActive(ModalityType.UHC)
+                            .stream()
+                            .map(modality -> removeColors(modality.getName()))
+                            .collect(Collectors.joining(", ")))) +
+                    String.format("> **Scenarios:** %s\\n", modeManager.getModesActive(ModalityType.SCENARIO).size() == 0
+                            ? "No hay scenarios activos."
+                            : modeManager.getModesActive(ModalityType.SCENARIO)
+                            .stream()
+                            .map(modality -> removeColors(modality.getName()))
+                            .collect(Collectors.joining(", "))
+                    ) +
+                    String.format("> **Modos:** %s\\n", modeManager.getModesActive(ModalityType.MODE).size() == 0
+                            ? "No hay modos activos."
+                            : modeManager.getModesActive(ModalityType.MODE)
+                            .stream()
+                            .map(modality -> removeColors(modality.getName()))
+                            .collect(Collectors.joining(", "))
+                    ) +
+                            String.format("> **Cobweb limit:** %s\\n\\n",gameManager.getCobwebLimit()) +
+                    String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup()))+
+                    String.format("> **PvP:** %s\\n", formatTime(gameManager.getTimeForPvP())));
 
             hook.execute();
         } catch (IOException e) {
@@ -154,8 +209,8 @@ public class StaffGameCommands implements CommandClass  {
             names = "cobweblimit"
     )
     public void cobwebLimitCommand(@Sender Player sender, int cobwebLimit) {
-        if (cobwebLimit > 64) {
-            sender.sendMessage(ChatUtils.PREFIX + "No puedes poner un cobweb limit de más de 64.");
+        if (cobwebLimit > 64 || cobwebLimit < 0) {
+            sender.sendMessage(ChatUtils.PREFIX + "No puedes poner ese límite.");
         }
 
         sender.sendMessage(String.format(

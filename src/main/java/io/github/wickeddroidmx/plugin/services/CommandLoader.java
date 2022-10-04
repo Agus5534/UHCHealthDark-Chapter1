@@ -3,10 +3,7 @@ package io.github.wickeddroidmx.plugin.services;
 import io.github.wickeddroidmx.plugin.commands.MainCommand;
 import io.github.wickeddroidmx.plugin.commands.PlayerCommands;
 import io.github.wickeddroidmx.plugin.commands.StatsCommand;
-import io.github.wickeddroidmx.plugin.commands.staff.StaffCommands;
-import io.github.wickeddroidmx.plugin.commands.staff.StaffGameCommands;
-import io.github.wickeddroidmx.plugin.commands.staff.StaffModeCommands;
-import io.github.wickeddroidmx.plugin.commands.staff.StaffTeamCommands;
+import io.github.wickeddroidmx.plugin.commands.staff.*;
 import io.github.wickeddroidmx.plugin.commands.teams.TeamCommands;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilder;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -31,6 +28,8 @@ public class CommandLoader implements Loader {
     private StaffTeamCommands staffTeamCommands;
     private StaffModeCommands staffModeCommands;
 
+    private StaffMeetupCommands staffMeetupCommands;
+
     @Override
     public void load() {
         registerCommands(
@@ -41,7 +40,8 @@ public class CommandLoader implements Loader {
                 staffGameCommands,
                 staffTeamCommands,
                 staffModeCommands,
-                statsCommand
+                statsCommand,
+                staffMeetupCommands
         );
     }
 

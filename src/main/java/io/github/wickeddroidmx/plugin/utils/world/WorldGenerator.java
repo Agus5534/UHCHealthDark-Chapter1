@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.utils.world;
 
 import io.github.wickeddroidmx.plugin.utils.files.Configuration;
 import org.bukkit.*;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 
@@ -9,7 +10,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.BitSet;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -25,36 +28,61 @@ public class WorldGenerator {
             "world_the_end"
     };
 
-    public void createWorld() {
-        var list = configuration.getLongList("seed");
+    World uhcWorld;
 
+    private List<Biome> blockedBiomes;
+
+    public void createWorld() {
+        Biome[] ban = new Biome[] {
+                Biome.OCEAN,
+                Biome.COLD_OCEAN,
+                Biome.DEEP_COLD_OCEAN,
+                Biome.DEEP_OCEAN,
+                Biome.DEEP_WARM_OCEAN,
+                Biome.FROZEN_OCEAN,
+                Biome.DEEP_FROZEN_OCEAN,
+                Biome.WARM_OCEAN,
+                Biome.LUKEWARM_OCEAN,
+                Biome.DEEP_LUKEWARM_OCEAN,
+                Biome.BAMBOO_JUNGLE_HILLS
+        };
+
+        blockedBiomes = Arrays.asList(ban);
+
+        long seed = randomSeed();
+
+        uhcWorld = createUhcWorld(seed).createWorld();
+
+        worldTasks();
+
+        while (blockedBiomes.contains(getBiome())) {
+            Bukkit.unloadWorld(uhcWorld, false);
+            seed = randomSeed();
+            uhcWorld = createUhcWorld(seed).createWorld();
+            worldTasks();
+
+            Bukkit.getLogger().info(String.format("Changing world"));
+        }
+
+    }
+
+    private long randomSeed() {
+        return ThreadLocalRandom.current().nextLong(-Long.MAX_VALUE,Long.MAX_VALUE);
+    }
+
+    private Biome getBiome() {
+        return uhcWorld.getBiome(0,0,0);
+    }
+
+    public WorldCreator createUhcWorld(long seed) {
         WorldCreator worldCreator = new WorldCreator("uhc_world");
         worldCreator.environment(World.Environment.NORMAL);
         worldCreator.type(WorldType.NORMAL);
-        long seed = randomSeed();
-        worldCreator.seed(seed);
 
-        Bukkit.getLogger().info("Seed: " + seed);
+        return worldCreator;
+    }
 
-        var uhcWorld = worldCreator.createWorld();
-
-        /*if (list.size() > 0) {
-            var seed = list.get(0);
-
-            worldCreator.seed(seed);
-
-            Bukkit.getLogger().info("Seed: " + seed);
-
-            try {
-                configuration.save();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            Bukkit.getLogger().info("No hay seeds.");
-        }*/
-
+    public void worldTasks() {
         if (uhcWorld != null) {
             uhcWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
             uhcWorld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
@@ -67,10 +95,6 @@ public class WorldGenerator {
             world.setDifficulty(Difficulty.HARD);
             world.setGameRule(GameRule.NATURAL_REGENERATION, false);
         }
-    }
-
-    private long randomSeed() {
-        return ThreadLocalRandom.current().nextLong(-Long.MAX_VALUE,Long.MAX_VALUE);
     }
 
     public void deleteWorlds() throws IOException {

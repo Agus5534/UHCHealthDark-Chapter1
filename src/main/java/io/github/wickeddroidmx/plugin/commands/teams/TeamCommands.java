@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;
+import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -33,6 +34,9 @@ public class TeamCommands implements CommandClass {
 
     @Inject
     private UhcTeamMenu uhcTeamMenu;
+
+    @Inject
+    private PlayerManager playerManager;
 
     @Command(
             names = "invite"
@@ -149,9 +153,20 @@ public class TeamCommands implements CommandClass {
         }
 
         if(uhcTeam.getTeam().getPrefix() != null) {
-            if(teamPrefixes.contains(ChatColor.stripColor(text))) {
+            if(teamPrefixes.contains(ChatColor.stripColor(text + " | "))) {
                 sender.sendMessage(ChatUtils.TEAM + "Ya hay un team con ese prefix.");
                 return;
+            }
+        }
+
+        var teamOwner = playerManager.getPlayer(uhcTeam.getOwner().getUniqueId());
+
+        if(teamOwner != null) {
+            if(teamOwner.isAlive()) {
+                if(!sender.equals(uhcTeam.getOwner())) {
+                    sender.sendMessage(ChatUtils.PREFIX + "No eres el owner del team.");
+                    return;
+                }
             }
         }
 

@@ -46,6 +46,21 @@ public class PlayerPortalListener implements Listener {
                 e.setTo(new Location(Bukkit.getWorld("world_nether"), e.getFrom().getBlockX() / 8.0, e.getFrom().getBlockY(), e.getFrom().getBlockZ() / 8.0));
             }
         }
+
+        if(e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+            if(e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END) {
+                var world = Bukkit.getWorld("uhc_world");
+
+                if(player.getBedSpawnLocation() != null) {
+                    if(player.getBedSpawnLocation().getWorld().getName().equals("uhc_world")) {
+                        e.setTo(player.getBedSpawnLocation());
+                        return;
+                    }
+                }
+
+                e.setTo(world.getSpawnLocation());
+            }
+        }
     }
 
 

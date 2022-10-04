@@ -23,14 +23,15 @@ public class GameManager {
     timeForPvP,
     timeForMeetup,
     worldBorder,
-    cobwebLimit;
+    cobwebLimit,
+    borderDelay;
 
     private long seconds;
 
     private GameState gameState;
 
     private int uhcId;
-
+    private int cape;
     private boolean pvpEnabled;
     private boolean gameStart;
     private boolean runMode;
@@ -41,7 +42,7 @@ public class GameManager {
 
     public GameManager() {
         this.host = null;
-        this.uhcId = 96;
+        this.uhcId = 253;
 
         this.gameState = GameState.WAITING;
         this.scatteredPlayers = false;
@@ -53,12 +54,14 @@ public class GameManager {
 
         this.teamWin = null;
         this.worldBorder = 2000;
+        this.cape = 150;
 
-        this.cobwebLimit = 64;
+        this.cobwebLimit = 16;
         this.seconds = 0;
         this.currentTime = 0;
         this.timeForPvP = 3600;
         this.timeForMeetup = 7200;
+        this.borderDelay = 300;
     }
 
     public void setHost(Player host) {
@@ -129,6 +132,10 @@ public class GameManager {
         this.worldBorder = worldBorder;
     }
 
+    public void setCape(int cape) {
+        this.cape = cape;
+    }
+
     public Team getSpectatorTeam() {
         return spectatorTeam;
     }
@@ -153,6 +160,14 @@ public class GameManager {
         return timeForMeetup;
     }
 
+    public int getBorderDelay() {
+        return borderDelay;
+    }
+
+    public void setBorderDelay(int borderDelay) {
+        this.borderDelay = borderDelay;
+    }
+
     public UhcTeam getTeamWin() {
         return teamWin;
     }
@@ -168,6 +183,8 @@ public class GameManager {
     public long getSeconds() {
         return seconds;
     }
+
+    public int getCape() { return cape; }
 
     public int getCobwebLimit() {
         return cobwebLimit;

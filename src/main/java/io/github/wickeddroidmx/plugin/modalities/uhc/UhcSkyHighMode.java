@@ -25,8 +25,6 @@ public class UhcSkyHighMode extends Modality {
     @Inject
     private GameManager gameManager;
 
-    int cape = 150;
-
     int taskID;
 
     public UhcSkyHighMode() {
@@ -38,9 +36,7 @@ public class UhcSkyHighMode extends Modality {
     @Override
     public void activeMode() {
         super.activeMode();
-        gameManager.setRunMode(false);
         gameManager.setSkyHighMode(true);
-        gameManager.setScenarioLimit(true);
         gameManager.setTimeForPvP(3540);
         gameManager.setTimeForMeetup(3600);
 
@@ -51,9 +47,9 @@ public class UhcSkyHighMode extends Modality {
     public void desactiveMode() {
         super.desactiveMode();
         gameManager.setSkyHighMode(false);
-        gameManager.setTimeForPvP(3600);
-        gameManager.setTimeForMeetup(7200);
-        gameManager.setScenarioLimit(true);
+        gameManager.setTimeForPvP(gameManager.isRunMode() ? 1800 : 3600);
+        gameManager.setTimeForPvP(gameManager.isRunMode() ? 3600 : 7200);
+        //gameManager.setScenarioLimit(true);
 
         Bukkit.getScheduler().cancelTask(taskID);
     }
@@ -74,27 +70,32 @@ public class UhcSkyHighMode extends Modality {
 
             double y = p.getLocation().getY();
 
-            if(y >= cape) { return; }
+            if(y >= gameManager.getCape()) { return; }
 
-            int amplifier = (int) ((cape - y) / 25);
+            int amplifier = (int) ((gameManager.getCape() - y) / 50);
 
-            p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 60, amplifier, true,true,true));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60, amplifier, true,true,true));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 45, amplifier, true,true,true));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 45, amplifier, true,true,true));
         });
     }
 
     @EventHandler
     public void onTick(GameTickEvent e) {
-        if(e.getTime() % (60 * 67) == 0) {
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()->addCape(15),1L,8400);
+        if(e.getTime() == (gameManager.getTimeForMeetup() + 360))  {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + "La capa estará subiendo 10 bloques en el próximo minuto!")),1L, 8400L);
+
+        }
+
+        if(e.getTime() == (gameManager.getTimeForMeetup() + 420))  {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> addCape(10),1L,8400);
         }
     }
 
     public void addCape(int capes) {
         int tid;
 
-        tid = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()->cape++, 1L, 40L);
+        tid = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()->gameManager.setCape(gameManager.getCape()+1), 120L, 120L);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->Bukkit.getScheduler().cancelTask(tid), 20*capes*2);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->Bukkit.getScheduler().cancelTask(tid), 20*capes*6);
     }
 }

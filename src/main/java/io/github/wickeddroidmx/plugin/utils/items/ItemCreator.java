@@ -88,13 +88,13 @@ public class ItemCreator extends ItemStack {
         return this;
     }
 
-    public ItemCreator canHaveEnchants() {
+    public ItemCreator hasRandomEnchants() {
         double n = ThreadLocalRandom.current().nextInt(1, 50);
         double maxEnch = ThreadLocalRandom.current().nextInt(1, 3);
         int i = 0;
 
         while (i < maxEnch) {
-            if(4 > n) {
+            if(5 > n) {
                 List<Enchantment> availableEnchants = new ArrayList<>();
 
                 Arrays.stream(Enchantment.values())
@@ -108,7 +108,9 @@ public class ItemCreator extends ItemStack {
 
                     if(level == 0) { level++; }
 
-                    addEnchantment(enchantment,level);
+                    if(enchantment.canEnchantItem(this)) {
+                        addEnchantment(enchantment,level);
+                    }
                 }
             }
             i++;

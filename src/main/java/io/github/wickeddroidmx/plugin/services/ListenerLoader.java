@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.team.TeamWinEvent;
 import io.github.wickeddroidmx.plugin.listeners.block.BlockBreakListener;
 import io.github.wickeddroidmx.plugin.listeners.chat.AsyncChatListener;
+import io.github.wickeddroidmx.plugin.listeners.chunk.ChunkLoadListener;
 import io.github.wickeddroidmx.plugin.listeners.custom.*;
 import io.github.wickeddroidmx.plugin.listeners.players.*;
 import io.github.wickeddroidmx.plugin.listeners.portal.PlayerPortalListener;
@@ -61,6 +62,10 @@ public class ListenerLoader implements Loader {
     private WorldBorderSetListener worldBorderSetListener;
     private WorldBorderMoveListener worldBorderMoveListener;
 
+    // Chunk Events
+
+    private ChunkLoadListener chunkLoadListener;
+
     @Override
     public void load() {
         registerListeners(
@@ -87,7 +92,8 @@ public class ListenerLoader implements Loader {
                 portalListener,
                 playerPreLoginListener,
                 teamWinListener,
-                changeGameTimeListener
+                changeGameTimeListener,
+                chunkLoadListener
         );
     }
 

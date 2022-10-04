@@ -78,7 +78,12 @@ public class GameTickListener implements Listener {
         if (seconds == gameManager.getTimeForMeetup()) {
             gameManager.setGameState(GameState.MEETUP);
 
-            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(150, 300, false)));
+            if(gameManager.getTimeForMeetup() == 300) {
+                Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(20, gameManager.getBorderDelay(), false)));
+
+                return;
+            }
+            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(150, gameManager.getBorderDelay(), false)));
         }
 
         if(seconds == gameManager.getTimeForMeetup() + 300 || seconds == gameManager.getTimeForMeetup() + 900 || seconds == gameManager.getTimeForMeetup() + 1200 || seconds == gameManager.getTimeForMeetup() + 1800) {
@@ -86,7 +91,7 @@ public class GameTickListener implements Listener {
 
             int wb = (int) (world.getWorldBorder().getSize() / 2);
 
-            Bukkit.getScheduler().runTask(plugin, ()->Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(wb-35,300,false)));
+            Bukkit.getScheduler().runTask(plugin, ()->Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(wb-35, gameManager.getBorderDelay(), false)));
 
         }
 

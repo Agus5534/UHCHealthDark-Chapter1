@@ -118,7 +118,7 @@ public class EntityDamageListener implements Listener {
                 hook.setUsername("Ironman");
                 hook.addEmbed(
                         new DiscordWebhook.EmbedObject()
-                                .setTitle(player.getName() + " Es el ironman de la partida")
+                                .setTitle(ironPlayer.getName() + " Es el ironman de la partida")
                                 .setColor(Color.GREEN)
                 );
 
@@ -129,8 +129,6 @@ public class EntityDamageListener implements Listener {
                 }
 
             }
-        } else if (e.getEntityType() == EntityType.DROPPED_ITEM) {
-            e.setCancelled(true);
         }
     }
 }

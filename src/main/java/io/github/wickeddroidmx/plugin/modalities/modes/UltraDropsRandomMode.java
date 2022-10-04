@@ -7,7 +7,6 @@ import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -114,7 +113,7 @@ public class UltraDropsRandomMode extends Modality {
 
             Material chosen = possibleDrops.get(new Random().nextInt(possibleDrops.size()));
 
-            ItemStack item = new ItemCreator(chosen).canHaveEnchants();
+            ItemStack item = new ItemCreator(chosen).hasRandomEnchants();
 
             try {
                 loc.getWorld().dropItem(loc, item);

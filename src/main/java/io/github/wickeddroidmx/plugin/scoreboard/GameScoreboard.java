@@ -22,6 +22,21 @@ public class GameScoreboard extends UHCScoreboard {
         var uhcPlayer = playerManager.getPlayer(player.getUniqueId());
         var teamPlayer = teamManager.getPlayerTeam(player.getUniqueId());
 
+        if(gameManager.isSkyHighMode()) {
+           this.updateLines(
+                    ChatUtils.format("&7&m--------------------"),
+                    ChatUtils.format( "&7Time: &f" + formatTime(gameManager.getCurrentTime())),
+                    ChatUtils.format("&7 &f"),
+                    ChatUtils.format("&7Players Left: &f" + playerManager.getUhcPlayers().values().stream().filter(UhcPlayer::isAlive).toList().size()),
+                    ChatUtils.format("&7WorldBorder: &f" + gameManager.getWorldBorder()),
+                    ChatUtils.format("&7Capa: &fY"+gameManager.getCape()),
+                    ChatUtils.format("&7 &f"),
+                    ChatUtils.format("&7Kills: &f" + uhcPlayer.getKills()),
+                    ChatUtils.format("&7Team Kills: &f" + (teamPlayer != null ? teamPlayer.getKills() : uhcPlayer.getKills())),
+                    ChatUtils.format("&7&m--------------------")
+                );
+            return;
+        }
         this.updateLines(
                 ChatUtils.format("&7&m--------------------"),
                 ChatUtils.format( "&7Time: &f" + formatTime(gameManager.getCurrentTime())),
