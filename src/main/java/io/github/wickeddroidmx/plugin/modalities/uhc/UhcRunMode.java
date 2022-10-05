@@ -77,6 +77,7 @@ public class UhcRunMode extends Modality {
         if(!gameManager.isSkyHighMode()) {
             gameManager.setTimeForPvP(1800);
             gameManager.setTimeForMeetup(3600);
+            gameManager.setCobwebLimit(8);
         }
 
         gameManager.setScenarioLimit(false);
@@ -89,6 +90,7 @@ public class UhcRunMode extends Modality {
 
         gameManager.setTimeForPvP(gameManager.isSkyHighMode() ? 3540 : 3600);
         gameManager.setTimeForMeetup(gameManager.isSkyHighMode() ? 3600 : 7200);
+        gameManager.setCobwebLimit(gameManager.isSkyHighMode() ? 1 : 16);
         gameManager.setRunMode(false);
         gameManager.setScenarioLimit(true);
     }

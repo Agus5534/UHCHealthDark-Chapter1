@@ -39,6 +39,7 @@ public class UhcSkyHighMode extends Modality {
         gameManager.setSkyHighMode(true);
         gameManager.setTimeForPvP(3540);
         gameManager.setTimeForMeetup(3600);
+        gameManager.setCobwebLimit(1);
 
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> check(), 2L, 2L);
     }
@@ -49,6 +50,7 @@ public class UhcSkyHighMode extends Modality {
         gameManager.setSkyHighMode(false);
         gameManager.setTimeForPvP(gameManager.isRunMode() ? 1800 : 3600);
         gameManager.setTimeForPvP(gameManager.isRunMode() ? 3600 : 7200);
+        gameManager.setCobwebLimit(gameManager.isRunMode() ? 8 : 16);
         //gameManager.setScenarioLimit(true);
 
         Bukkit.getScheduler().cancelTask(taskID);
