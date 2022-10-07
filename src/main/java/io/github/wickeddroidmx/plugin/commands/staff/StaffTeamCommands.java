@@ -48,6 +48,9 @@ public class StaffTeamCommands implements CommandClass {
     @Inject
     private ModeManager modeManager;
 
+    @Inject
+    private GameManager gameManager;
+
     @Command(
             names = "create"
     )
@@ -240,6 +243,20 @@ public class StaffTeamCommands implements CommandClass {
             }
         });
 
+    }
+
+    @Command(names = "deleteall")
+    public void deleteAllCommand(@Sender Player sender) {
+        if(sender != gameManager.getHost()) {
+            sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "No eres el host de la partida"));
+            return;
+        }
+
+        for(var uhcTeam : teamManager.getUhcTeams().values()) {
+            Bukkit.getPluginManager().callEvent(new TeamDeleteEvent(uhcTeam));
+        }
+
+        Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + String.format("%s borró todos los teams de la partida",sender.getName())));
     }
 
 
