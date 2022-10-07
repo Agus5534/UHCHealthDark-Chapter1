@@ -40,6 +40,8 @@ public class ModeManager {
 
     private MolesMode molesMode;
 
+    private EncyclopediaMode encyclopediaMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -119,7 +121,8 @@ public class ModeManager {
                 chosenMode,
                 uhcSkyHighMode,
                 anvilDiscountsScenario,
-                noBurnScenario
+                noBurnScenario,
+                encyclopediaMode
         );
     }
 
