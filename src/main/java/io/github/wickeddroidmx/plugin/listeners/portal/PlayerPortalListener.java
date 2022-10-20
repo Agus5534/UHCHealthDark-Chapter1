@@ -31,6 +31,7 @@ public class PlayerPortalListener implements Listener {
 
             if (e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER) {
                 var loc = new Location(Bukkit.getWorld("uhc_world"), e.getFrom().getX() * 8, e.getFrom().getY(), e.getFrom().getZ() * 8);
+                loc.setY(loc.getWorld().getHighestBlockYAt(loc));
 
                 if(isOutsideBorder(loc)) {
                     int size = (int) Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
@@ -45,9 +46,7 @@ public class PlayerPortalListener implements Listener {
             } else if (e.getFrom().getWorld().getEnvironment() == World.Environment.NORMAL) {
                 e.setTo(new Location(Bukkit.getWorld("world_nether"), e.getFrom().getBlockX() / 8.0, e.getFrom().getBlockY(), e.getFrom().getBlockZ() / 8.0));
             }
-        }
-
-        if(e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+        } else if(e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
             if(e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END) {
                 var world = Bukkit.getWorld("uhc_world");
 
@@ -61,6 +60,7 @@ public class PlayerPortalListener implements Listener {
                 e.setTo(world.getSpawnLocation());
             }
         }
+
     }
 
 

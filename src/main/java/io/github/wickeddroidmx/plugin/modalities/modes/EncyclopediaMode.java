@@ -25,7 +25,6 @@ public class EncyclopediaMode extends Modality {
 
         if(event.getItem().getType() != Material.BOOK) { return; }
 
-
         int n = ThreadLocalRandom.current().nextInt(1,100);
 
         var player = event.getEnchanter();

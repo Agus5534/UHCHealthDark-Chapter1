@@ -16,17 +16,17 @@ public class Rank {
 
         donations.put("Agus5534",RankList.DONATOR_BASIC); //AGUS5534 / 1 DL
 
-        donations.put("abnercc_",RankList.DONATOR_HIGH); //PAPAS / (9) 5 DLS + 4 DLS de 2 BOOSTS
+        donations.put("abnercc_",RankList.DONATOR_HIGH); //PAPAS / 5 DLS
 
-        donations.put("largesocks",RankList.DONATOR_NORMAL); //EVE / 4 DLS de 2 BOOSTS
+        donations.put("largesocks",RankList.DONATOR_NORMAL); //EVE 2 BOOSTS
 
-        donations.put("_Light999", RankList.DONATOR_NORMAL); //LIGHT / 4 DLS de 2 BOOSTS
+        donations.put("_Light999", RankList.DONATOR_NORMAL); //LIGHT 2 BOOSTS
 
-        donations.put("HellSinky_29", RankList.DONATOR_BASIC); //HELLSINKY / 2 DLS de 1 BOOST
+        donations.put("HellSinky_29", RankList.DONATOR_BASIC); //HELLSINKY1 BOOST
 
-        donations.put("SasuMC", RankList.DONATOR_BASIC); //SASUMC / 2 DLS de 1 BOOST
+        donations.put("SasuMC", RankList.DONATOR_BASIC); //SASUMC 1 BOOST
 
-        donations.put("darkyutu", RankList.DONATOR_BASIC); //DARKYUTU / 2 DLS de 1 BOOST
+        donations.put("darkyutu", RankList.DONATOR_BASIC); //DARKYUTU 1 BOOST
 
 
         // STAFF

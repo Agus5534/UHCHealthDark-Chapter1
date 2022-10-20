@@ -27,8 +27,6 @@ public class AsyncChatListener implements Listener {
         var uhcPlayer = playerManager.getPlayer(player.getUniqueId());
         var uhcTeam = teamManager.getPlayerTeam(player.getUniqueId());
 
-        e.setFormat(ChatUtils.format(Rank.getRank(player) + "&7%1$s: &r%2$s"));
-
         if (uhcPlayer == null)
             return;
 
@@ -36,14 +34,14 @@ public class AsyncChatListener implements Listener {
             return;
 
         if (uhcPlayer.isChat()) {
-            if (player.getGameMode() == GameMode.SPECTATOR) {
+            if (player.getGameMode() == GameMode.SPECTATOR || uhcPlayer.isDeath()) {
                 player.sendMessage(ChatUtils.PREFIX + "No puedes utilizar el chat de equipo una vez muerto.");
                 return;
             }
 
             e.setCancelled(true);
 
-            teamManager.sendMessage(player.getUniqueId(), ChatUtils.format(String.format("%s%s &8» &7%s", Rank.getRank(player), player.getName(), e.getMessage())));
+            teamManager.sendMessage(player.getUniqueId(), ChatUtils.format(String.format("%s &8» &7%s", player.getName(), e.getMessage())));
             Bukkit.getLogger().info(String.format("[%s] %s » %s", uhcTeam.getName(), player.getName(), e.getMessage()));
         }
     }

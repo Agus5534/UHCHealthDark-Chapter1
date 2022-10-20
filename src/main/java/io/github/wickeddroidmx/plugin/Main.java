@@ -68,10 +68,6 @@ public class Main extends JavaPlugin {
 
         createScoreboard();
 
-        rank = new Rank();
-
-        rank.registerRanks();
-
         try {
             int id = getRootObject("https://agus5534.tech/hd-uhcid.json").get("id").getAsInt();
             String date = getRootObject("https://agus5534.tech/hd-uhcid.json").get("last_update").getAsString();

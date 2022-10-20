@@ -27,9 +27,7 @@ public class GameManager {
     borderDelay;
 
     private long seconds;
-
     private GameState gameState;
-
     private int uhcId;
     private int cape;
     private boolean pvpEnabled;

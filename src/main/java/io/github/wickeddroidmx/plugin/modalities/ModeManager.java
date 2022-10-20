@@ -42,6 +42,8 @@ public class ModeManager {
 
     private EncyclopediaMode encyclopediaMode;
 
+    private MoreOresMode moreOresMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -122,7 +124,8 @@ public class ModeManager {
                 uhcSkyHighMode,
                 anvilDiscountsScenario,
                 noBurnScenario,
-                encyclopediaMode
+                encyclopediaMode,
+                moreOresMode
         );
     }
 
