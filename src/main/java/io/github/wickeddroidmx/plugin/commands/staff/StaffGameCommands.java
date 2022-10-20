@@ -209,8 +209,9 @@ public class StaffGameCommands implements CommandClass  {
             names = "cobweblimit"
     )
     public void cobwebLimitCommand(@Sender Player sender, int cobwebLimit) {
-        if (cobwebLimit > 64 || cobwebLimit < 0) {
+        if (cobwebLimit > 128 || cobwebLimit < 0) {
             sender.sendMessage(ChatUtils.PREFIX + "No puedes poner ese límite.");
+            return;
         }
 
         sender.sendMessage(String.format(
