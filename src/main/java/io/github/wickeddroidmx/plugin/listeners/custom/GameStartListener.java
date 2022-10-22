@@ -5,6 +5,8 @@ import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderSetEvent;
 import io.github.wickeddroidmx.plugin.game.GameState;
+import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
+import io.github.wickeddroidmx.plugin.hooks.discord.HookType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.schedulers.GameTask;
@@ -22,6 +24,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.awt.*;
+import java.io.IOException;
 import java.util.UUID;
 
 @InjectAll
@@ -52,6 +56,21 @@ public class GameStartListener implements Listener {
             player.sendTitle(ChatUtils.format("&6¡UHC Iniciado!"), ChatUtils.format("&7El UHC ha iniciado"), 20, 60, 20);
             cache.add(player.getUniqueId(), new GameScoreboard(player, modeManager ,gameManager, playerManager, teamManager));
         });
+
+        var hook = new DiscordWebhook(HookType.LOGS.getUrl());
+
+        hook.setUsername("Partida");
+        hook.addEmbed(
+                new DiscordWebhook.EmbedObject()
+                        .setTitle("La partida ha iniciado")
+                        .setColor(Color.YELLOW)
+        );
+
+        try {
+            hook.execute();
+        } catch (IOException err) {
+            err.printStackTrace();
+        }
 
         gameManager.setGameState(GameState.PLAYING);
         gameManager.setSeconds(System.currentTimeMillis());
