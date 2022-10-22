@@ -5,7 +5,6 @@ import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
 import team.unnamed.gui.abstraction.item.ItemClickable;
 import team.unnamed.gui.core.gui.type.GUIBuilder;
