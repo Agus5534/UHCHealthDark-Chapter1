@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.utils.items;
 
+import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -119,6 +120,14 @@ public class ItemCreator extends ItemStack {
         return this;
     }
 
+    public ItemCreator looksEnchanted() {
+        final ItemMeta meta = getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addEnchant(Enchantment.CHANNELING,1,false);
+
+        setItemMeta(meta);
+        return this;
+    }
 
     public ItemCreator lore(final Component... txt) {
         final ItemMeta meta = getItemMeta();
@@ -127,6 +136,20 @@ public class ItemCreator extends ItemStack {
             lore = new ArrayList<>();
         }
         meta.lore(lore);
+        setItemMeta(meta);
+        return this;
+    }
+
+    @Deprecated
+    public ItemCreator lore(final String... txt) {
+        final ItemMeta meta = getItemMeta();
+        List<String> lore = Arrays.asList(txt);
+
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+
+        meta.setLore(lore);
         setItemMeta(meta);
         return this;
     }

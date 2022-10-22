@@ -4,10 +4,13 @@ import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import team.unnamed.gui.abstraction.item.ItemClickable;
 import team.unnamed.gui.core.gui.type.GUIBuilder;
 import team.unnamed.gui.core.item.type.ItemBuilder;
@@ -40,14 +43,24 @@ public class UhcStaffModesMenu {
                                 .build())
                         .build())
                 .setItemParser(mode -> ItemClickable.builder().setItemStack(mode.build()).setAction(event -> {
+                    var ic = new ItemCreator(event.getCurrentItem());
 
                     if(!mode.isEnabled()) {
                         if (modalityType == ModalityType.SCENARIO && gameManager.isScenarioLimit() && modeManager.getModesActive(ModalityType.SCENARIO).size() > 0)
                             return true;
 
                         mode.activeMode();
+
+                        var itMeta = event.getCurrentItem().getItemMeta();
+                        itMeta.addEnchant(Enchantment.CHANNELING,1,false);
+
+                        event.getCurrentItem().setItemMeta(itMeta);
                     } else
                         mode.desactiveMode();
+
+                        ic.removeEnchantments();
+
+                        event.setCurrentItem(ic);
 
                     return true;
                 }).build())

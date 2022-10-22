@@ -4,10 +4,12 @@ import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.ActiveModeEvent;
 import io.github.wickeddroidmx.plugin.events.game.DesactiveModeEvent;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
@@ -81,9 +83,13 @@ public abstract class Modality implements Listener  {
     }
 
     public ItemStack build() {
-        return ItemBuilder.newBuilder(material)
-                .setName(ChatUtils.format(name))
-                .setLore(lore)
-                .build();
+        var item = new ItemCreator(material)
+                .name(ChatUtils.formatC(name))
+                .lore(lore)
+                .addItemFlag(ItemFlag.HIDE_ENCHANTS);
+
+        if(this.isEnabled()) { item.looksEnchanted(); }
+
+        return item;
     }
 }
