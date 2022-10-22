@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.listeners.custom;
 
 import io.github.wickeddroidmx.plugin.cache.ListCache;
+import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
@@ -52,5 +53,23 @@ public class PlayerScatteredListener implements Listener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 4));
 
         player.teleport(e.getLocation());
+
+        Bukkit.getLogger().info(String.format("Scattered player %s to X: %d Y: %d Z: %d in world %s",
+                player.getName(),
+                Math.round(e.getLocation().getX()),
+                Math.round(e.getLocation().getY()),
+                Math.round(e.getLocation().getZ()),
+                e.getLocation().getWorld().getName()));
+    }
+
+    @EventHandler
+    public void onLaterScatter(PlayerLaterScatterEvent e) {
+        var player = e.getPlayer();
+        Bukkit.getLogger().info(String.format("Scattered player %s to X: %d Y: %d Z: %d in world %s",
+                player.getName(),
+                Math.round(e.getLocation().getX()),
+                Math.round(e.getLocation().getY()),
+                Math.round(e.getLocation().getZ()),
+                e.getLocation().getWorld().getName()));
     }
 }

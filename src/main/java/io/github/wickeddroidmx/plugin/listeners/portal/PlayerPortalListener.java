@@ -61,6 +61,15 @@ public class PlayerPortalListener implements Listener {
             }
         }
 
+        var location = e.getTo();
+
+        Bukkit.getLogger().info(String.format("The player %s changed dimension from %s to %s (X: %d Y: %d Z: %d)",
+                e.getPlayer(),
+                e.getFrom().getWorld().getName(),
+                e.getTo().getWorld().getName(),
+                Math.round(location.getX()),
+                Math.round(location.getY()),
+                Math.round(location.getZ())));
     }
 
 

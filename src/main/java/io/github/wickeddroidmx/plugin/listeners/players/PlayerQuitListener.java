@@ -53,5 +53,13 @@ public class PlayerQuitListener implements Listener {
 
         if (userCache.exists(player.getUniqueId()))
             sqlConsults.updateUser(player.getUniqueId().toString(), user.getWins(), user.getKills(), user.getIronMans());
+
+        var location = player.getLocation();
+        Bukkit.getLogger().info(String.format("%s has left at %s (X: %d Y: %d Z: %d)",
+                player.getName(),
+                location.getWorld().getName(),
+                Math.round(location.getX()),
+                Math.round(location.getY()),
+                Math.round(location.getZ())));
     }
 }

@@ -17,6 +17,7 @@ import io.github.wickeddroidmx.plugin.listeners.worldborder.WorldBorderSetListen
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import team.unnamed.gui.core.GUIListeners;
 
 @InjectAll
@@ -65,6 +66,10 @@ public class ListenerLoader implements Loader {
     private WorldBorderSetListener worldBorderSetListener;
     private WorldBorderMoveListener worldBorderMoveListener;
 
+    // LOGS events
+
+    private PlayerLogsListener playerLogsListener;
+
 
 
     @Override
@@ -94,7 +99,8 @@ public class ListenerLoader implements Loader {
                 playerPreLoginListener,
                 teamWinListener,
                 changeGameTimeListener,
-                blockPlaceListener
+                blockPlaceListener,
+                playerLogsListener
         );
     }
 

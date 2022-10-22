@@ -57,6 +57,15 @@ public class PlayerDeathListener implements Listener {
             err.printStackTrace();
         }
 
+        var location = e.getEntity().getLocation();
+
+        Bukkit.getLogger().info(String.format("%s murió en X: %d Y: %d Z: %d en %s",
+                player.getName(),
+                Math.round(location.getX()),
+                Math.round(location.getY()),
+                Math.round(location.getZ()),
+                location.getWorld().getName()));
+
         if (player.getKiller() != null) {
             var killer = player.getKiller();
             var uhcKiller = playerManager.getPlayer(killer.getUniqueId());
