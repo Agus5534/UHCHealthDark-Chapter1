@@ -24,7 +24,7 @@ public class UhcStaffMenu {
                         "BCCCDCCCB",
                         "BCCHIJCCB",
                         "BCCNOPCCB",
-                        "BCCTUVWCB",
+                        "BCTUVWCCB",
                         "BBBBBBBBB"
                 )
                 .setLayoutItem('B', ItemClickable.builderCancellingEvent()
