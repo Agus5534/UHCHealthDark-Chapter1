@@ -10,6 +10,8 @@ import javax.inject.Named;
 
 public class SQLConsults {
 
+
+
     @Inject
     @Named("sql-user")
     private SQLClient sqlClient;
