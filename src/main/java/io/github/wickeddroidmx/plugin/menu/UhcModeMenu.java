@@ -71,7 +71,7 @@ public class UhcModeMenu {
                                         .stream()
                                         .map(Modality::getName)
                                         .map(modality -> ChatUtils.format(String.format("&7- %s", modality)))
-                                        .collect(Collectors.joining("\n"))
+                                        .collect(Collectors.joining())
                                         : ChatUtils.format("&7No hay modalidades activas."))
                                 .build())
                         .setAction(action -> {
