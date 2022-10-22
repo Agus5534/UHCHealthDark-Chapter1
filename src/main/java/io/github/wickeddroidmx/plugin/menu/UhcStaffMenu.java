@@ -24,7 +24,7 @@ public class UhcStaffMenu {
                         "BCCCDCCCB",
                         "BCCHIJCCB",
                         "BCCNOPCCB",
-                        "BCCTUVCCB",
+                        "BCCTUVWCB",
                         "BBBBBBBBB"
                 )
                 .setLayoutItem('B', ItemClickable.builderCancellingEvent()
@@ -147,6 +147,17 @@ public class UhcStaffMenu {
                         })
                         .build())
                 .setLayoutItem('V', ItemClickable.builder()
+                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL",DyeColor.RED)
+                                .setName(ChatUtils.format("&6Tiempo: "))
+                                .setLore(ChatUtils.format("&73 horas | Meetup"),
+                                        ChatUtils.format("&71 hora | PvP"))
+                                .build())
+                        .setAction(event -> {
+                            Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(10800, 3600));
+                            return true;
+                        })
+                        .build())
+                .setLayoutItem('W', ItemClickable.builder()
                         .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL",DyeColor.RED)
                                 .setName(ChatUtils.format("&6Tiempo: "))
                                 .setLore(ChatUtils.format("&73 horas | Meetup"),
