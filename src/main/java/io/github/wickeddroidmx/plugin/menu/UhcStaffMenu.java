@@ -19,18 +19,34 @@ public class UhcStaffMenu {
     private GameManager gameManager;
 
     public Inventory getTimeInventory() {
-        return GUIBuilder.builderStringLayout("Tiempos de UHC", 3)
+        return GUIBuilder.builderStringLayout("Tiempos de UHC", 6)
                 .setLayoutLines(
-                        "CCCCJCCCC",
-                        "CMHLTQKPC",
-                        "CCCCCCCCD"
+                        "CCCCCCCCC",
+                        "CCCCDCCCC",
+                        "CCCEFCCCC",
+                        "CCCGHICCC",
+                        "CCCJKCCCC",
+                        "CCCCCCCCC"
                 )
                 .setLayoutItem('C', ItemClickable.builderCancellingEvent()
                         .setItemStack(ItemBuilder.newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.GRAY)
                                 .setName(" ")
                                 .build())
                         .build())
-                .setLayoutItem('M', ItemClickable.builder()
+                .setLayoutItem('D', ItemClickable.builder()
+                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.PURPLE)
+                                .setName(ChatUtils.format("&6Tiempo (MEETUP): "))
+                                .setLore(ChatUtils.format("&75 minutos | Meetup"),
+                                        ChatUtils.format("&730 segundos | PvP"))
+                                .build())
+                        .setAction(event -> {
+                            Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(300, 30));
+                            gameManager.setBorderDelay(1200);
+                            gameManager.setWorldBorder(750);
+                            return true;
+                        })
+                        .build())
+                .setLayoutItem('E', ItemClickable.builder()
                         .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.GREEN)
                                 .setName(ChatUtils.format(ChatUtils.format("&6Tiempo: ")))
                                 .setLore(ChatUtils.format("&730 minutos | Meetup"),
@@ -42,7 +58,7 @@ public class UhcStaffMenu {
                             return true;
                         })
                         .build())
-                .setLayoutItem('H', ItemClickable.builder()
+                .setLayoutItem('F', ItemClickable.builder()
                         .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.GREEN)
                                 .setName(ChatUtils.format(ChatUtils.format("&6Tiempo: ")))
                                 .setLore(ChatUtils.format("&71 hora | Meetup"),
@@ -54,8 +70,8 @@ public class UhcStaffMenu {
                             return true;
                         })
                         .build())
-                .setLayoutItem('L', ItemClickable.builder()
-                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.GREEN)
+                .setLayoutItem('G', ItemClickable.builder()
+                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.YELLOW)
                                 .setName(ChatUtils.format(ChatUtils.format("&6Tiempo: ")))
                                 .setLore(ChatUtils.format("&71 hora y 30 minutos | Meetup"),
                                         ChatUtils.format("&745 minutos | PvP"))
@@ -66,56 +82,8 @@ public class UhcStaffMenu {
                             return true;
                         })
                         .build())
-                .setLayoutItem('T', ItemClickable.builder()
-                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.GREEN)
-                                .setName(ChatUtils.format(ChatUtils.format("&6Tiempo: ")))
-                                .setLore(ChatUtils.format("&72 horas | Meetup"),
-                                        ChatUtils.format("&71 hora | PvP"))
-                                .build())
-                        .setAction(event -> {
-                            Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(7200, 3600));
-
-                            return true;
-                        })
-                        .build())
-                .setLayoutItem('Q', ItemClickable.builder()
-                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.GREEN)
-                                .setName(ChatUtils.format(ChatUtils.format("&6Tiempo: ")))
-                                .setLore(ChatUtils.format("&72 horas y 30 minutos | Meetup"),
-                                        ChatUtils.format("&71 hora y 15 minutos | PvP"))
-                                .build())
-                        .setAction(event -> {
-                            Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(9000, 4500));
-
-                            return true;
-                        })
-                        .build())
-                .setLayoutItem('D', ItemClickable.builder()
-                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.RED)
-                                .setName(ChatUtils.format("&cNo Tocar"))
-                                .setLore(ChatUtils.format("&7Tiempo para probar cosas (Dev)"))
-                                .build())
-                        .setAction(event -> {
-                            Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(30, 15));
-
-                            return true;
-                        })
-                        .build())
-                .setLayoutItem('K', ItemClickable.builder()
-                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.GREEN)
-                                .setName(ChatUtils.format("&6Tiempo: "))
-                                .setLore(ChatUtils.format("&75 minutos | Meetup"),
-                                        ChatUtils.format("&730 segundos | PvP"))
-                                .build())
-                        .setAction(event -> {
-                            Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(300, 30));
-                            gameManager.setBorderDelay(1200);
-                            gameManager.setWorldBorder(750);
-                            return true;
-                        })
-                        .build())
-                .setLayoutItem('P', ItemClickable.builder()
-                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.GREEN)
+                .setLayoutItem('H', ItemClickable.builder()
+                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.YELLOW)
                                 .setName(ChatUtils.format("&6Tiempo: "))
                                 .setLore(ChatUtils.format("&72 horas | Meetup"),
                                         ChatUtils.format("&745 minutos | PvP"))
@@ -126,8 +94,32 @@ public class UhcStaffMenu {
                             return true;
                         })
                         .build())
+                .setLayoutItem('I', ItemClickable.builder()
+                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.YELLOW)
+                                .setName(ChatUtils.format(ChatUtils.format("&6Tiempo: ")))
+                                .setLore(ChatUtils.format("&72 horas | Meetup"),
+                                        ChatUtils.format("&71 hora | PvP"))
+                                .build())
+                        .setAction(event -> {
+                            Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(7200, 3600));
+
+                            return true;
+                        })
+                        .build())
                 .setLayoutItem('J', ItemClickable.builder()
-                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.GREEN)
+                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.RED)
+                                .setName(ChatUtils.format(ChatUtils.format("&6Tiempo: ")))
+                                .setLore(ChatUtils.format("&72 horas y 30 minutos | Meetup"),
+                                        ChatUtils.format("&71 hora y 15 minutos | PvP"))
+                                .build())
+                        .setAction(event -> {
+                            Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(9000, 4500));
+
+                            return true;
+                        })
+                        .build())
+                .setLayoutItem('K', ItemClickable.builder()
+                        .setItemStack(ItemBuilder.newDyeItemBuilder("WOOL", DyeColor.RED)
                                 .setName(ChatUtils.format("&6Tiempo: "))
                                 .setLore(ChatUtils.format("&72 horas 55 minutos | Meetup"),
                                         ChatUtils.format("&71 hora 20 minutos | PvP"))
