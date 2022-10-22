@@ -17,10 +17,12 @@ import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.annotated.annotation.Text;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.C;
 import team.unnamed.gui.abstraction.item.ItemClickable;
 import team.unnamed.gui.core.gui.type.GUIBuilder;
 import team.unnamed.gui.core.item.type.ItemBuilder;
@@ -54,7 +56,7 @@ public class StaffTeamCommands implements CommandClass {
     @Command(
             names = "create"
     )
-    public void createCommand(@Sender Player sender, Player target) {
+    public void createCommand(@Sender Player sender, Player target, @Text @OptArg String name) {
         var teamPlayer = teamManager.getTeam(target.getUniqueId());
 
         if (teamPlayer != null) {
@@ -65,6 +67,17 @@ public class StaffTeamCommands implements CommandClass {
         teamManager.createTeam(target);
 
         Bukkit.getPluginManager().callEvent(new TeamCreateEvent(teamManager.getTeam(target.getUniqueId()), target));
+
+
+        if(name != null) {
+            var team = teamManager.getTeam(target.getUniqueId());
+
+            team.setName(name);
+
+            team.setPrefix(name);
+
+            team.setBlockChangeName(true);
+        }
     }
 
     @Command(

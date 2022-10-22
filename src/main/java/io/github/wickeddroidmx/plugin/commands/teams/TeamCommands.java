@@ -152,6 +152,11 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
+        if(uhcTeam.isBlockChangeName()) {
+            sender.sendMessage(ChatUtils.TEAM + "El team tiene desactivada la característica de cambiar el prefix.");
+            return;
+        }
+
         if(uhcTeam.getTeam().getPrefix() != null) {
             if(teamPrefixes.contains(ChatColor.stripColor(text + " | "))) {
                 sender.sendMessage(ChatUtils.TEAM + "Ya hay un team con ese prefix.");

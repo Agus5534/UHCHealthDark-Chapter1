@@ -24,7 +24,7 @@ public class UhcTeam {
             mole,
             king;
 
-    private boolean alive;
+    private boolean alive, blockChangeName;
 
     private NamedTextColor[] textColors = {
             NamedTextColor.AQUA,
@@ -50,6 +50,7 @@ public class UhcTeam {
         this.king = null;
 
         this.alive = true;
+        blockChangeName = false;
 
         this.owner = owner;
         this.playersAlive = 0;
@@ -107,6 +108,10 @@ public class UhcTeam {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public void setBlockChangeName(boolean blockChangeName) {
+        this.blockChangeName = blockChangeName;
     }
 
     public void decrementPlayersAlive() {
@@ -187,5 +192,9 @@ public class UhcTeam {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isBlockChangeName() {
+        return blockChangeName;
     }
 }
