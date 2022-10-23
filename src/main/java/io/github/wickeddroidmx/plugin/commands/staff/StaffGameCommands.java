@@ -23,6 +23,7 @@ import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.Text;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
@@ -187,6 +188,11 @@ public class StaffGameCommands implements CommandClass  {
         gameManager.setUhcId(uhcId);
 
         sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha cambiado al UHC &6#" + uhcId));
+    }
+
+    @Command(names = "notify")
+    public void notifyCommand(@Text @Named("message") String message) {
+        Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + message));
     }
 
     @Command(
