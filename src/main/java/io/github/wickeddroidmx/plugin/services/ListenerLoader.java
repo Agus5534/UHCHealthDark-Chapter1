@@ -32,6 +32,7 @@ public class ListenerLoader implements Loader {
     private PlayerScatteredListener playerScatteredListener;
     private FoodLevelChangeListener foodLevelChangeListener;
     private AsyncChatListener asyncChatListener;
+    private PlayerInteractAtEntityListener playerInteractAtEntityListener;
 
     private PlayerPreLoginListener playerPreLoginListener;
 
@@ -100,7 +101,8 @@ public class ListenerLoader implements Loader {
                 teamWinListener,
                 changeGameTimeListener,
                 blockPlaceListener,
-                playerLogsListener
+                playerLogsListener,
+                playerInteractAtEntityListener
         );
     }
 
