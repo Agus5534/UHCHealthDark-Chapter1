@@ -47,7 +47,7 @@ public class StaffTeamCommands implements CommandClass {
     @Command(
             names = "size"
     )
-    public void sizeCommand(@Sender Player sender, int size) {
+    public void sizeCommand(@Sender Player sender, @Named("size") int size) {
         if(size < 0) {
             sender.sendMessage(ChatUtils.PREFIX + "Los teams no pueden tener este tamaño.");
             return;

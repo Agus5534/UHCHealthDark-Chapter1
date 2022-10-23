@@ -61,7 +61,11 @@ public class TeamManager  {
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
                 .filter(Player::isOnline)
-                .forEach(player -> player.sendMessage(ChatUtils.TEAM + text));
+                .forEach(player -> {
+                    if(getPlayerTeam(player.getUniqueId()).equals(team)) {
+                        player.sendMessage(ChatUtils.TEAM + text);
+                    }
+                });
     }
 
     public void createInvite(Player owner, Player player) {
