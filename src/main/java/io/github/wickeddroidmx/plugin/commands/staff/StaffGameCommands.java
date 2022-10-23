@@ -24,6 +24,7 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Named;
+import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.annotated.annotation.Text;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.inject.InjectAll;
@@ -44,6 +45,7 @@ import java.util.stream.Collectors;
 
 @InjectAll
 @Command( names = "staffgame", permission = "healthdark.staff")
+@SubCommandClasses(value = {StaffGameCommands.SettingsSubCommand.class})
 public class StaffGameCommands implements CommandClass  {
 
     private Main plugin;
@@ -96,14 +98,6 @@ public class StaffGameCommands implements CommandClass  {
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> Bukkit.getPluginManager().callEvent(new GameStartEvent(gameManager)), delayForTeam);
     }
-
-    @Command(
-            names = "worldborder"
-    )
-    public void worldBorderMoveCommand(@Sender Player target, @Named("size") int size, @Named("time") int seconds) {
-        Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(size, seconds, false));
-    }
-
 
     @Command(
             names = "host"
@@ -160,82 +154,9 @@ public class StaffGameCommands implements CommandClass  {
             e.printStackTrace();
         }
     }
-
-    @Command(
-            names = "cobweblimit"
-    )
-    public void cobwebLimitCommand(@Sender Player sender, @Named("limit") int cobwebLimit) {
-        if (cobwebLimit > 128 || cobwebLimit < 0) {
-            sender.sendMessage(ChatUtils.PREFIX + "No puedes poner ese límite.");
-            return;
-        }
-
-        sender.sendMessage(String.format(
-                ChatUtils.PREFIX + ChatUtils.format("El cobweb limit de ahora es de %d"),
-                cobwebLimit
-        ));
-        gameManager.setCobwebLimit(cobwebLimit);
-    }
-
-    @Command(
-            names = "uhcid"
-    )
-    public void uhcIDCommand(@Sender Player sender, @Named("id") int uhcId) {
-        if (uhcId < 0) {
-            sender.sendMessage(ChatUtils.PREFIX + "No es válido ese número.");
-            return;
-        }
-
-        gameManager.setUhcId(uhcId);
-
-        sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha cambiado al UHC &6#" + uhcId));
-    }
-
     @Command(names = "notify")
     public void notifyCommand(@Named("message")@Text String message) {
         Bukkit.broadcast(ChatUtils.formatC(ChatUtils.NOTIFICATION + message));
-    }
-
-    @Command(
-            names = "time"
-    )
-    public void configCommand(@Sender Player sender) {
-        sender.openInventory(uhcStaffMenu.getTimeInventory());
-    }
-
-    @Command(
-            names = "spectate"
-    )
-    public void spectateCommand(@Sender Player sender) {
-        var player = playerManager.getPlayer(sender.getUniqueId());
-
-        if(player == null) {
-            playerManager.createPlayer(sender,false);
-
-            player = playerManager.getPlayer(sender.getUniqueId());
-        }
-
-        if(teamManager.getPlayerTeam(sender.getUniqueId()) != null) {
-            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ya tienes un equipo!"));
-
-            return;
-        }
-
-        if(player.isSpect()) {
-            player.setSpect(false);
-
-            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ya no eres espectador!"));
-
-            gameManager.getSpectatorTeam().removeEntry(sender.getName());
-        } else {
-            player.setSpect(true);
-
-            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ahora eres espectador!"));
-
-            sender.setGameMode(GameMode.SPECTATOR);
-
-            gameManager.getSpectatorTeam().addEntry(sender.getName());
-        }
     }
 
     @Command(names = "revive")
@@ -310,6 +231,56 @@ public class StaffGameCommands implements CommandClass  {
         target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 400, 10, false,false,false));
 
         Bukkit.broadcastMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha revivido al jugador &6"+target.getName()));
+    }
+
+
+
+    // SETTINGS SUBCOMMAND
+    @Command(names = "settings")
+    public class SettingsSubCommand implements CommandClass {
+        @Command(
+                names = "cobweblimit"
+        )
+        public void cobwebLimitCommand(@Sender Player sender, @Named("limit") int cobwebLimit) {
+            if (cobwebLimit > 128 || cobwebLimit < 0) {
+                sender.sendMessage(ChatUtils.PREFIX + "No puedes poner ese límite.");
+                return;
+            }
+
+            sender.sendMessage(String.format(
+                    ChatUtils.PREFIX + ChatUtils.format("El cobweb limit de ahora es de %d"),
+                    cobwebLimit
+            ));
+            gameManager.setCobwebLimit(cobwebLimit);
+        }
+
+        @Command(
+                names = "id"
+        )
+        public void uhcIDCommand(@Sender Player sender, @Named("id") int uhcId) {
+            if (uhcId < 0) {
+                sender.sendMessage(ChatUtils.PREFIX + "No es válido ese número.");
+                return;
+            }
+
+            gameManager.setUhcId(uhcId);
+
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha cambiado al UHC &6#" + uhcId));
+        }
+
+        @Command(
+                names = "time"
+        )
+        public void configCommand(@Sender Player sender) {
+            sender.openInventory(uhcStaffMenu.getTimeInventory());
+        }
+
+        @Command(
+                names = "worldborder"
+        )
+        public void worldBorderMoveCommand(@Sender Player target, @Named("size") int size, @Named("time") int seconds) {
+            Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(size, seconds, false));
+        }
     }
 
     private String formatTime(int totalSecs) {
