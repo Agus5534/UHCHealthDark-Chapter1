@@ -6,12 +6,9 @@ import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamScatteredEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
-import io.github.wickeddroidmx.plugin.game.GameState;
-import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
 import io.github.wickeddroidmx.plugin.hooks.discord.DiscordManager;
 import io.github.wickeddroidmx.plugin.hooks.discord.HookType;
 import io.github.wickeddroidmx.plugin.menu.UhcStaffMenu;
-import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.modalities.uhc.UhcVanillaMode;
@@ -29,14 +26,9 @@ import me.fixeddev.commandflow.annotated.annotation.Text;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
@@ -195,7 +187,7 @@ public class StaffGameCommands implements CommandClass  {
         @Command(
                 names = "time"
         )
-        public void configCommand(@Sender Player sender) {
+        public void timeCommand(@Sender Player sender) {
             sender.openInventory(uhcStaffMenu.getTimeInventory());
         }
 
