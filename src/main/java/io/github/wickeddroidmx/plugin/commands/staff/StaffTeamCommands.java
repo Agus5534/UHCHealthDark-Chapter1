@@ -5,6 +5,7 @@ import io.github.wickeddroidmx.plugin.events.team.PlayerLeaveTeamEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
@@ -17,7 +18,10 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.units.qual.C;
 
 import javax.inject.Inject;
@@ -113,6 +117,80 @@ public class StaffTeamCommands implements CommandClass {
             }
 
             Bukkit.getPluginManager().callEvent(new PlayerLeaveTeamEvent(uhcTeam, target));
+        }
+
+        @Command(names = "revive")
+        public void reviveCommand(@Sender Player sender, @Named("toRevive") Player target, @Named("recoverInv") Boolean setInv) {
+            var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
+            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
+
+            if(gameManager.getGameState() == GameState.WAITING) {
+                sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7La partida no ha iniciado."));
+                return;
+            }
+
+            if(gameManager.getGameState() == GameState.MEETUP) {
+                sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7Este comando no se puede utilizar durante el Meetup."));
+                return;
+            }
+
+            if(uhcPlayer == null) {
+                sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7Esta persona no juega la partida."));
+                return;
+            }
+
+            if(uhcTeam == null) {
+                sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7La data de esta persona ha sido eliminada (Equipo eliminado definitivamente)."));
+                return;
+            }
+
+            var uhcInv = uhcPlayer.getUhcInventory();
+            var inv = uhcInv.getInventory();
+            var loc = uhcInv.getLocation();
+
+            if(inv == null || loc == null) {
+                sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7Esta persona nunca ha muerto."));
+                return;
+            }
+
+            uhcTeam.incrementPlayersAlive();
+            target.getInventory().clear();
+
+            var killer = target.getKiller();
+            if(killer != null) {
+                var killerPlayer = playerManager.getPlayer(killer.getUniqueId());
+                var teamKiller = teamManager.getPlayerTeam(killer.getUniqueId());
+
+                if(killerPlayer != null) {
+                    killerPlayer.setKills(killerPlayer.getKills()-1);
+                }
+
+                if(teamKiller != null) {
+                    teamKiller.setKills(teamKiller.getKills()-1);
+                }
+
+            }
+
+            uhcPlayer.setAlive(true);
+            uhcPlayer.setDeath(false);
+            target.setGameMode(GameMode.SURVIVAL);
+            uhcTeam.getTeam().addEntry(target.getName());
+
+
+            if(setInv) {
+                for(var i : inv.keySet()) {
+                    if(inv.get(i) == null) { continue; }
+
+                    target.getInventory().setItem(i, inv.get(i));
+                }
+
+            }
+
+            target.teleport(loc);
+
+            target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 400, 10, false,false,false));
+
+            Bukkit.broadcastMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha revivido al jugador &6"+target.getName()));
         }
     }
 
