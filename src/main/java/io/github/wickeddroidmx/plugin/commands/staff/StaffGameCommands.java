@@ -23,6 +23,7 @@ import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.Named;
 import me.fixeddev.commandflow.annotated.annotation.Text;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.inject.InjectAll;
@@ -35,7 +36,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
@@ -57,7 +57,8 @@ public class StaffGameCommands implements CommandClass  {
     private DiscordManager discordManager;
     private ModeManager modeManager;
 
-    @Named("scoreboard-cache")
+
+    @javax.inject.Named("scoreboard-cache")
     private MapCache<UUID, UHCScoreboard> cache;
 
     @Command(
@@ -191,7 +192,7 @@ public class StaffGameCommands implements CommandClass  {
     }
 
     @Command(names = "notify")
-    public void notifyCommand(@Text @Named("message") String message) {
+    public void notifyCommand(@Named("message")@Text String message) {
         Bukkit.broadcast(ChatUtils.formatC(ChatUtils.NOTIFICATION + message));
     }
 

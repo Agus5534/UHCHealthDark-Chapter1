@@ -339,7 +339,7 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(names = "name")
-        public void modifyNameCommand(@Sender Player sender, @Named("teamMember") Player target, @Text @Named("name") String name) {
+        public void modifyNameCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("name") @Text String name) {
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
             if (uhcTeam == null) {
