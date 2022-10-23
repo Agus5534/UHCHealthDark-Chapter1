@@ -135,7 +135,8 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
-        sender.sendMessage(ChatUtils.TEAM + ChatUtils.format(String.format("El nombre del equipo ha cambiado a &6%s", text)));
+        uhcTeam.sendMessage(ChatUtils.format(String.format("El nombre del equipo ha cambiado a &6%s", text)));
+
         uhcTeam.setName(text);
     }
 
@@ -185,7 +186,7 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
-        sender.sendMessage(ChatUtils.TEAM + ChatUtils.format(String.format("El prefix del equipo ha cambiado a &6%s", text)));
+        uhcTeam.sendMessage(ChatUtils.format(String.format("El prefix del equipo ha cambiado a &6%s", text)));
         uhcTeam.setPrefix(text);
     }
 
