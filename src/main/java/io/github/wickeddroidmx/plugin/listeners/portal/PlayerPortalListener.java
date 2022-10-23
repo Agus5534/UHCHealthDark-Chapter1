@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.listeners.portal;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.data.type.Observer;
 import org.bukkit.entity.Player;
@@ -25,6 +26,8 @@ public class PlayerPortalListener implements Listener {
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent e) {
         Player player = e.getPlayer();
+        e.setCreationRadius(100);
+        e.setSearchRadius(200);
 
         if (e.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             e.setCanCreatePortal(true);
@@ -36,7 +39,15 @@ public class PlayerPortalListener implements Listener {
                 if(isOutsideBorder(loc)) {
                     int size = (int) Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
                     var safeLoc = new Location(Bukkit.getWorld("uhc_world"), new Random(ThreadLocalRandom.current().nextInt(1500)).nextInt((size/2)-3), e.getFrom().getY(), new Random(ThreadLocalRandom.current().nextInt(1500)).nextInt((size/2)-3));
-                    safeLoc.setY(safeLoc.getWorld().getHighestBlockYAt(safeLoc));
+                    var highestLoc = safeLoc.getWorld().getHighestBlockAt(safeLoc);
+
+                    safeLoc.setY(highestLoc.getY());
+
+                    if(highestLoc.getType() == Material.WATER) {
+                        safeLoc.setY(highestLoc.getY()+1);
+
+                        highestLoc.setType(Material.NETHERRACK);
+                    }
 
                     e.setTo(safeLoc);
                     return;
