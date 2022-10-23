@@ -14,9 +14,11 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.*;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -123,7 +125,7 @@ public class StaffTeamCommands implements CommandClass {
         @Command(
                 names = "player"
         )
-        public void teamDeleteCommand(@Sender Player sender, Player target) {
+        public void teamDeleteCommand(@Sender Player sender, @Named("teamMember") Player target) {
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
             if (uhcTeam == null) {
@@ -292,7 +294,7 @@ public class StaffTeamCommands implements CommandClass {
     @Command(names = "modify")
     public class ModifyTeamSubCommand implements CommandClass {
         @Command(names = "prefix")
-        public void modifyPrefixCommand(@Sender Player sender, @Named("teamOwner") Player target, @Text @Named("newPrefix") String prefix) {
+        public void modifyPrefixCommand(@Sender Player sender, @Named("teamMember") Player target, @Text @Named("newPrefix") String prefix) {
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
             if (uhcTeam == null) {
@@ -308,7 +310,7 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(names = "color")
-        public void modifyColorCommand(@Sender Player sender, @Named("teamOwner") Player target, @Named("color") String color) {
+        public void modifyColorCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("color") String color) {
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
             if (uhcTeam == null) {
@@ -319,7 +321,6 @@ public class StaffTeamCommands implements CommandClass {
             String s = color;
 
             ChatColor cColor;
-
 
             try {
              cColor = ChatColor.valueOf(s);
@@ -335,6 +336,66 @@ public class StaffTeamCommands implements CommandClass {
             sender.sendMessage(ChatUtils.PREFIX + "Has cambiado el color del team a " + color.toUpperCase());
 
             uhcTeam.sendMessage(String.format("%s ha cambiado el color del team a %s", sender.getName(), color.toUpperCase()));
+        }
+
+        @Command(names = "name")
+        public void modifyNameCommand(@Sender Player sender, @Named("teamMember") Player target, @Text @Named("name") String name) {
+            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
+
+            if (uhcTeam == null) {
+                sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
+                return;
+            }
+
+            Bukkit.broadcast(Component.text(ChatUtils.PREFIX + String.format("El equipo %s ha sido renombrado a %s", uhcTeam.getName(), name)));
+
+            uhcTeam.setName(name);
+        }
+
+        @Command(names = "owner")
+        public void modifyOwnerCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newOwner") Player newOwner) {
+            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
+
+            if (uhcTeam == null) {
+                sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
+                return;
+            }
+
+            if(!uhcTeam.getTeamPlayers().contains(newOwner.getUniqueId())) {
+                sender.sendMessage(ChatUtils.PREFIX + "Ese jugador no pertenece a ese equipo.");
+                return;
+            }
+
+            sender.sendMessage(ChatUtils.PREFIX + "Has transferido exitosamente el owner del equipo a " + newOwner.getName());
+
+            uhcTeam.sendMessage(String.format("%s ha transferido la propiedad del equipo de %s a %s",
+                    sender.getName(),
+                    uhcTeam.getOwner().getName(),
+                    newOwner.getName()));
+
+            uhcTeam.setOwner(newOwner);
+        }
+
+        @Command(names = "blockPrefixChange")
+        public void blockPrefixChangeCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newValue") boolean value) {
+            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
+
+            if (uhcTeam == null) {
+                sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
+                return;
+            }
+
+            if(uhcTeam.isBlockChangeName() == value) {
+                sender.sendMessage(ChatUtils.PREFIX + "La flag ya está en ese valor");
+                return;
+            }
+
+            uhcTeam.setBlockChangeName(value);
+
+            uhcTeam.sendMessage(String.format("La flag 'blockPrefixChange' del equipo ha cambiado su valor a %s",
+                    value));
+
+            sender.sendMessage(ChatUtils.PREFIX + "Has cambiado la flag 'blockPrefixChange' a " + value);
         }
     }
 
