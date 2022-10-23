@@ -197,4 +197,14 @@ public class UhcTeam {
     public boolean isBlockChangeName() {
         return blockChangeName;
     }
+
+    public void sendMessage(String s) {
+        getTeamPlayers().forEach(tP -> {
+            var op = Bukkit.getOfflinePlayer(tP);
+
+            if(op.isOnline()) {
+                op.getPlayer().sendMessage(ChatUtils.TEAM + s);
+            }
+        });
+    }
 }
