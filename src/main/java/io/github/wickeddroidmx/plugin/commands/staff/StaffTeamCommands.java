@@ -28,7 +28,7 @@ import java.util.concurrent.ThreadLocalRandom;
         names="staffteam",
         permission = "healthdark.staffteam"
 )
-@SubCommandClasses(value = { StaffTeamCommands.ModifyTeamSubCommand.class, StaffTeamCommands.CreateTeamSubCommand.class, StaffTeamCommands.DeleteTeamSubCommand.class})
+@SubCommandClasses(value = { StaffTeamCommands.ModifyTeamSubCommand.class, StaffTeamCommands.CreateTeamSubCommand.class, StaffTeamCommands.DeleteTeamSubCommand.class, StaffTeamCommands.MemberTeamSubCommand.class})
 public class StaffTeamCommands implements CommandClass {
 
     @Inject
