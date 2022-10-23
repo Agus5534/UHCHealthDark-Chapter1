@@ -36,6 +36,9 @@ public class AsyncChatListener implements Listener {
         if (uhcPlayer.isChat()) {
             if (player.getGameMode() == GameMode.SPECTATOR || uhcPlayer.isDeath()) {
                 player.sendMessage(ChatUtils.PREFIX + "No puedes utilizar el chat de equipo una vez muerto.");
+
+                uhcPlayer.setChat(false);
+
                 return;
             }
 
