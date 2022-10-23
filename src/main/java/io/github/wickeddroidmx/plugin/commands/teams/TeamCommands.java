@@ -136,7 +136,7 @@ public class TeamCommands implements CommandClass {
         }
 
         sender.sendMessage(ChatUtils.TEAM + ChatUtils.format(String.format("El nombre del equipo ha cambiado a &6%s", text)));
-        uhcTeam.setPrefix(text);
+        uhcTeam.setName(text);
     }
 
     @Command(
