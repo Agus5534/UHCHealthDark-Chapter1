@@ -42,7 +42,7 @@ public class AsyncChatListener implements Listener {
             e.setCancelled(true);
 
             teamManager.sendMessage(player.getUniqueId(), ChatUtils.format(String.format("%s &8» &7%s", player.getName(), e.getMessage())));
-            Bukkit.getLogger().info(String.format("[%s] %s » %s", uhcTeam.getName(), player.getName(), e.getMessage()));
+            Bukkit.getLogger().info(String.format("[TEAMCHAT] [%s] %s » %s", uhcTeam.getName(), player.getName(), e.getMessage()));
         }
     }
 }
