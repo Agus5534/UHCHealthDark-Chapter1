@@ -88,6 +88,7 @@ public class StaffCommands implements CommandClass {
             uhcPlayer.getPlayer().setFlying(false);
         }
     }
+
     @Command(
             names = {"inv","inventory","invsee"}, permission = "healthdark.staff"
     )
@@ -116,6 +117,42 @@ public class StaffCommands implements CommandClass {
         var playerInv = new PlayerInventoryMenu(target);
 
         playerInv.openInv(sender);
+    }
+
+    @Command(
+            names = {"spect", "spectate", "moderate", "mod"},
+            permission = "healthdark.staff"
+    )
+    public void spectateCommand(@Sender Player sender) {
+        var player = playerManager.getPlayer(sender.getUniqueId());
+
+        if(player == null) {
+            playerManager.createPlayer(sender,false);
+
+            player = playerManager.getPlayer(sender.getUniqueId());
+        }
+
+        if(teamManager.getPlayerTeam(sender.getUniqueId()) != null) {
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ya tienes un equipo!"));
+
+            return;
+        }
+
+        if(player.isSpect()) {
+            player.setSpect(false);
+
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ya no eres espectador!"));
+
+            gameManager.getSpectatorTeam().removeEntry(sender.getName());
+        } else {
+            player.setSpect(true);
+
+            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7¡Ahora eres espectador!"));
+
+            sender.setGameMode(GameMode.SPECTATOR);
+
+            gameManager.getSpectatorTeam().addEntry(sender.getName());
+        }
     }
 
 }
