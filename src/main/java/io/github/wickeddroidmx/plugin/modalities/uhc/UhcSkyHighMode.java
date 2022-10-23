@@ -50,7 +50,7 @@ public class UhcSkyHighMode extends Modality {
         gameManager.setSkyHighMode(false);
         gameManager.setTimeForPvP(gameManager.isRunMode() ? 1800 : 3600);
         gameManager.setTimeForPvP(gameManager.isRunMode() ? 3600 : 7200);
-        gameManager.setCobwebLimit(gameManager.isRunMode() ? 8 : 16);
+        gameManager.setCobwebLimit(gameManager.isRunMode() ? 8 : 12);
         //gameManager.setScenarioLimit(true);
 
         Bukkit.getScheduler().cancelTask(taskID);

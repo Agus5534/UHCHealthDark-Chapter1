@@ -54,7 +54,7 @@ public class GameManager {
         this.worldBorder = 2000;
         this.cape = 150;
 
-        this.cobwebLimit = 16;
+        this.cobwebLimit = 12;
         this.seconds = 0;
         this.currentTime = 0;
         this.timeForPvP = 3600;
