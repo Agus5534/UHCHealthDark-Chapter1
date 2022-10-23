@@ -6,9 +6,11 @@ import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
@@ -45,6 +47,7 @@ public class PlayerScatteredListener implements Listener {
         player.setLevel(0);
         player.setGameMode(GameMode.SURVIVAL);
         player.getInventory().clear();
+        player.getInventory().addItem(new ItemCreator(Material.ACACIA_BOAT).amount(1));
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 9));
         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 4));
@@ -65,6 +68,8 @@ public class PlayerScatteredListener implements Listener {
     @EventHandler
     public void onLaterScatter(PlayerLaterScatterEvent e) {
         var player = e.getPlayer();
+
+        player.getInventory().addItem(new ItemCreator(Material.ACACIA_BOAT).amount(1));
         Bukkit.getLogger().info(String.format("Scattered player %s to X: %d Y: %d Z: %d in world %s",
                 player.getName(),
                 Math.round(e.getLocation().getX()),
