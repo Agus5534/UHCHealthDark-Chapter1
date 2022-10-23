@@ -98,7 +98,7 @@ public class StaffGameCommands implements CommandClass  {
     @Command(
             names = "worldborder"
     )
-    public void worldBorderMoveCommand(@Sender Player target, int size, int seconds) {
+    public void worldBorderMoveCommand(@Sender Player target, @Named("size") int size, @Named("time") int seconds) {
         Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(size, seconds, false));
     }
 
@@ -111,9 +111,9 @@ public class StaffGameCommands implements CommandClass  {
     }
 
     @Command(
-            names="postuhc"
+            names="post"
     )
-    public void postCommand(@Sender Player sender, int minutes) {
+    public void postCommand(@Sender Player sender, @Named("minutes") int minutes) {
         var timeConverted = (minutes * 60);
         var timeToStart = (System.currentTimeMillis() + (timeConverted * 1000L)) / 1000L;
 
@@ -162,7 +162,7 @@ public class StaffGameCommands implements CommandClass  {
     @Command(
             names = "cobweblimit"
     )
-    public void cobwebLimitCommand(@Sender Player sender, int cobwebLimit) {
+    public void cobwebLimitCommand(@Sender Player sender, @Named("limit") int cobwebLimit) {
         if (cobwebLimit > 128 || cobwebLimit < 0) {
             sender.sendMessage(ChatUtils.PREFIX + "No puedes poner ese límite.");
             return;
@@ -178,7 +178,7 @@ public class StaffGameCommands implements CommandClass  {
     @Command(
             names = "uhcid"
     )
-    public void uhcIDCommand(@Sender Player sender, int uhcId) {
+    public void uhcIDCommand(@Sender Player sender, @Named("id") int uhcId) {
         if (uhcId < 0) {
             sender.sendMessage(ChatUtils.PREFIX + "No es válido ese número.");
             return;
@@ -232,7 +232,7 @@ public class StaffGameCommands implements CommandClass  {
     }
 
     @Command(names = "revive")
-    public void reviveCommand(@Sender Player sender, Player target, Boolean setInv) {
+    public void reviveCommand(@Sender Player sender, @Named("toRevive") Player target, @Named("recoverInv") Boolean setInv) {
         var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
         var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
