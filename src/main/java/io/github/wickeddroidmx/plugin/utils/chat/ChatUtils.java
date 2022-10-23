@@ -9,6 +9,8 @@ public class ChatUtils {
 
     public static final String TEAM = format("&7[&cTeam&7] &7» ");
 
+    public static final String NOTIFICATION = format("&7[&bNotificación&7] &7» ");
+
     @Deprecated
     public static String format(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);

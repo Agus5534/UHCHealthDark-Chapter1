@@ -192,7 +192,7 @@ public class StaffGameCommands implements CommandClass  {
 
     @Command(names = "notify")
     public void notifyCommand(@Text @Named("message") String message) {
-        Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + message));
+        Bukkit.broadcast(ChatUtils.formatC(ChatUtils.NOTIFICATION + message));
     }
 
     @Command(
