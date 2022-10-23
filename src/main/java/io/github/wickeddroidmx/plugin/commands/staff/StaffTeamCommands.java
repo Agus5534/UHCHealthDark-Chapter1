@@ -376,7 +376,7 @@ public class StaffTeamCommands implements CommandClass {
             uhcTeam.setOwner(newOwner);
         }
 
-        @Command(names = "blockNameChange")
+        @Command(names = "blocknamechange")
         public void blockNameChangeCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newValue") boolean value) {
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
