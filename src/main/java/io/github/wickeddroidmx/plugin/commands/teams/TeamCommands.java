@@ -125,6 +125,11 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
+        if(uhcTeam.isBlockChangeName()) {
+            sender.sendMessage(ChatUtils.TEAM + "El team tiene desactivada la característica de cambiar el nombre.");
+            return;
+        }
+
         if (text.length() > 16) {
             sender.sendMessage(ChatUtils.PREFIX + "Has pasado el limite de caracteres.");
             return;
@@ -184,6 +189,7 @@ public class TeamCommands implements CommandClass {
         uhcTeam.setPrefix(text);
     }
 
+    /*
     @Command(
             names = "promote"
     )
@@ -206,7 +212,7 @@ public class TeamCommands implements CommandClass {
         }
 
         Bukkit.getPluginManager().callEvent(new PlayerPromotedTeamEvent(team, target));
-    }
+    }*/
 
     @Command(
             names = "list"

@@ -376,8 +376,8 @@ public class StaffTeamCommands implements CommandClass {
             uhcTeam.setOwner(newOwner);
         }
 
-        @Command(names = "blockPrefixChange")
-        public void blockPrefixChangeCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newValue") boolean value) {
+        @Command(names = "blockNameChange")
+        public void blockNameChangeCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newValue") boolean value) {
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
             if (uhcTeam == null) {
@@ -392,10 +392,10 @@ public class StaffTeamCommands implements CommandClass {
 
             uhcTeam.setBlockChangeName(value);
 
-            uhcTeam.sendMessage(String.format("La flag 'blockPrefixChange' del equipo ha cambiado su valor a %s",
+            uhcTeam.sendMessage(String.format("La flag 'blockNameChange' del equipo ha cambiado su valor a %s",
                     value));
 
-            sender.sendMessage(ChatUtils.PREFIX + "Has cambiado la flag 'blockPrefixChange' a " + value);
+            sender.sendMessage(ChatUtils.PREFIX + "Has cambiado la flag 'blockNameChange' a " + value);
         }
     }
 
