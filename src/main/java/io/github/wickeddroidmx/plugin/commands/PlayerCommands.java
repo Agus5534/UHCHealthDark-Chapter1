@@ -38,7 +38,7 @@ public class PlayerCommands implements CommandClass {
     private TeamManager teamManager;
 
     @Command(
-            names = "fullbright"
+            names = {"fullbright", "fb", "bright"}
     )
     public void fullBrightCommand(@Sender Player sender) {
         if (!gameManager.isRunMode()) {
@@ -107,7 +107,7 @@ public class PlayerCommands implements CommandClass {
         }
     }
 
-    @Command( names = "cleanitem" )
+    @Command( names = {"cleanitem", "ci", "clean"} )
     public void cutCleanCommand(@Sender Player sender) {
         if (!modeManager.isActiveMode("uhc_run")) {
             sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("No puedes utilizar este comando en uhc's vanillas."));
