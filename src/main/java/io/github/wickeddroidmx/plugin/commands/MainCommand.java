@@ -21,19 +21,18 @@ public class MainCommand implements CommandClass {
     @Inject
     private UhcMenu uhcMenu;
 
-    @Command(
+    /*@Command(
             names = "uhc"
     )
     public void uhcCommand() {
 
-    }
+    }*/
 
     @Command(
             names = "ironman"
     )
     public void ironMan(@Sender Player sender) {
-        sender.sendMessage(ChatUtils.PREFIX + "Comando desactivado");
-        // sender.openInventory(uhcMenu.getIronManMenu());
+        sender.openInventory(uhcMenu.getIronManMenu());
     }
 
     @Command(
