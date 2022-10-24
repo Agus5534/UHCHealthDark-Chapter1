@@ -50,7 +50,7 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
-        if(senderTeam.getSize() >= teamManager.getCurrentTeams()) {
+        if(senderTeam.getSize() >= teamManager.getTeamSize()) {
             sender.sendMessage(ChatUtils.PREFIX + "El equipo ya ha alcanzado el máximo de jugadores posibles");
             return;
         }
