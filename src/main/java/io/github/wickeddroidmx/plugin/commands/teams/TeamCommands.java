@@ -50,6 +50,11 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
+        if(senderTeam.getSize() >= teamManager.getCurrentTeams()) {
+            sender.sendMessage(ChatUtils.PREFIX + "El equipo ya ha alcanzado el máximo de jugadores posibles");
+            return;
+        }
+
         if (sender == target) {
             sender.sendMessage(ChatUtils.PREFIX + "No te puedes invitar a ti mismo.");
             return;
