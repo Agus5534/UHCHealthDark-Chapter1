@@ -7,6 +7,7 @@ import io.github.wickeddroidmx.plugin.listeners.block.BlockPlaceListener;
 import io.github.wickeddroidmx.plugin.listeners.chat.AsyncChatListener;
 import io.github.wickeddroidmx.plugin.listeners.chunk.ChunkLoadListener;
 import io.github.wickeddroidmx.plugin.listeners.custom.*;
+import io.github.wickeddroidmx.plugin.listeners.entities.EntityPickupItemListener;
 import io.github.wickeddroidmx.plugin.listeners.players.*;
 import io.github.wickeddroidmx.plugin.listeners.portal.PlayerPortalListener;
 import io.github.wickeddroidmx.plugin.listeners.team.*;
@@ -44,6 +45,7 @@ public class ListenerLoader implements Loader {
     //Entity Events
     private EntityDamageByEntityListener entityDamageByEntityListener;
     private EntityDamageListener entityDamageListener;
+    private EntityPickupItemListener entityPickupItemListener;
 
     // Portal Events
     private PlayerPortalListener portalListener;
@@ -102,7 +104,8 @@ public class ListenerLoader implements Loader {
                 changeGameTimeListener,
                 blockPlaceListener,
                 playerLogsListener,
-                playerInteractAtEntityListener
+                playerInteractAtEntityListener,
+                entityPickupItemListener
         );
     }
 
