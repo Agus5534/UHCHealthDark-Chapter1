@@ -35,7 +35,11 @@ public class SecondLifeMode extends Modality {
     @EventHandler
     public void onResurrect(EntityResurrectEvent event) {
         if(event.getEntity().getType() == EntityType.PLAYER) {
-            Bukkit.broadcast(Component.text(ChatUtils.PREFIX + ChatUtils.format(String.format("&4%s &7Ha utilizado un totem", event.getEntity().getName()))));
+            var player = (Player) event.getEntity();
+
+            if(player.getInventory().contains(Material.TOTEM_OF_UNDYING)) {
+                Bukkit.broadcast(Component.text(ChatUtils.PREFIX + ChatUtils.format(String.format("&4%s &7Ha utilizado un totem", event.getEntity().getName()))));
+            }
         }
     }
 }
