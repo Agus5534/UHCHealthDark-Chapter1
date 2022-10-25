@@ -75,6 +75,8 @@ public class ModeManager {
     private TradeParanoia tradeParanoia;
     private CobwebLess cobwebLess;
 
+    private ShieldLessScenario shieldLessScenario;
+
     //UHC
     private UhcRunMode uhcRunMode;
 
@@ -127,7 +129,8 @@ public class ModeManager {
                 anvilDiscountsScenario,
                 noBurnScenario,
                 encyclopediaMode,
-                coldWeaponsMode
+                coldWeaponsMode,
+                shieldLessScenario
         );
     }
 
