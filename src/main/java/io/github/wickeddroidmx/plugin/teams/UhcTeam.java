@@ -24,7 +24,7 @@ public class UhcTeam {
             mole,
             king;
 
-    private boolean alive, blockChangeName;
+    private boolean alive, blockChangeName, friendlyFire;
 
     private NamedTextColor[] textColors = {
             NamedTextColor.AQUA,
@@ -51,6 +51,7 @@ public class UhcTeam {
 
         this.alive = true;
         blockChangeName = false;
+        this.friendlyFire = false;
 
         this.owner = owner;
         this.playersAlive = 0;
@@ -146,6 +147,11 @@ public class UhcTeam {
         this.size = size;
     }
 
+    public void setFriendlyFire(boolean friendlyFire) {
+        this.friendlyFire = friendlyFire;
+        getTeam().setAllowFriendlyFire(friendlyFire);
+    }
+
     public void incrementKills() {
         ++this.kills;
     }
@@ -160,6 +166,10 @@ public class UhcTeam {
 
     public int getSize() {
         return size;
+    }
+
+    public boolean isFriendlyFire() {
+        return friendlyFire;
     }
 
     public boolean isAlive() {

@@ -475,6 +475,22 @@ public class StaffTeamCommands implements CommandClass {
 
             sender.sendMessage(ChatUtils.PREFIX + "Has cambiado la flag 'blockNameChange' a " + value);
         }
+
+        @Command(names = "friendlyfire")
+        public void friendlyFireCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newValue") boolean value) {
+            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
+
+            if (uhcTeam == null) {
+                sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
+                return;
+            }
+
+            uhcTeam.setFriendlyFire(value);
+
+            sender.sendMessage(ChatUtils.PREFIX + "Se ha cambiado el friendly fire a " + value);
+            uhcTeam.sendMessage(String.format("La flag 'friendlyFire' del equipo ha cambiado su valor a %s",
+                    value));
+        }
     }
 
 
