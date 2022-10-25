@@ -36,7 +36,7 @@ public class PlayerPortalListener implements Listener {
 
                 if(isOutsideBorder(loc)) {
                     int size = (int) Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
-                    var safeLoc = new Location(Bukkit.getWorld("uhc_world"), new Random(ThreadLocalRandom.current().nextInt(1500)).nextInt((size/2)-3), e.getFrom().getY(), new Random(ThreadLocalRandom.current().nextInt(1500)).nextInt((size/2)-3));
+                    var safeLoc = new Location(Bukkit.getWorld("uhc_world"), new Random(ThreadLocalRandom.current().nextInt(1500)).nextInt((size/2)-4), e.getFrom().getY(), new Random(ThreadLocalRandom.current().nextInt(1500)).nextInt((size/2)-4));
                     var highestLoc = safeLoc.getWorld().getHighestBlockAt(safeLoc);
 
                     safeLoc.setY(highestLoc.getY());
