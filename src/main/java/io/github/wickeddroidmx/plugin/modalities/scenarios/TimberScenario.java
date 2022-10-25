@@ -5,11 +5,13 @@ import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.inject.Inject;
@@ -29,22 +31,61 @@ public class TimberScenario extends Modality {
         var block = e.getBlock();
 
         if (isLog(block.getType())) {
-            breakTree(block);
+            breakTree(block, block.getLocation());
         }
     }
 
-    private void breakTree(Block block) {
+    private void breakTree(Block block, Location centralLoc) {
         if (isLog(block.getType())) {
             block.breakNaturally(new ItemStack(Material.AIR), true);
+            double radius = radius(block.getType());
 
             for (var face : BlockFace.values()){
-                if (face.equals(BlockFace.UP))
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> breakTree(block.getRelative(face)), 3L);
+                if(isLog(block.getRelative(face).getType())) {
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> breakTree(block.getRelative(face), centralLoc), 3L);
+                    continue;
+                }
+
+                if(!isLog(block.getRelative(BlockFace.UP).getType())) {
+                    Bukkit.getScheduler().runTaskLater(plugin, ()-> breakLeaves(block.getRelative(face), radius, block.getLocation()), 3L);
+                }
+            }
+        }
+    }
+
+    private void breakLeaves(Block block, double radius, Location centralLoc) {
+        if(isLeaves(block.getType())) {
+            if(centralLoc.distance(block.getLocation()) > radius) {
+                return;
+            }
+
+            block.breakNaturally(new ItemStack(Material.AIR), true);
+
+            for(var face : BlockFace.values()) {
+                Bukkit.getScheduler().runTaskLater(plugin, ()-> breakLeaves(block.getRelative(face), radius, centralLoc),3L);
             }
         }
     }
 
     private boolean isLog(Material material) {
-        return material.toString().toLowerCase().endsWith("_log");
+        return (material.toString().toLowerCase().endsWith("_log") || material.toString().toLowerCase().endsWith("_stem"));
+    }
+
+    private boolean isLeaves(Material material) {
+        return (material.toString().toLowerCase().endsWith("_leaves") || material == Material.BROWN_MUSHROOM_BLOCK || material == Material.RED_MUSHROOM_BLOCK || material.toString().toLowerCase().endsWith("_log"));
+    }
+
+    private double radius(Material material) {
+        switch (material) {
+            case JUNGLE_LOG -> {
+                return 10.0D;
+            }
+            case DARK_OAK_LOG, MUSHROOM_STEM, SPRUCE_LOG -> {
+                return 5.0D;
+            }
+            default -> {
+                return 4.0D;
+            }
+        }
     }
 }
