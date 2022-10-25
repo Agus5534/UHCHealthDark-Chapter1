@@ -7,6 +7,7 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
@@ -46,7 +47,7 @@ public class ShieldLessScenario extends Modality {
     }
 
     @EventHandler
-    public void onPickupItem(InventoryPickupItemEvent event) {
+    public void onPickupItem(EntityPickupItemEvent event) {
         if(event.getItem().getItemStack() == null) { return; }
 
 

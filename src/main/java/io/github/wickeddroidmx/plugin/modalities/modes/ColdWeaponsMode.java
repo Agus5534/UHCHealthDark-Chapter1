@@ -39,6 +39,8 @@ public class ColdWeaponsMode extends Modality {
 
     @EventHandler
     public void onEnchantAnvil(PrepareAnvilEvent event) {
+        if(event.getResult() == null) { return; }
+
         if(event.getResult().containsEnchantment(Enchantment.ARROW_FIRE) || event.getResult().containsEnchantment(Enchantment.FIRE_ASPECT)) {
             var ench = (event.getResult().containsEnchantment(Enchantment.FIRE_ASPECT) ? Enchantment.FIRE_ASPECT : Enchantment.ARROW_FIRE);
 
