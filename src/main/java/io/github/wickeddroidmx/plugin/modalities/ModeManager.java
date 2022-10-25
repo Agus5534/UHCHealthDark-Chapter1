@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.modalities;
 import io.github.wickeddroidmx.plugin.modalities.modes.*;
 import io.github.wickeddroidmx.plugin.modalities.scenarios.*;
 import io.github.wickeddroidmx.plugin.modalities.teams.ChosenMode;
+import io.github.wickeddroidmx.plugin.modalities.teams.FriendlyFireMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.LoveAtFirstSightMode;
 import io.github.wickeddroidmx.plugin.modalities.uhc.UhcRunMode;
 import io.github.wickeddroidmx.plugin.modalities.uhc.UhcSkyHighMode;
@@ -51,6 +52,8 @@ public class ModeManager {
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
     private ChosenMode chosenMode;
+
+    private FriendlyFireMode friendlyFireMode;
 
     //Scenarios
     private GunsNRosesScenario gunsNRosesScenario;
@@ -131,7 +134,8 @@ public class ModeManager {
                 noBurnScenario,
                 encyclopediaMode,
                 coldWeaponsMode,
-                shieldLessScenario
+                shieldLessScenario,
+                friendlyFireMode
         );
     }
 
