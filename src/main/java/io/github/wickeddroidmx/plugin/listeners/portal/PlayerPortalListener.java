@@ -26,8 +26,6 @@ public class PlayerPortalListener implements Listener {
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent e) {
         Player player = e.getPlayer();
-        e.setCreationRadius(100);
-        e.setSearchRadius(200);
 
         if (e.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             e.setCanCreatePortal(true);
