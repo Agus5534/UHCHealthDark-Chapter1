@@ -7,6 +7,8 @@ import io.github.wickeddroidmx.plugin.events.team.TeamWinEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
+import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
+import io.github.wickeddroidmx.plugin.hooks.discord.HookType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.scoreboard.KillTopScoreboard;
@@ -22,6 +24,8 @@ import org.bukkit.event.Listener;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.awt.*;
+import java.io.IOException;
 import java.util.UUID;
 
 public class GameTickListener implements Listener {
@@ -70,11 +74,41 @@ public class GameTickListener implements Listener {
 
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0F, 1.0F);
             });
+
+            var hook = new DiscordWebhook(HookType.LOGS.getUrl());
+
+            hook.setUsername("Partida");
+            hook.addEmbed(
+                    new DiscordWebhook.EmbedObject()
+                            .setTitle("El PvP se ha iniciado")
+                            .setColor(Color.YELLOW)
+            );
+
+            try {
+                hook.execute();
+            } catch (IOException err) {
+                err.printStackTrace();
+            }
         }
 
 
         if (seconds == gameManager.getTimeForMeetup()) {
             gameManager.setGameState(GameState.MEETUP);
+
+            var hook = new DiscordWebhook(HookType.LOGS.getUrl());
+
+            hook.setUsername("Partida");
+            hook.addEmbed(
+                    new DiscordWebhook.EmbedObject()
+                            .setTitle("El Meetup ha iniciado")
+                            .setColor(Color.YELLOW)
+            );
+
+            try {
+                hook.execute();
+            } catch (IOException err) {
+                err.printStackTrace();
+            }
 
             if(gameManager.getTimeForMeetup() == 300) {
                 Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(20, gameManager.getBorderDelay(), false)));
