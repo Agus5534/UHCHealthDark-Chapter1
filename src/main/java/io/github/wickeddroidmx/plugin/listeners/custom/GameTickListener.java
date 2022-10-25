@@ -63,9 +63,7 @@ public class GameTickListener implements Listener {
         }
 
         if (seconds == gameManager.getTimeForPvP()) {
-            Bukkit.getWorlds().forEach(world -> {
-                world.setPVP(true);
-            });
+            Bukkit.getWorlds().forEach(world -> world.setPVP(true));
 
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.sendTitle(ChatUtils.format("&e⚠ &6PVP Activado &e⚠"), ChatUtils.format("&7El PvP se ha activado."), 20, 60, 20);

@@ -40,7 +40,7 @@ public class WorldBorderMoveListener implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> worldBorder.setDamageAmount(1.0f), (e.getSeconds() * 20L));
         }
 
-        if(gameManager.isRunMode() && gameManager.getGameState() == GameState.MEETUP) {
+        if(gameManager.getGameState() == GameState.MEETUP) {
             var nether = Bukkit.getWorlds().get(1);
 
             var wb = nether.getWorldBorder();
