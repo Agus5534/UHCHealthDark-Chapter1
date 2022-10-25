@@ -19,6 +19,7 @@ import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Comparator;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,7 @@ public class UhcMenu {
                 .setEntities(ironManCache.values()
                         .stream()
                         .map(Bukkit::getPlayer)
+                        .sorted(Comparator.comparing(Player::getName))
                         .collect(Collectors.toList()))
                 .setBounds(10, 35)
                 .setItemsPerRow(7)

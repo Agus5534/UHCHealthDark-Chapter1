@@ -17,6 +17,7 @@ import team.unnamed.gui.core.gui.type.GUIBuilder;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -66,7 +67,7 @@ public class UhcTeamMenu {
                         )
                         .build()
                 )
-                .setEntities(teamManager.getUhcTeams().values())
+                .setEntities(teamManager.getUhcTeams().values().stream().sorted(Comparator.comparing(uhcTeam -> uhcTeam.getOwner().getName())).toList())
                 .setBounds(10, 35)
                 .setItemsPerRow(7)
                 .build();
@@ -74,7 +75,7 @@ public class UhcTeamMenu {
 
     public Inventory getJoinInventory(Player sender, Player target) {
         return  GUIBuilder.builderPaginated(UhcTeam.class, "Teams")
-                .setEntities(teamManager.getUhcTeams().values())
+                .setEntities(teamManager.getUhcTeams().values().stream().sorted(Comparator.comparing(uhcTeam -> uhcTeam.getOwner().getName())).toList())
                 .setItemParser(uhcTeam -> ItemClickable.builderCancellingEvent()
                         .setItemStack(ItemBuilder.newSkullBuilder(uhcTeam.getSize()).setName(ChatColor.GOLD + "Team de " + uhcTeam.getName()).setOwner(uhcTeam.getOwner().getName()).build())
                         .setAction(inventoryClickEvent -> {
