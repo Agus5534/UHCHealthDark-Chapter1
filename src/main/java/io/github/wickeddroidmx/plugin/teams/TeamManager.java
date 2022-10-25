@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.teams;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
+import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
@@ -21,6 +22,9 @@ public class TeamManager  {
 
     @Inject
     private PlayerManager playerManager;
+
+    @Inject
+    private GameManager gameManager;
 
     private final HashMap<UUID, UhcTeam> uhcTeams = new HashMap<>();
     private final List<TeamInvite> teamInvites = new ArrayList<>();
@@ -106,6 +110,7 @@ public class TeamManager  {
             var playersWithoutTeam = Bukkit.getOnlinePlayers()
                     .stream()
                     .filter(player -> getPlayerTeam(player.getUniqueId()) == null)
+                    .filter(player -> !gameManager.getSpectatorTeam().hasEntry(player.getName()))
                     .collect(Collectors.toCollection(ArrayList::new));
 
             Collections.shuffle(playersWithoutTeam);
@@ -120,10 +125,6 @@ public class TeamManager  {
 
                     var uhcPlayer = playerManager.getPlayer(leader.getUniqueId());
 
-                    if(uhcPlayer != null) {
-                        if(uhcPlayer.isSpect()) { continue; }
-                    }
-
                     createTeam(leader);
 
                     var team = getPlayerTeam(leader.getUniqueId());
@@ -135,10 +136,6 @@ public class TeamManager  {
                             var member = playersWithoutTeam.remove(0);
 
                             var uPlayer = playerManager.getPlayer(leader.getUniqueId());
-
-                            if(uPlayer != null) {
-                                if(uPlayer.isSpect()) { continue; }
-                            }
 
                             Bukkit.getPluginManager().callEvent(new PlayerJoinedTeamEvent(team, member));
                         }
