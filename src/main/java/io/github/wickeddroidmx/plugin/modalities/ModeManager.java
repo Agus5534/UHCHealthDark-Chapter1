@@ -9,6 +9,7 @@ import io.github.wickeddroidmx.plugin.modalities.uhc.UhcSkyHighMode;
 import me.yushust.inject.InjectAll;
 
 import javax.inject.Singleton;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -145,6 +146,7 @@ public class ModeManager {
         return modeMap.values()
                 .stream()
                 .filter(modality -> modality.getModalityType() == modalityType)
+                .sorted(Comparator.comparing(Modality::getName))
                 .collect(Collectors.toList());
     }
 
@@ -160,6 +162,7 @@ public class ModeManager {
                 .stream()
                 .filter(modality -> modality.getModalityType() == modalityType)
                 .filter(Modality::isEnabled)
+                .sorted(Comparator.comparing(Modality::getName))
                 .collect(Collectors.toList());
     }
 
