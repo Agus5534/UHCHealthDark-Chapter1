@@ -44,6 +44,8 @@ public class ModeManager {
 
     private MoreOresMode moreOresMode;
 
+    private ColdWeaponsMode coldWeaponsMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -125,7 +127,7 @@ public class ModeManager {
                 anvilDiscountsScenario,
                 noBurnScenario,
                 encyclopediaMode,
-                moreOresMode
+                coldWeaponsMode
         );
     }
 
