@@ -50,6 +50,8 @@ public class ModeManager {
 
     private GoldenHeadMode goldenHeadMode;
 
+    private DamageCycleMode damageCycleMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -138,7 +140,8 @@ public class ModeManager {
                 coldWeaponsMode,
                 shieldLessScenario,
                 friendlyFireMode,
-                goldenHeadMode
+                goldenHeadMode,
+                damageCycleMode
         );
     }
 

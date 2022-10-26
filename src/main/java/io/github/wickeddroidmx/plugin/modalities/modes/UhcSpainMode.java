@@ -65,7 +65,10 @@ public class UhcSpainMode extends Modality {
                     e.setCancelled(true);
                     return;
                 }
-                if(attribute.getBaseValue() >= 80.0D) { e.setCancelled(true); }
+                if(attribute.getBaseValue() >= 80.0D) {
+                    e.setCancelled(true);
+                    return;
+                }
 
                 attribute.setBaseValue(attribute.getBaseValue() + 4.0D);
 
