@@ -39,6 +39,8 @@ public class AnvilDiscountsScenario extends Modality {
 
         int newRepairCost = (int) Math.round(repairCost*toDiscount);
 
+        if(newRepairCost < 1) { newRepairCost = 2; }
+
         event.getInventory().setRepairCost(newRepairCost);
 
         itemsHash.put(itemOne,newRepairCost);
