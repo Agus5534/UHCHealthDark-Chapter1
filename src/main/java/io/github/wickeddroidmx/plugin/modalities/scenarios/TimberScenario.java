@@ -61,6 +61,10 @@ public class TimberScenario extends Modality {
 
             block.breakNaturally(new ItemStack(Material.AIR), true);
 
+            if(block.getType().toString().toLowerCase().endsWith("_leaves")) {
+                Bukkit.getPluginManager().callEvent(new LeavesDecayEvent(block));
+            }
+
             for(var face : BlockFace.values()) {
                 Bukkit.getScheduler().runTaskLater(plugin, ()-> breakLeaves(block.getRelative(face), radius, centralLoc),3L);
             }
@@ -81,10 +85,10 @@ public class TimberScenario extends Modality {
                 return 10.0D;
             }
             case DARK_OAK_LOG, MUSHROOM_STEM, SPRUCE_LOG -> {
-                return 5.0D;
+                return 6.0D;
             }
             default -> {
-                return 4.0D;
+                return 5.0D;
             }
         }
     }

@@ -60,7 +60,7 @@ public class UhcRunMode extends Modality {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockDestroyEvent e) {
+    public void onBlockBreak(BlockBreakEvent e) {
         var block = e.getBlock();
         var random = new Random();
 
