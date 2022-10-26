@@ -19,6 +19,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -120,7 +121,7 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(names = "revive")
-        public void reviveCommand(@Sender Player sender, @Named("toRevive") Player target, @Named("recoverInv") Boolean setInv) {
+        public void reviveCommand(@Sender Player sender, @Named("toRevive") Player target, @Named("recoverInv") Boolean setInv, @Named("health") int health) {
             var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
@@ -141,6 +142,16 @@ public class StaffTeamCommands implements CommandClass {
 
             if(uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("&7La data de esta persona ha sido eliminada (Equipo eliminado definitivamente)."));
+                return;
+            }
+
+            if(health < 1) {
+                sender.sendMessage(ChatUtils.PREFIX + "La vida no puede ser menor a 1.");
+                return;
+            }
+
+            if(health > uhcPlayer.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue()) {
+                sender.sendMessage(ChatUtils.PREFIX + "La vida no puede ser menor a la de los contenedores de esta persona.");
                 return;
             }
 
@@ -191,6 +202,8 @@ public class StaffTeamCommands implements CommandClass {
             target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 400, 10, false,false,false));
 
             Bukkit.broadcastMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha revivido al jugador &6"+target.getName()));
+
+            uhcPlayer.getPlayer().setHealth(health);
         }
     }
 
