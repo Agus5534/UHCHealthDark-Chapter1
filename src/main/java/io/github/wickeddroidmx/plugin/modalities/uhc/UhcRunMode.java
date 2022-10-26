@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.uhc;
 
+import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderSetEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -59,9 +60,10 @@ public class UhcRunMode extends Modality {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent e) {
+    public void onBlockBreak(BlockDestroyEvent e) {
         var block = e.getBlock();
         var random = new Random();
+
 
         if (block.getType().toString().toLowerCase().endsWith("leaves")) {
             if (random.nextInt(100) >= 90) {
