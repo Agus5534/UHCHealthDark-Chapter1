@@ -78,7 +78,7 @@ public class UhcStaffModesMenu {
                         .build()
                 )
                 .setEntities(modeManager.getAllModes(modalityType))
-                .setBounds(10, 35)
+                .setBounds(10, 44)
                 .setItemsPerRow(7)
                 .build();
     }
