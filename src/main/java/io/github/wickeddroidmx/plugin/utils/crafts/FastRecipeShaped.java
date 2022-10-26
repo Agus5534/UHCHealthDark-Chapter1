@@ -25,7 +25,7 @@ public class FastRecipeShaped {
 
     public FastRecipeShaped setItem(FastIngredient... fastIngredients) {
         for(FastIngredient fastIngredient : fastIngredients) {
-            recipe.setIngredient(fastIngredient.getCharacter(),fastIngredient.getMaterial());
+            recipe.setIngredient(fastIngredient.getCharacter(),fastIngredient.getItemStack());
         }
         return this;
     }
