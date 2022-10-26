@@ -3,7 +3,9 @@ package io.github.wickeddroidmx.plugin.modalities.scenarios;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
+import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,6 +27,9 @@ public class GraveRobbersScenario extends Modality {
     @Inject
     private Main plugin;
 
+    @Inject
+    private ModeManager modeManager;
+
     public GraveRobbersScenario() {
         super(ModalityType.SCENARIO, "grave_robbers", "&cGrave Robbers", Material.MOSSY_COBBLESTONE,
                 ChatUtils.format("&7- Al matar a alguien tendrá un tumba."));
@@ -37,6 +42,10 @@ public class GraveRobbersScenario extends Modality {
         var newDrops = new ArrayList<>(e.getDrops());
 
         e.getDrops().clear();
+
+        if(modeManager.isActiveMode("golden_head")) {
+            newDrops.add(new ItemCreator(Material.PLAYER_HEAD).setSkullSkin(e.getEntity()));
+        }
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             var chest = createDoubleChestAt(location);

@@ -48,6 +48,8 @@ public class ModeManager {
 
     private ColdWeaponsMode coldWeaponsMode;
 
+    private GoldenHeadMode goldenHeadMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -135,7 +137,8 @@ public class ModeManager {
                 encyclopediaMode,
                 coldWeaponsMode,
                 shieldLessScenario,
-                friendlyFireMode
+                friendlyFireMode,
+                goldenHeadMode
         );
     }
 
