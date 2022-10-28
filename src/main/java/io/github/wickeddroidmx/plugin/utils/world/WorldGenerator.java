@@ -27,75 +27,7 @@ public class WorldGenerator {
             "world_nether",
             "world_the_end"
     };
-
-    World uhcWorld;
-
-    private List<Biome> blockedBiomes;
-
-    public void createWorld() {
-        Biome[] ban = new Biome[] {
-                Biome.OCEAN,
-                Biome.COLD_OCEAN,
-                Biome.DEEP_COLD_OCEAN,
-                Biome.DEEP_OCEAN,
-                Biome.DEEP_WARM_OCEAN,
-                Biome.FROZEN_OCEAN,
-                Biome.DEEP_FROZEN_OCEAN,
-                Biome.WARM_OCEAN,
-                Biome.LUKEWARM_OCEAN,
-                Biome.DEEP_LUKEWARM_OCEAN,
-                Biome.BAMBOO_JUNGLE_HILLS
-        };
-
-        blockedBiomes = Arrays.asList(ban);
-
-        long seed = randomSeed();
-
-        uhcWorld = createUhcWorld(seed).createWorld();
-
-        worldTasks();
-
-        while (blockedBiomes.contains(getBiome())) {
-            Bukkit.unloadWorld(uhcWorld, false);
-            seed = randomSeed();
-            uhcWorld = createUhcWorld(seed).createWorld();
-            worldTasks();
-
-            Bukkit.getLogger().info(String.format("Changing world"));
-        }
-
-    }
-
-    private long randomSeed() {
-        return ThreadLocalRandom.current().nextLong(-Long.MAX_VALUE,Long.MAX_VALUE);
-    }
-
-    private Biome getBiome() {
-        return uhcWorld.getBiome(0,0,0);
-    }
-
-    public WorldCreator createUhcWorld(long seed) {
-        WorldCreator worldCreator = new WorldCreator("uhc_world");
-        worldCreator.environment(World.Environment.NORMAL);
-        worldCreator.type(WorldType.NORMAL);
-
-        return worldCreator;
-    }
-
-    public void worldTasks() {
-        if (uhcWorld != null) {
-            uhcWorld.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-            uhcWorld.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-            uhcWorld.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-        }
-
-        for (var world : Bukkit.getWorlds()) {
-            world.setPVP(false);
-
-            world.setDifficulty(Difficulty.HARD);
-            world.setGameRule(GameRule.NATURAL_REGENERATION, false);
-        }
-    }
+    UhcWorld uhcWorld = new UhcWorld(0);
 
     public void deleteWorlds() throws IOException {
         for (String worldName : worlds) {
@@ -139,5 +71,9 @@ public class WorldGenerator {
             worldBorder.setSize(4000);
             worldBorder.setDamageAmount(0);
         }
+    }
+
+    public UhcWorld getUhcWorld() {
+        return uhcWorld;
     }
 }

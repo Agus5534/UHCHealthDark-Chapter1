@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.commands.staff;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -32,12 +33,20 @@ public class StaffCommands implements CommandClass {
     @Inject
     private GameManager gameManager;
 
+    @Inject
+    private Main plugin;
+
     @Command(
             names = "worldtp", permission = "healthdark.staff"
     )
     public void teleportCommand(@Sender Player sender, World world) {
         if(world == null) {
             sender.sendMessage(ChatUtils.PREFIX + "No existe ese mundo");
+            return;
+        }
+
+        if(plugin.getWorldGenerator().getUhcWorld().isRecreatingWorld()) {
+            sender.sendMessage(ChatUtils.PREFIX + "El mundo se está recreando, el comando se encuentra desactivado.");
             return;
         }
 
