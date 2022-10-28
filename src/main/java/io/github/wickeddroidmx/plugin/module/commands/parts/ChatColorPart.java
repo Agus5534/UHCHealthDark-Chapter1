@@ -5,17 +5,14 @@ import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
-import org.bukkit.Bukkit;
-import org.bukkit.block.Biome;
+import org.bukkit.ChatColor;
 
 import java.util.*;
 
-public class BiomePart implements ArgumentPart {
+public class ChatColorPart implements ArgumentPart {
     private final String name;
 
-    public BiomePart(String name) {
-        this.name = name;
-    }
+    public ChatColorPart(String name) { this.name = name; }
 
     @Override
     public List<String> getSuggestions(CommandContext commandContext, ArgumentStack stack) {
@@ -27,7 +24,7 @@ public class BiomePart implements ArgumentPart {
 
         List<String> suggestions = new ArrayList<>();
 
-        Iterator iterator = Arrays.stream(Biome.values()).iterator();
+        Iterator iterator = Arrays.stream(ChatColor.values()).iterator();
 
         while (iterator.hasNext()) {
             suggestions.add(iterator.next().toString());
@@ -41,21 +38,20 @@ public class BiomePart implements ArgumentPart {
     }
 
     @Override
-    public List<Biome> parseValue(CommandContext commandContext, ArgumentStack argumentStack, CommandPart commandPart) throws ArgumentParseException {
-        return Collections.singletonList(this.checkBiome(argumentStack));
+    public List<?> parseValue(CommandContext commandContext, ArgumentStack argumentStack, CommandPart commandPart) throws ArgumentParseException {
+        return Collections.singletonList(this.checkColor(argumentStack));
     }
 
     public String getName() {
         return this.name;
     }
 
-    private Biome checkBiome(ArgumentStack stack) {
+    private ChatColor checkColor(ArgumentStack stack) {
         try {
-            var biome = Biome.valueOf(stack.next());
-            return biome;
+            var color = ChatColor.valueOf(stack.next());
+            return color;
         } catch (Exception e) {
-            throw new ArgumentParseException("That Biome not exist!");
+            throw new ArgumentParseException("That Color not exist!");
         }
     }
-
 }

@@ -401,7 +401,7 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(names = "color")
-        public void modifyColorCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("color") String color) {
+        public void modifyColorCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("color") ChatColor color) {
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
             if (uhcTeam == null) {
@@ -409,24 +409,11 @@ public class StaffTeamCommands implements CommandClass {
                 return;
             }
 
-            String s = color;
+            uhcTeam.getTeam().setColor(color);
 
-            ChatColor cColor;
+            sender.sendMessage(ChatUtils.PREFIX + "Has cambiado el color del team a " + color);
 
-            try {
-             cColor = ChatColor.valueOf(s);
-            } catch (Exception e) {
-                sender.sendMessage(ChatUtils.PREFIX + "Ese color no existe.");
-                return;
-            }
-
-
-
-            uhcTeam.getTeam().setColor(cColor);
-
-            sender.sendMessage(ChatUtils.PREFIX + "Has cambiado el color del team a " + color.toUpperCase());
-
-            uhcTeam.sendMessage(String.format("%s ha cambiado el color del team a %s", sender.getName(), color.toUpperCase()));
+            uhcTeam.sendMessage(String.format("%s ha cambiado el color del team a %s", sender.getName(), color));
         }
 
         @Command(names = "name")
