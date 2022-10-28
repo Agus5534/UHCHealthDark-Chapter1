@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.commands.MainCommand;
 import io.github.wickeddroidmx.plugin.commands.PlayerCommands;
 import io.github.wickeddroidmx.plugin.commands.staff.*;
 import io.github.wickeddroidmx.plugin.commands.teams.TeamCommands;
+import io.github.wickeddroidmx.plugin.module.commands.ExtraBukkitModule;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilder;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.part.PartInjector;
@@ -25,8 +26,8 @@ public class CommandLoader implements Loader {
     private StaffGameCommands staffGameCommands;
     private StaffTeamCommands staffTeamCommands;
     private StaffModeCommands staffModeCommands;
-
     private StaffMeetupCommands staffMeetupCommands;
+    private StaffWorldCommands staffWorldCommands;
 
     @Override
     public void load() {
@@ -38,7 +39,8 @@ public class CommandLoader implements Loader {
                 staffGameCommands,
                 staffTeamCommands,
                 staffModeCommands,
-                staffMeetupCommands
+                staffMeetupCommands,
+                staffWorldCommands
         );
     }
 
@@ -46,6 +48,7 @@ public class CommandLoader implements Loader {
         PartInjector partInjector = PartInjector.create();
         partInjector.install(new DefaultsModule());
         partInjector.install(new BukkitModule());
+        partInjector.install(new ExtraBukkitModule());
 
         BukkitCommandManager commandManager = new BukkitCommandManager("template");
         AnnotatedCommandTreeBuilder treeBuilder = AnnotatedCommandTreeBuilder.create(partInjector);

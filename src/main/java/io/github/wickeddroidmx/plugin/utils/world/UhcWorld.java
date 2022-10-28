@@ -2,7 +2,12 @@ package io.github.wickeddroidmx.plugin.utils.world;
 
 import org.bukkit.*;
 import org.bukkit.block.Biome;
+import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
+import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -14,29 +19,32 @@ public class UhcWorld {
     private long seed;
     private boolean recreatingWorld;
 
-    List<Biome> bannedBiomes = Arrays.asList(new Biome[] {
-            Biome.OCEAN,
-            Biome.COLD_OCEAN,
-            Biome.DEEP_COLD_OCEAN,
-            Biome.DEEP_OCEAN,
-            Biome.DEEP_WARM_OCEAN,
-            Biome.FROZEN_OCEAN,
-            Biome.DEEP_FROZEN_OCEAN,
-            Biome.WARM_OCEAN,
-            Biome.LUKEWARM_OCEAN,
-            Biome.DEEP_LUKEWARM_OCEAN,
-            Biome.BAMBOO_JUNGLE_HILLS
-    });
+    List<Biome> bannedBiomes;
 
     public UhcWorld(long seed) {
         this.name = "uhc_world";
         this.seed = seed;
         this.world = null;
+        this.bannedBiomes = new ArrayList<>();
         recreatingWorld = false;
+
+        addBannedBiomes(
+                Biome.OCEAN,
+                Biome.COLD_OCEAN,
+                Biome.DEEP_COLD_OCEAN,
+                Biome.DEEP_OCEAN,
+                Biome.DEEP_WARM_OCEAN,
+                Biome.FROZEN_OCEAN,
+                Biome.DEEP_FROZEN_OCEAN,
+                Biome.WARM_OCEAN,
+                Biome.LUKEWARM_OCEAN,
+                Biome.DEEP_LUKEWARM_OCEAN,
+                Biome.BAMBOO_JUNGLE_HILLS
+        );
     }
 
 
-    public WorldCreator createUhcWorld() {
+    private WorldCreator createUhcWorld() {
         WorldCreator worldCreator = new WorldCreator(this.name);
 
         if(seed != 0) {
@@ -49,8 +57,7 @@ public class UhcWorld {
         return worldCreator;
     }
 
-    private World createWorld() {
-
+    public World createWorld() {
         var w = createUhcWorld().createWorld();
 
         if(this.seed == 0) {
@@ -71,7 +78,7 @@ public class UhcWorld {
         return w.getBiome(0,0,0);
     }
 
-    public void recreateWorld() {
+    public void recreateWorld(JavaPlugin plugin) {
         recreatingWorld = true;
 
         Bukkit.getOnlinePlayers().forEach(p -> {
@@ -80,7 +87,16 @@ public class UhcWorld {
             }
         });
 
-        this.world = createWorld();
+
+        Bukkit.getScheduler().runTaskLater(plugin, ()-> {
+            Bukkit.unloadWorld(this.world, false);
+
+            try {
+                deleteWorldDir();
+            } catch (Exception e) {}
+
+            this.world = createWorld();
+        }, 200L);
     }
 
     private void configWorld() {
@@ -125,7 +141,25 @@ public class UhcWorld {
         }
     }
 
+    public void removeBannedBiomes(Biome... b) {
+        for(var biome : b) {
+            this.bannedBiomes.remove(biome);
+        }
+    }
+
     public boolean isRecreatingWorld() {
         return recreatingWorld;
+    }
+
+    public void deleteWorldDirectory(String name) throws IOException {
+        var file = new File(name);
+
+        FileUtils.deleteDirectory(file);
+    }
+
+    public void deleteWorldDir() throws IOException {
+        var file = new File(this.name);
+
+        FileUtils.deleteDirectory(file);
     }
 }

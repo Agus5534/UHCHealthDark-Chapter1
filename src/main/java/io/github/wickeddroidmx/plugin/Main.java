@@ -62,7 +62,7 @@ public class Main extends JavaPlugin {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeams()
                 .forEach(Team::unregister);
 
-        worldGenerator.getUhcWorld().createUhcWorld();
+        worldGenerator.getUhcWorld().createWorld();
 
         getServer().getScheduler().runTaskTimer(this, () -> cache.values().forEach(uhcScoreboard -> uhcScoreboard.update(modeManager, gameManager, playerManager, teamManager)), 0L, 20L);
 

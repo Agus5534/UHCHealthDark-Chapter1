@@ -59,6 +59,10 @@ public class StaffGameCommands implements CommandClass  {
             names = "start"
     )
     public void startCommand() {
+        if(plugin.getWorldGenerator().getUhcWorld().isRecreatingWorld()) {
+            Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + "No se puede iniciar la partida, hay un mundo recreandose."));
+            return;
+        }
 
         Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getOnlinePlayers().forEach(player -> {
             var uhcPlayer = playerManager.getPlayer(player.getUniqueId());

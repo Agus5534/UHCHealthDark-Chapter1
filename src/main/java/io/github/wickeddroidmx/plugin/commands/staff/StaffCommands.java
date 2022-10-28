@@ -52,6 +52,8 @@ public class StaffCommands implements CommandClass {
 
         sender.teleport(world.getSpawnLocation());
         sender.sendMessage(ChatUtils.PREFIX + String.format("Te has teletransportado al mundo %s", world.getName()));
+
+        sender.sendMessage(ChatUtils.NOTIFICATION + ChatUtils.format("&7Este comando será reemplazado en un futuro por &6/staffworld tp"));
     }
 
     @Command(

@@ -32,7 +32,7 @@ public class WorldGenerator {
     public void deleteWorlds() throws IOException {
         for (String worldName : worlds) {
             Bukkit.unloadWorld(worldName, false);
-            deleteWorldDirectory(worldName);
+            uhcWorld.deleteWorldDirectory(worldName);
         }
 
         deleteDirectory("advancements");
@@ -54,13 +54,6 @@ public class WorldGenerator {
         }
     }
 
-
-
-    private void deleteWorldDirectory(String name) throws IOException {
-        var file = new File(name);
-
-        FileUtils.deleteDirectory(file);
-    }
 
     private void setupWorldBorder() {
         var world = Bukkit.getWorld("uhc_world");
