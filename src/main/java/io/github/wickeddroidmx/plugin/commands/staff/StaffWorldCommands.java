@@ -34,13 +34,13 @@ public class StaffWorldCommands implements CommandClass {
 
         @Command(names = "list")
         public void bannedBiomesCommand(@Sender Player sender) {
-            String s = "&a";
+            String s = "Biomas bloqueados: &a";
 
             for(var b : plugin.getWorldGenerator().getUhcWorld().getBannedBiomes()) {
                 s+= ", " + b.toString();
             }
 
-            sender.sendMessage(ChatUtils.formatC(s.replaceFirst(", ", "")));
+            sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + s.replaceFirst(", ", "")));
         }
 
         @Command(names = "clear")
