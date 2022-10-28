@@ -411,9 +411,9 @@ public class StaffTeamCommands implements CommandClass {
 
             uhcTeam.getTeam().setColor(color);
 
-            sender.sendMessage(ChatUtils.PREFIX + "Has cambiado el color del team a " + color);
+            sender.sendMessage(ChatUtils.PREFIX + "Has cambiado el color del team a " + color.name());
 
-            uhcTeam.sendMessage(String.format("%s ha cambiado el color del team a %s", sender.getName(), color));
+            uhcTeam.sendMessage(String.format("%s ha cambiado el color del team a %s", sender.getName(), color.name()));
         }
 
         @Command(names = "name")

@@ -24,10 +24,8 @@ public class ChatColorPart implements ArgumentPart {
 
         List<String> suggestions = new ArrayList<>();
 
-        Iterator iterator = Arrays.stream(ChatColor.values()).iterator();
-
-        while (iterator.hasNext()) {
-            suggestions.add(iterator.next().toString());
+        for(ChatColor c : ChatColor.values()) {
+            suggestions.add(c.name());
         }
 
         if (suggestions.size() == 1) {
