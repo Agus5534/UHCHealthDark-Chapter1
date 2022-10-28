@@ -34,7 +34,7 @@ public class StaffWorldCommands implements CommandClass {
 
         @Command(names = "list")
         public void bannedBiomesCommand(@Sender Player sender) {
-            String s = "Biomas bloqueados: &a";
+            String s = String.format("Biomas bloqueados (%d): &a", plugin.getWorldGenerator().getUhcWorld().getBannedBiomes().size());
 
             for(var b : plugin.getWorldGenerator().getUhcWorld().getBannedBiomes()) {
                 s+= ", " + b.toString();
