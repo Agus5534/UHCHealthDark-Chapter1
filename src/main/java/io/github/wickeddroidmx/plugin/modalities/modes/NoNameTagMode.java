@@ -2,8 +2,10 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
+import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
+import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Material;
@@ -25,7 +27,7 @@ public class NoNameTagMode extends Modality {
     public void onGameStart(GameStartEvent e) {
         teamManager.getUhcTeams()
                 .values()
-                .forEach(uhcTeam -> uhcTeam.getTeam().setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS));
+                .forEach(uhcTeam -> uhcTeam.addFlag(TeamFlags.HIDE_NICKNAMES));
     }
 
 
@@ -34,7 +36,18 @@ public class NoNameTagMode extends Modality {
         var uhcTeam = teamManager.getPlayerTeam(event.getPlayer().getUniqueId());
 
         if(uhcTeam != null) {
-            uhcTeam.getTeam().setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OTHER_TEAMS);
+            uhcTeam.addFlag(TeamFlags.HIDE_NICKNAMES);
         }
+    }
+
+    @EventHandler
+    public void onTeamCreate(TeamCreateEvent event) {
+        event.getUhcTeam().addFlag(TeamFlags.HIDE_NICKNAMES);
+    }
+
+    @Override
+    public void desactiveMode() {
+        super.desactiveMode();
+        teamManager.getUhcTeams().values().forEach(team -> team.removeFlag(TeamFlags.HIDE_NICKNAMES));
     }
 }

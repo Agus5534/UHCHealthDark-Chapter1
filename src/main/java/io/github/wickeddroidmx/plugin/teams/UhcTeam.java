@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.teams;
 
+import io.github.wickeddroidmx.plugin.events.team.TeamFlagChangedEvent;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -234,10 +235,16 @@ public class UhcTeam {
     }
 
     public void addFlag(TeamFlags flag) {
-        this.teamFlags.add(flag);
+        if(!this.containsFlag(flag)) {
+            this.teamFlags.add(flag);
+            Bukkit.getPluginManager().callEvent(new TeamFlagChangedEvent(this, flag, true));
+        }
     }
 
     public void removeFlag(TeamFlags flag) {
-        this.teamFlags.remove(flag);
+        if(this.teamFlags.contains(flag)) {
+            this.teamFlags.remove(flag);
+            Bukkit.getPluginManager().callEvent(new TeamFlagChangedEvent(this, flag, false));
+        }
     }
 }

@@ -474,8 +474,6 @@ public class StaffTeamCommands implements CommandClass {
 
             uhcTeam.sendMessage(String.format("La flag del equipo '%s' ha cambiado a %s", flag.getName(), value));
             sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX +  String.format("Has cambiado la flag '%s' a %s", flag.getName(), value)));
-
-            Bukkit.getPluginManager().callEvent(new TeamFlagChangedEvent(uhcTeam, flag, value));
         }
     }
 
