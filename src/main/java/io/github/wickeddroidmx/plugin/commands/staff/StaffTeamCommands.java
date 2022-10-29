@@ -1,14 +1,12 @@
 package io.github.wickeddroidmx.plugin.commands.staff;
 
-import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
-import io.github.wickeddroidmx.plugin.events.team.PlayerLeaveTeamEvent;
-import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
-import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
+import io.github.wickeddroidmx.plugin.events.team.*;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
+import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -284,8 +282,6 @@ public class StaffTeamCommands implements CommandClass {
                 team.setName(name);
 
                 team.setPrefix(name);
-
-                team.setBlockChangeName(true);
             }
 
             Bukkit.getPluginManager().callEvent(new TeamCreateEvent(teamManager.getTeam(target.getUniqueId()), target));
@@ -454,8 +450,8 @@ public class StaffTeamCommands implements CommandClass {
             uhcTeam.setOwner(newOwner);
         }
 
-        @Command(names = "blocknamechange")
-        public void blockNameChangeCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newValue") boolean value) {
+        @Command(names = "flag")
+        public void flagCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("flag") TeamFlags flag, @Named("newValue") boolean value) {
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
 
             if (uhcTeam == null) {
@@ -463,17 +459,21 @@ public class StaffTeamCommands implements CommandClass {
                 return;
             }
 
-            if(uhcTeam.isBlockChangeName() == value) {
+            if(uhcTeam.containsFlag(flag) == value) {
                 sender.sendMessage(ChatUtils.PREFIX + "La flag ya está en ese valor");
                 return;
             }
 
-            uhcTeam.setBlockChangeName(value);
+            if(value) {
+                uhcTeam.addFlag(flag);
+            } else {
+                uhcTeam.removeFlag(flag);
+            }
 
-            uhcTeam.sendMessage(String.format("La flag 'blockNameChange' del equipo ha cambiado su valor a %s",
-                    value));
+            uhcTeam.sendMessage(String.format("La flag del equipo '%s' ha cambiado a %s", flag.getName(), value));
+            sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX +  String.format("Has cambiado la flag '%s' a %s", flag.getName(), value)));
 
-            sender.sendMessage(ChatUtils.PREFIX + "Has cambiado la flag 'blockNameChange' a " + value);
+            Bukkit.getPluginManager().callEvent(new TeamFlagChangedEvent(uhcTeam, flag, value));
         }
 
         @Command(names = "friendlyfire")

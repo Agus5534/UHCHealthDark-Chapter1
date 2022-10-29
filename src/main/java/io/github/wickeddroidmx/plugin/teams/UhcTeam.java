@@ -14,17 +14,15 @@ public class UhcTeam {
 
     private final int id;
     private final Set<UUID> teamPlayers;
-
     private final Team team;
     private String name;
-
     private final Inventory inventory;
-
     private Player owner,
             mole,
             king;
+    private boolean alive, friendlyFire;
 
-    private boolean alive, blockChangeName, friendlyFire;
+    private List<TeamFlags> teamFlags;
 
     private NamedTextColor[] textColors = {
             NamedTextColor.AQUA,
@@ -50,11 +48,11 @@ public class UhcTeam {
         this.king = null;
 
         this.alive = true;
-        blockChangeName = false;
         this.friendlyFire = false;
 
         this.owner = owner;
         this.playersAlive = 0;
+        teamFlags = new ArrayList<>();
 
         this.name = String.format("%s team",owner.getName());
 
@@ -109,10 +107,6 @@ public class UhcTeam {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
-    }
-
-    public void setBlockChangeName(boolean blockChangeName) {
-        this.blockChangeName = blockChangeName;
     }
 
     public void decrementPlayersAlive() {
@@ -204,8 +198,9 @@ public class UhcTeam {
         return name;
     }
 
+    @Deprecated(forRemoval = true)
     public boolean isBlockChangeName() {
-        return blockChangeName;
+        return this.teamFlags.contains(TeamFlags.BLOCK_NAME_CHANGE);
     }
 
     public void sendMessage(String s) {
@@ -216,5 +211,21 @@ public class UhcTeam {
                 op.getPlayer().sendMessage(ChatUtils.TEAM + s);
             }
         });
+    }
+
+    public List<TeamFlags> getTeamFlags() {
+        return teamFlags;
+    }
+
+    public boolean containsFlag(TeamFlags flag) {
+        return this.teamFlags.contains(flag);
+    }
+
+    public void addFlag(TeamFlags flag) {
+        this.teamFlags.add(flag);
+    }
+
+    public void removeFlag(TeamFlags flag) {
+        this.teamFlags.remove(flag);
     }
 }

@@ -7,6 +7,7 @@ import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
+import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -130,7 +131,7 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
-        if(uhcTeam.isBlockChangeName()) {
+        if(uhcTeam.containsFlag(TeamFlags.BLOCK_NAME_CHANGE)) {
             sender.sendMessage(ChatUtils.TEAM + "El team tiene desactivada la característica de cambiar el nombre.");
             return;
         }
@@ -163,7 +164,7 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
-        if(uhcTeam.isBlockChangeName()) {
+        if(uhcTeam.containsFlag(TeamFlags.BLOCK_PREFIX_CHANGE)) {
             sender.sendMessage(ChatUtils.TEAM + "El team tiene desactivada la característica de cambiar el prefix.");
             return;
         }
