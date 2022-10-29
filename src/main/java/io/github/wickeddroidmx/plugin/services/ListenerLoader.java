@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.services;
 
 import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.events.team.TeamFlagChangedEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamWinEvent;
 import io.github.wickeddroidmx.plugin.listeners.block.BlockBreakListener;
 import io.github.wickeddroidmx.plugin.listeners.block.BlockPlaceListener;
@@ -64,6 +65,7 @@ public class ListenerLoader implements Loader {
     private PlayerJoinedTeamListener playerJoinedTeamListener;
     private PlayerLeaveTeamListener playerLeaveTeamListener;
     private PlayerPromotedTeamListener playerPromotedTeamListener;
+    private TeamFlagChangedListener teamFlagChangedListener;
 
     // WorldBorder Events
     private WorldBorderSetListener worldBorderSetListener;
@@ -105,7 +107,8 @@ public class ListenerLoader implements Loader {
                 blockPlaceListener,
                 playerLogsListener,
                 playerInteractAtEntityListener,
-                entityPickupItemListener
+                entityPickupItemListener,
+                teamCreateListener
         );
     }
 

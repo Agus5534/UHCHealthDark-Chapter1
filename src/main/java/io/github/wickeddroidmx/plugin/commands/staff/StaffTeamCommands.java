@@ -407,6 +407,8 @@ public class StaffTeamCommands implements CommandClass {
 
             uhcTeam.getTeam().setColor(color);
 
+            uhcTeam.setColor(color);
+
             sender.sendMessage(ChatUtils.PREFIX + "Has cambiado el color del team a " + color.name());
 
             uhcTeam.sendMessage(String.format("%s ha cambiado el color del team a %s", sender.getName(), color.name()));
@@ -474,22 +476,6 @@ public class StaffTeamCommands implements CommandClass {
             sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX +  String.format("Has cambiado la flag '%s' a %s", flag.getName(), value)));
 
             Bukkit.getPluginManager().callEvent(new TeamFlagChangedEvent(uhcTeam, flag, value));
-        }
-
-        @Command(names = "friendlyfire")
-        public void friendlyFireCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newValue") boolean value) {
-            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
-
-            if (uhcTeam == null) {
-                sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
-                return;
-            }
-
-            uhcTeam.setFriendlyFire(value);
-
-            sender.sendMessage(ChatUtils.PREFIX + "Se ha cambiado el friendly fire a " + value);
-            uhcTeam.sendMessage(String.format("La flag 'friendlyFire' del equipo ha cambiado su valor a %s",
-                    value));
         }
     }
 

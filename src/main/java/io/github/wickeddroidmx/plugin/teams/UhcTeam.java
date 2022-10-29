@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
@@ -22,20 +23,22 @@ public class UhcTeam {
             king;
     private boolean alive, friendlyFire;
 
+    private ChatColor color;
+
     private List<TeamFlags> teamFlags;
 
-    private NamedTextColor[] textColors = {
-            NamedTextColor.AQUA,
-            NamedTextColor.BLUE,
-            NamedTextColor.DARK_AQUA,
-            NamedTextColor.DARK_BLUE,
-            NamedTextColor.DARK_GRAY,
-            NamedTextColor.DARK_RED,
-            NamedTextColor.YELLOW,
-            NamedTextColor.LIGHT_PURPLE,
-            NamedTextColor.RED,
-            NamedTextColor.GREEN,
-            NamedTextColor.GRAY
+    private ChatColor[] textColors = {
+            ChatColor.AQUA,
+            ChatColor.BLUE,
+            ChatColor.DARK_AQUA,
+            ChatColor.DARK_BLUE,
+            ChatColor.DARK_GRAY,
+            ChatColor.DARK_RED,
+            ChatColor.YELLOW,
+            ChatColor.LIGHT_PURPLE,
+            ChatColor.RED,
+            ChatColor.GREEN,
+            ChatColor.GRAY
     };
 
     private int kills,
@@ -64,7 +67,8 @@ public class UhcTeam {
             this.team = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(owner.getName());
 
             team.prefix(Component.text(String.format("[Team %s] | ", owner.getName())));
-            team.color(textColors[new Random().nextInt(textColors.length)]);
+            color = textColors[new Random().nextInt(textColors.length)];
+            team.setColor(color);
             team.setAllowFriendlyFire(false);
         } else
             this.team = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(owner.getName());
@@ -160,6 +164,14 @@ public class UhcTeam {
 
     public int getSize() {
         return size;
+    }
+
+    public void setColor(ChatColor color) {
+        this.color = color;
+    }
+
+    public ChatColor getColor() {
+        return color;
     }
 
     public boolean isFriendlyFire() {
