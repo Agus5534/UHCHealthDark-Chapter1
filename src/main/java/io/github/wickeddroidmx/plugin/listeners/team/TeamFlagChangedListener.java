@@ -5,6 +5,7 @@ import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scoreboard.Team;
 
 public class TeamFlagChangedListener implements Listener {
 
@@ -24,6 +25,11 @@ public class TeamFlagChangedListener implements Listener {
 
         if(flag == TeamFlags.FRIENDLY_FIRE) {
             team.setFriendlyFire(event.isNewValue());
+        }
+
+        if(flag == TeamFlags.HIDE_NICKNAMES) {
+            var optStatus = (event.isNewValue() ? Team.OptionStatus.FOR_OTHER_TEAMS : Team.OptionStatus.ALWAYS);
+            team.getTeam().setOption(Team.Option.NAME_TAG_VISIBILITY, optStatus);
         }
     }
 }
