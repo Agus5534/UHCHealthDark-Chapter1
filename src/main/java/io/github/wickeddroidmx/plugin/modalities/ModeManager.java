@@ -52,6 +52,8 @@ public class ModeManager {
 
     private DamageCycleMode damageCycleMode;
 
+    private SilentNightMode silentNightMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
@@ -141,7 +143,8 @@ public class ModeManager {
                 shieldLessScenario,
                 friendlyFireMode,
                 goldenHeadMode,
-                damageCycleMode
+                damageCycleMode,
+                silentNightMode
         );
     }
 
