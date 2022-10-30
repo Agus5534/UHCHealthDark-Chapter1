@@ -108,7 +108,7 @@ public class ListenerLoader implements Loader {
                 playerLogsListener,
                 playerInteractAtEntityListener,
                 entityPickupItemListener,
-                teamCreateListener
+                teamFlagChangedListener
         );
     }
 

@@ -57,7 +57,7 @@ public class UhcSpainMode extends Modality {
 
         switch (persistentData.getData(PersistentDataType.STRING).toString()) {
 
-            case "super" -> Bukkit.getScheduler().runTaskLater(plugin, ()-> player.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20, 1)),2L);
+            case "super" -> Bukkit.getScheduler().runTaskLater(plugin, ()-> player.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, 1)),2L);
 
             case "hyper" -> Bukkit.getScheduler().runTaskLater(plugin, ()-> {
                 if(attribute == null) {
@@ -72,7 +72,7 @@ public class UhcSpainMode extends Modality {
 
                 attribute.setBaseValue(attribute.getBaseValue() + 4.0D);
 
-                player.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 1, 0));
             },2L);
         }
 

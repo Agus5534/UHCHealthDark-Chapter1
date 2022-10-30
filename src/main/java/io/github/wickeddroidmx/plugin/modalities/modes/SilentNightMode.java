@@ -31,7 +31,7 @@ public class SilentNightMode extends Modality {
 
     private DayLight dayLightStatus;
 
-    private int taskID;
+    private int taskID = 0;
 
     public SilentNightMode() throws IllegalClassFormatException {
         super(ChatUtils.format("&7- TODO")); //TODO GameModality DESC
@@ -58,7 +58,7 @@ public class SilentNightMode extends Modality {
     }
 
     private void updateDayLightStatus() {
-        if(getDayLightStatus() != getGameDayLight()) {
+        if(getDayLightStatus() != getGameDayLight() && this.isEnabled()) {
             setDayLightStatus(getGameDayLight());
 
             if(getDayLightStatus() == DayLight.NIGHT) {

@@ -71,6 +71,7 @@ public class UhcWorld {
         configWorld();
 
         this.recreatingWorld = false;
+        this.world = w;
         return w;
     }
 
