@@ -4,3 +4,5 @@ version: '${version}'
 api-version: 1.13
 description: Plugin oficial de HealthDark
 author: WickedDroid
+softdepend:
+  - HDBot
