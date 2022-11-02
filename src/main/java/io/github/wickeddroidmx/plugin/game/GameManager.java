@@ -30,6 +30,7 @@ public class GameManager {
     private GameState gameState;
     private int uhcId;
     private int cape;
+    private int appleRate;
     private boolean pvpEnabled;
     private boolean gameStart;
     private boolean runMode;
@@ -53,6 +54,7 @@ public class GameManager {
         this.teamWin = null;
         this.worldBorder = 2000;
         this.cape = 150;
+        this.appleRate = 5;
 
         this.cobwebLimit = 12;
         this.seconds = 0;
@@ -96,6 +98,10 @@ public class GameManager {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public void setAppleRate(int appleRate) {
+        this.appleRate = appleRate;
     }
 
     public void setSpectatorTeam(Team spectatorTeam) {
@@ -183,6 +189,10 @@ public class GameManager {
     }
 
     public int getCape() { return cape; }
+
+    public int getAppleRate() {
+        return appleRate;
+    }
 
     public int getCobwebLimit() {
         return cobwebLimit;

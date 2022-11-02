@@ -201,6 +201,17 @@ public class StaffGameCommands implements CommandClass  {
         public void worldBorderMoveCommand(@Sender Player target, @Named("size") int size, @Named("time") int seconds) {
             Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(size, seconds, false));
         }
+
+        @Command(
+                names = "applerate"
+        )
+        public void appleRateCommand(@Sender Player target, @Named("percentage") int n) {
+            if(n < 2 || n > 99) {
+                target.sendMessage(ChatUtils.PREFIX + "Ese porcentaje no es válido.");
+            }
+
+            gameManager.setAppleRate(n);
+        }
     }
 
     private String formatTime(int totalSecs) {

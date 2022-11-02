@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.inject.Inject;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class UhcRunMode extends Modality {
 
@@ -44,7 +45,7 @@ public class UhcRunMode extends Modality {
     public void onLeavesDecay(LeavesDecayEvent e) {
         var block = e.getBlock();
 
-        if (new Random().nextInt(100) >= 95) {
+        if (ThreadLocalRandom.current().nextInt(1,100) <= gameManager.getAppleRate()) {
             block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.APPLE));
         }
     }
@@ -66,7 +67,7 @@ public class UhcRunMode extends Modality {
 
 
         if (block.getType().toString().toLowerCase().endsWith("leaves")) {
-            if (random.nextInt(100) >= 90) {
+            if (ThreadLocalRandom.current().nextInt(1,100) <= gameManager.getAppleRate()) {
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.APPLE));
             }
         }
