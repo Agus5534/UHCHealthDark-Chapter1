@@ -64,7 +64,7 @@ public class ModeManager {
     //Scenarios
     private GunsNRosesScenario gunsNRosesScenario;
     private GraveRobbersScenario graveRobbersScenario;
-    private ChickenScenario chickenScenario;
+    private HalfHeartScenario halfHeartScenario;
     private ChickenFightScenario chickenFightScenario;
     private NoFallScenario noFallScenario;
     private SuperHeroesMode superHeroesMode;
@@ -84,8 +84,8 @@ public class ModeManager {
     private NoBurnScenario noBurnScenario;
     private TradeParanoia tradeParanoia;
     private CobwebLess cobwebLess;
-
     private ShieldLessScenario shieldLessScenario;
+    private SuspiciousStewLessScenario suspiciousStewLessScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
@@ -107,7 +107,7 @@ public class ModeManager {
                 hasteyBoysScenario,
                 cutCleanScenario,
                 chickenFightScenario,
-                chickenScenario,
+                halfHeartScenario,
                 loveAtFirstSightMode,
                 fireLessScenario,
                 noFallScenario,
@@ -144,7 +144,8 @@ public class ModeManager {
                 friendlyFireMode,
                 goldenHeadMode,
                 damageCycleMode,
-                silentNightMode
+                silentNightMode,
+                suspiciousStewLessScenario
         );
     }
 
