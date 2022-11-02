@@ -211,6 +211,8 @@ public class StaffGameCommands implements CommandClass  {
             }
 
             gameManager.setAppleRate(n);
+
+            target.sendMessage(ChatUtils.PREFIX + "El porcentaje de apple rate ha cambiado al " + n + "%");
         }
     }
 

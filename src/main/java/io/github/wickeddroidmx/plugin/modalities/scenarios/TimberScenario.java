@@ -1,7 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
 import io.github.wickeddroidmx.plugin.Main;
-import io.github.wickeddroidmx.plugin.events.game.TimberLeaveDecayEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
@@ -42,18 +41,6 @@ public class TimberScenario extends Modality {
         }
     }
 
-    @EventHandler
-    public void onLeaveDecay(TimberLeaveDecayEvent event) {
-        var block = event.getBlock();
-        block.breakNaturally();
-
-        if(gameManager.isRunMode()) {
-            if (ThreadLocalRandom.current().nextInt(1,100) <= gameManager.getAppleRate()) {
-                block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.APPLE));
-            }
-        }
-    }
-
     private void breakTree(Block block, Location centralLoc) {
         if (isLog(block.getType())) {
             block.breakNaturally(new ItemStack(Material.AIR), true);
@@ -78,10 +65,14 @@ public class TimberScenario extends Modality {
                 return;
             }
 
-            //block.breakNaturally(new ItemStack(Material.AIR), true);
+            block.breakNaturally(new ItemStack(Material.AIR), true);
 
             if(block.getType().toString().toLowerCase().endsWith("_leaves")) {
-                Bukkit.getPluginManager().callEvent(new TimberLeaveDecayEvent(block));
+                if(gameManager.isRunMode()) {
+                    if (ThreadLocalRandom.current().nextInt(1,100) <= gameManager.getAppleRate()) {
+                        block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.APPLE));
+                    }
+                }
             }
 
             for(var face : BlockFace.values()) {
