@@ -22,7 +22,8 @@ import java.util.Random;
         name = "&6Damage Cycle",
         modalityType = ModalityType.MODE,
         material = Material.WOODEN_SWORD,
-        key = "damage_cycle"
+        key = "damage_cycle",
+        experimental = true
 )
 public class DamageCycleMode extends Modality {
     int taskID = -1234567;
