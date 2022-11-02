@@ -90,6 +90,10 @@ public abstract class Modality implements Listener  {
         return enable;
     }
 
+    public boolean isExperimental() {
+        return experimental;
+    }
+
     public String getName() {
         return name;
     }
