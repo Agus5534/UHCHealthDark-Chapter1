@@ -99,7 +99,7 @@ public class StaffWorldCommands implements CommandClass {
     }
 
     @Command(names = "tp")
-    public void teleportCommand(@Sender Player sender, World world) {
+    public void teleportCommand(@Sender Player sender, @Named("world") World world) {
         if(world == null) {
             sender.sendMessage(ChatUtils.PREFIX + "No existe ese mundo");
             return;
