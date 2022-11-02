@@ -12,7 +12,7 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.util.concurrent.ThreadLocalRandom;
 
 @GameModality(name = "&5Encyclopedia", modalityType = ModalityType.MODE,
-key = "encyclopedia", material = Material.ENCHANTED_BOOK)
+key = "encyclopedia", material = Material.ENCHANTED_BOOK, experimental = true)
 public class EncyclopediaMode extends Modality {
 
     public EncyclopediaMode() throws IllegalClassFormatException {
@@ -29,7 +29,7 @@ public class EncyclopediaMode extends Modality {
 
         var player = event.getEnchanter();
         var enchantedItem = event.getItem().clone();
-        enchantedItem.addEnchantments(event.getEnchantsToAdd());
+        enchantedItem.addUnsafeEnchantments(event.getEnchantsToAdd());
 
         if(n > 93) {
             player.getInventory().addItem(enchantedItem);
