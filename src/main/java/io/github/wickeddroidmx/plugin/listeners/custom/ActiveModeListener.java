@@ -20,6 +20,10 @@ public class ActiveModeListener implements Listener {
                 case SCENARIO -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("El scenario %s &7se ha &aactivado &7correctamente.", modality.getName())));
             }
 
+            if(modality.isExperimental()) {
+                player.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "La modalidad fue marcada como &cexperimental &7y puede contener &cerrores&7, no se recomienda su uso."));
+            }
+
             player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.0F, 1.0F);
         }
     }
