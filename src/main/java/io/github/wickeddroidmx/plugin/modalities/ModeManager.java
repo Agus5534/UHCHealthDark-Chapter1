@@ -159,7 +159,6 @@ public class ModeManager {
         return modeMap.values()
                 .stream()
                 .filter(modality -> modality.getModalityType() == modalityType)
-                .sorted(Comparator.comparing(Modality::getName))
                 .collect(Collectors.toList());
     }
 

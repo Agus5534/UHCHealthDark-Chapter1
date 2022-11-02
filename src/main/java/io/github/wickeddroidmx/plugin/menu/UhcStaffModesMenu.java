@@ -16,6 +16,8 @@ import team.unnamed.gui.core.gui.type.GUIBuilder;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class UhcStaffModesMenu {
 
@@ -77,7 +79,7 @@ public class UhcStaffModesMenu {
                         )
                         .build()
                 )
-                .setEntities(modeManager.getAllModes(modalityType))
+                .setEntities(modeManager.getAllModes(modalityType).stream().sorted(Comparator.comparing(Modality::isEnabled)).collect(Collectors.toList()))
                 .setBounds(10, 44)
                 .setItemsPerRow(7)
                 .build();

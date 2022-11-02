@@ -15,7 +15,9 @@ import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class Modality implements Listener  {
 
@@ -57,12 +59,12 @@ public abstract class Modality implements Listener  {
     public Modality() throws IllegalClassFormatException {
         if(this.getClass().isAnnotationPresent(GameModality.class)) {
             var annotation = this.getClass().getAnnotation(GameModality.class);
-            String[] s = annotation.lore();
-            Arrays.stream(s).forEach(st -> ChatUtils.format(st));
+            List<String> s = new ArrayList<>();
+            Arrays.stream(annotation.lore()).forEach(str -> s.add(ChatUtils.format(str)));
 
             this.name = annotation.name();
             this.key = annotation.key();
-            this.lore = s;
+            this.lore = s.toArray(new String[0]);
             this.material = annotation.material();
             this.modalityType = annotation.modalityType();
             this.experimental = annotation.experimental();
