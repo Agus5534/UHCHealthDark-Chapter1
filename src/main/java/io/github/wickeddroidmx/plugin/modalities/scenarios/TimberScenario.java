@@ -1,8 +1,11 @@
 package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
 import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.events.game.TimberLeaveDecayEvent;
+import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
+import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,11 +18,15 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.inject.Inject;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TimberScenario extends Modality {
 
     @Inject
     private Main plugin;
+
+    @Inject
+    private GameManager gameManager;
 
     public TimberScenario() {
         super(ModalityType.SCENARIO, "timber", "&aTimber", Material.OAK_LOG,
@@ -32,6 +39,18 @@ public class TimberScenario extends Modality {
 
         if (isLog(block.getType())) {
             breakTree(block, block.getLocation());
+        }
+    }
+
+    @EventHandler
+    public void onLeaveDecay(TimberLeaveDecayEvent event) {
+        var block = event.getBlock();
+        block.breakNaturally();
+
+        if(gameManager.isRunMode()) {
+            if (ThreadLocalRandom.current().nextInt(1,100) <= gameManager.getAppleRate()) {
+                block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.APPLE));
+            }
         }
     }
 
@@ -59,10 +78,10 @@ public class TimberScenario extends Modality {
                 return;
             }
 
-            block.breakNaturally(new ItemStack(Material.AIR), true);
+            //block.breakNaturally(new ItemStack(Material.AIR), true);
 
             if(block.getType().toString().toLowerCase().endsWith("_leaves")) {
-                Bukkit.getPluginManager().callEvent(new LeavesDecayEvent(block));
+                Bukkit.getPluginManager().callEvent(new TimberLeaveDecayEvent(block));
             }
 
             for(var face : BlockFace.values()) {
