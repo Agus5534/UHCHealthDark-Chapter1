@@ -34,7 +34,7 @@ dependencies {
     implementation 'me.yushust.inject:core:0.4.5-SNAPSHOT'
 
     implementation 'team.unnamed.gui:core:2.3.3-SNAPSHOT'
-    implementation 'io.github.agus5534:HDBot:1.0'
+    compileOnly 'io.github.agus5534:HDBot:1.0'
     implementation "org.jdbi:jdbi3-core:3.30.0"
     implementation 'mysql:mysql-connector-java:8.0.30'
     implementation "com.zaxxer:HikariCP:5.0.1"

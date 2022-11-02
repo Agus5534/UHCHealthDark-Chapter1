@@ -14,5 +14,7 @@ public @interface GameModality {
     String key();
     Material material();
     ModalityType modalityType();
+    boolean experimental() default false;
+    String[] lore() default {""};
 
 }

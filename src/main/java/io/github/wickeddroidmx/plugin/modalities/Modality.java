@@ -15,6 +15,7 @@ import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
+import java.util.Arrays;
 
 public abstract class Modality implements Listener  {
 
@@ -26,7 +27,7 @@ public abstract class Modality implements Listener  {
     private final Material material;
     private final ModalityType modalityType;
     private final String key;
-
+    private final boolean experimental;
     private boolean enable;
 
     public Modality(ModalityType modalityType, String key, String name, Material material, String... lore) {
@@ -35,8 +36,10 @@ public abstract class Modality implements Listener  {
         this.name = name;
         this.material = material;
         this.lore = lore;
+        this.experimental = false;
     }
 
+    @Deprecated
     public Modality(String... lore) throws IllegalClassFormatException {
         if(this.getClass().isAnnotationPresent(GameModality.class)) {
             var annotation = this.getClass().getAnnotation(GameModality.class);
@@ -46,8 +49,25 @@ public abstract class Modality implements Listener  {
             this.lore = lore;
             this.material = annotation.material();
             this.modalityType = annotation.modalityType();
+            this.experimental = annotation.experimental();
         } else {
-            throw new IllegalClassFormatException("Missing @GameModality argument or constructor");
+            throw new IllegalClassFormatException("Missing @GameModality annotation or constructor");
+        }
+    }
+    public Modality() throws IllegalClassFormatException {
+        if(this.getClass().isAnnotationPresent(GameModality.class)) {
+            var annotation = this.getClass().getAnnotation(GameModality.class);
+            String[] s = annotation.lore();
+            Arrays.stream(s).forEach(st -> ChatUtils.format(st));
+
+            this.name = annotation.name();
+            this.key = annotation.key();
+            this.lore = s;
+            this.material = annotation.material();
+            this.modalityType = annotation.modalityType();
+            this.experimental = annotation.experimental();
+        } else {
+            throw new IllegalClassFormatException("Missing @GameModality annotation or constructor");
         }
     }
 

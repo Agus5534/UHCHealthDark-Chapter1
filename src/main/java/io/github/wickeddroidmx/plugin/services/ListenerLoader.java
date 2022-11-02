@@ -75,6 +75,10 @@ public class ListenerLoader implements Loader {
 
     private PlayerLogsListener playerLogsListener;
 
+    // ????
+
+    private WaitingStatusListeners statusListeners;
+
 
 
     @Override
@@ -108,7 +112,8 @@ public class ListenerLoader implements Loader {
                 playerLogsListener,
                 playerInteractAtEntityListener,
                 entityPickupItemListener,
-                teamFlagChangedListener
+                teamFlagChangedListener,
+                statusListeners
         );
     }
 

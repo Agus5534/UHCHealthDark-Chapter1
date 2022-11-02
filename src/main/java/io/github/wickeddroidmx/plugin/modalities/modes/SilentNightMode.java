@@ -16,10 +16,12 @@ import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 
 @GameModality(
-        name = "&9Silent &0Night",
+        name = "&9Silent &8Night",
         modalityType = ModalityType.MODE,
         key = "silent_night",
-        material = Material.BLUE_BED
+        material = Material.BLUE_BED,
+        lore = {"&7- La Noche y el Día alteran el juego"},
+        experimental = true
 )
 public class SilentNightMode extends Modality {
 
@@ -33,9 +35,7 @@ public class SilentNightMode extends Modality {
 
     private int taskID = 0;
 
-    public SilentNightMode() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- TODO")); //TODO GameModality DESC
-    }
+    public SilentNightMode() throws IllegalClassFormatException {}
 
 
     public DayLight getGameDayLight() {
