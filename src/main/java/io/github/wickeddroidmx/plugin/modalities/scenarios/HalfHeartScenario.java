@@ -11,9 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class ChickenScenario extends Modality {
-    public ChickenScenario() {
-        super(ModalityType.SCENARIO, "chicken", "&cChicken", Material.EGG,
+public class HalfHeartScenario extends Modality {
+    public HalfHeartScenario() {
+        super(ModalityType.SCENARIO, "half_heart", "&cHalf Heart", Material.GOLDEN_CARROT,
                 ChatUtils.format("&7- Todos tendrán medio corazón y una notch"));
     }
 
