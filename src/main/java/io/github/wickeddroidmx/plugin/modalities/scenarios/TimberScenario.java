@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
@@ -17,8 +18,17 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.concurrent.ThreadLocalRandom;
 
+@GameModality(
+        modalityType = ModalityType.SCENARIO,
+        key = "timber",
+        experimental = true,
+        name = "&aTimber",
+        material = Material.OAK_LOG,
+        lore = {"&7- Los árboles se talan de una."}
+)
 public class TimberScenario extends Modality {
 
     @Inject
@@ -27,9 +37,8 @@ public class TimberScenario extends Modality {
     @Inject
     private GameManager gameManager;
 
-    public TimberScenario() {
-        super(ModalityType.SCENARIO, "timber", "&aTimber", Material.OAK_LOG,
-                ChatUtils.format("&7- Los arboles se talan de una."));
+    public TimberScenario() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler
