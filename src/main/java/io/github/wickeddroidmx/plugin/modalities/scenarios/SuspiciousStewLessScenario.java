@@ -19,7 +19,9 @@ import java.lang.instrument.IllegalClassFormatException;
 )
 public class SuspiciousStewLessScenario extends Modality {
 
-    public SuspiciousStewLessScenario() throws IllegalClassFormatException {}
+    public SuspiciousStewLessScenario() throws IllegalClassFormatException {
+        super();
+    }
 
     @EventHandler
     public void onPlayerItemConsume(PlayerItemConsumeEvent event) {

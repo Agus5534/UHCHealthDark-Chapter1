@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -23,16 +24,27 @@ import org.bukkit.potion.PotionEffectType;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "uhc_spain",
+        name = "&6Uhc España",
+        material = Material.ENCHANTED_GOLDEN_APPLE,
+        lore = {
+                "&7- Se podrán craftear las &bSuper Golden Apples&7:",
+                "&7- Regeneran 4 coras de manera instantanea",
+                "&7- Se podrán craftear las &6Hyper Golden Apples&7:",
+                "&7- Agregan 2 contenedores de vida y los regeneran"
+        }
+)
 public class UhcSpainMode extends Modality {
 
     @Inject
     private Main plugin;
 
-    public UhcSpainMode() {
-        super(ModalityType.MODE, "uhc_spain", "&6Uhc España", Material.ENCHANTED_GOLDEN_APPLE,
-                ChatUtils.format("&7- Se podrán hacer las Hyper Golden Apples"),
-                ChatUtils.format("&7- Y las Super Golden Apples"));
+    public UhcSpainMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

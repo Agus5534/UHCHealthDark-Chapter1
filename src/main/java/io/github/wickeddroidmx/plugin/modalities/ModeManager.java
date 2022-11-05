@@ -54,17 +54,20 @@ public class ModeManager {
 
     private SilentNightMode silentNightMode;
 
+    private AnvilDiscountsMode anvilDiscountsMode;
+
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
 
     private ChosenMode chosenMode;
 
     private FriendlyFireMode friendlyFireMode;
+    private GraveRobbersMode graveRobbersMode;
+    private HalfHeartMode halfHeartMode;
+    private TradeParanoiaMode tradeParanoiaMode;
 
     //Scenarios
     private GunsNRosesScenario gunsNRosesScenario;
-    private GraveRobbersScenario graveRobbersScenario;
-    private HalfHeartScenario halfHeartScenario;
     private ChickenFightScenario chickenFightScenario;
     private NoFallScenario noFallScenario;
     private SuperHeroesMode superHeroesMode;
@@ -79,10 +82,8 @@ public class ModeManager {
     private DoggosMode doggosMode;
     private NuggetsScenario nuggetsScenario;
     private StarterBookScenario starterBookScenario;
-    private AnvilDiscountsScenario anvilDiscountsScenario;
 
     private NoBurnScenario noBurnScenario;
-    private TradeParanoia tradeParanoia;
     private CobwebLess cobwebLess;
     private ShieldLessScenario shieldLessScenario;
     private SuspiciousStewLessScenario suspiciousStewLessScenario;
@@ -103,15 +104,15 @@ public class ModeManager {
                 uhcRunMode,
                 gunsNRosesScenario,
                 timberScenario,
-                graveRobbersScenario,
+                graveRobbersMode,
                 hasteyBoysScenario,
                 cutCleanScenario,
                 chickenFightScenario,
-                halfHeartScenario,
+                halfHeartMode,
                 loveAtFirstSightMode,
                 fireLessScenario,
                 noFallScenario,
-                tradeParanoia,
+                tradeParanoiaMode,
                 siphonScenario,
                 teamInventoryScenario,
               //healthDarkStartMode,
@@ -136,7 +137,7 @@ public class ModeManager {
                 molesMode,
                 chosenMode,
                 uhcSkyHighMode,
-                anvilDiscountsScenario,
+                anvilDiscountsMode,
                 noBurnScenario,
                 encyclopediaMode,
                 coldWeaponsMode,

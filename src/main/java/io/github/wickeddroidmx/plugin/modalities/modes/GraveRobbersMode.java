@@ -1,6 +1,7 @@
-package io.github.wickeddroidmx.plugin.modalities.scenarios;
+package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
@@ -20,9 +21,17 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 
-public class GraveRobbersScenario extends Modality {
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "grave_robbers",
+        name = "&cGrave Robbers",
+        material = Material.MOSSY_COBBLESTONE,
+        lore = {"&7- Al morir alguien este generará una tumba."}
+)
+public class GraveRobbersMode extends Modality {
 
     @Inject
     private Main plugin;
@@ -30,9 +39,8 @@ public class GraveRobbersScenario extends Modality {
     @Inject
     private ModeManager modeManager;
 
-    public GraveRobbersScenario() {
-        super(ModalityType.SCENARIO, "grave_robbers", "&cGrave Robbers", Material.MOSSY_COBBLESTONE,
-                ChatUtils.format("&7- Al matar a alguien tendrá un tumba."));
+    public GraveRobbersMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

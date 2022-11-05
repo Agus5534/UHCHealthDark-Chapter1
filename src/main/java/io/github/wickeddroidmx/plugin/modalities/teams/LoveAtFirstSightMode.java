@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.teams;
 
 import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -14,15 +15,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 
+@GameModality(
+        modalityType = ModalityType.TEAM,
+        key = "lafs",
+        name = "&cLove at First Sight",
+        material = Material.POPPY,
+        lore = {"&7- Encontrarás a tu team en el transcurso de la partida."}
+)
 public class LoveAtFirstSightMode extends Modality {
 
     @Inject
     private TeamManager teamManager;
 
-    public LoveAtFirstSightMode() {
-        super(ModalityType.TEAM, "lafs", "&cLove At First Sight", Material.POPPY,
-                ChatUtils.format("&7- Encontrarás a tu team en el curso de la partida."));
+    public LoveAtFirstSightMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

@@ -22,10 +22,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-@GameModality(name = "&4Moles",
-              key = "moles",
-              material = Material.IRON_SWORD,
-              modalityType = ModalityType.MODE)
+@GameModality(
+        name = "&4Moles",
+        key = "moles",
+        material = Material.IRON_SWORD,
+        modalityType = ModalityType.MODE,
+        lore = {
+                "&7- Equipos de 3 jugadores.",
+                "&7- Un impostor por equipo.",
+                "&7- La partida terminará siendo To2.",
+                "&7- &bNo tiene función, solo visual."
+        }
+)
 public class MolesMode extends Modality {
 
     @Inject
@@ -38,10 +46,7 @@ public class MolesMode extends Modality {
     List<Player> molesList;
     HashMap<Player, Player> molesTeams;
     public MolesMode() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Equipos de 3"),
-                ChatUtils.format("&7- Un impostor por equipo"),
-                ChatUtils.format("&7- La partida termina siendo To2"),
-                ChatUtils.format("&7- No tiene función de momento, solo &bvisual"));
+        super();
 
        // teamManager.setTeamSize(3);
         molesList = new ArrayList<>();

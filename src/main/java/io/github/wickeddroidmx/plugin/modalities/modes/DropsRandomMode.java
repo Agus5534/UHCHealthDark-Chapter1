@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -9,8 +10,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.*;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "drops_random",
+        name = "&6Drops Random",
+        material = Material.DRAGON_EGG,
+        lore = {"&7- Los bloques tienen diferentes dropeos"}
+)
 public class DropsRandomMode extends Modality {
 
     private HashMap<Material, Material> blockDrops = new HashMap<>();
@@ -19,9 +28,8 @@ public class DropsRandomMode extends Modality {
 
     private final List<Material> possibleDrops = new ArrayList<>();
 
-    public DropsRandomMode() {
-        super(ModalityType.MODE, "drops_random", "&6Drops Random", Material.STRUCTURE_VOID,
-                ChatUtils.format("&7- Los bloques tienen diferentes dropeos"));
+    public DropsRandomMode() throws IllegalClassFormatException {
+        super();
 
         blockedMaterials = new Material[] {
                 Material.AIR,

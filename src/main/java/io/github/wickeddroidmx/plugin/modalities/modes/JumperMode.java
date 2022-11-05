@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -14,9 +15,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Objects;
 import java.util.Random;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "jumpers",
+        name = "&cJumpers",
+        material = Material.LEATHER_BOOTS,
+        lore = {"&7- Cada 15 minutos se teletransporta a todos a una ubicación al azar"}
+)
 public class JumperMode extends Modality {
 
     @Inject
@@ -25,9 +34,8 @@ public class JumperMode extends Modality {
     @Inject
     private TeamManager teamManager;
 
-    public JumperMode() {
-        super(ModalityType.MODE, "jumpers", "&cJumpers", Material.LEATHER_BOOTS,
-                ChatUtils.format("&7- Cada 15 minutos se tepea a los jugadores a una ubicación aleatoria."));
+    public JumperMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

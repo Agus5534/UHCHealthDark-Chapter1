@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -8,10 +9,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import java.lang.instrument.IllegalClassFormatException;
+
+@GameModality(
+        modalityType = ModalityType.SCENARIO,
+        key = "no_fall",
+        name = "&7No Fall",
+        material = Material.FEATHER,
+        lore = {"&7- No recibirás daño por caída."}
+)
 public class NoFallScenario extends Modality {
-    public NoFallScenario() {
-            super(ModalityType.SCENARIO, "no_fall", "&7No Fall", Material.PHANTOM_MEMBRANE,
-                    ChatUtils.format("&7- No recibes daño por caida."));
+    public NoFallScenario() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

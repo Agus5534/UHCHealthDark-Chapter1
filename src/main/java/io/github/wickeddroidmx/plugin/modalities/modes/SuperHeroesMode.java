@@ -5,6 +5,7 @@ import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -17,9 +18,24 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Objects;
 import java.util.Random;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "super_heroes",
+        name = "&bSuper Heroes",
+        material = Material.DIAMOND,
+        lore = {
+                "&7- Al iniciar la partida recibirás un buff de los siguientes: ",
+                "&7- Speed II & Night Vision I",
+                "&7- Jump Boost III & Speed I & Haste I",
+                "&7- Double Health & Resistance I",
+                "&7- Resistance I & Fire Resistance I",
+                "&7- Dolphin's Grace I & Water Breathing I & Luck II & Haste I"
+        }
+)
 public class SuperHeroesMode extends Modality {
 
     @Inject
@@ -28,14 +44,8 @@ public class SuperHeroesMode extends Modality {
     @Inject
     private GameManager gameManager;
 
-    public SuperHeroesMode() {
-        super(ModalityType.MODE, "super_heroes", "&bSuper Heroes", Material.NETHER_STAR,
-                ChatUtils.format("&7Al aparecer en el UHC recibiras un efecto de estos 5:"),
-                ChatUtils.format("&7- Speed II & Night Vision"),
-                ChatUtils.format("&7- Jump Boost III & Speed I & Haste I"),
-                ChatUtils.format("&7- Double Health"),
-                ChatUtils.format("&7- Resistance I & Fire Resistance"),
-                ChatUtils.format("&7- Dolphin's Grace & Water Breathing & Luck II & Haste I"));
+    public SuperHeroesMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler
@@ -73,6 +83,7 @@ public class SuperHeroesMode extends Modality {
             case 4 -> {
                 Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(40.0D);
                 player.setHealth(40.0D);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, true, true, true));
             }
             default -> {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, true, true, true));

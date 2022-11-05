@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderSetEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -17,19 +18,28 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+@GameModality(
+        modalityType = ModalityType.UHC,
+        key = "uhc_run",
+        name = "&bUhc Run",
+        material = Material.DIAMOND_BOOTS,
+        lore = {
+                "&7- El apple rate está alterado",
+                "&7- Hay comandos nuevos",
+                "&7- No hay límite de Scenarios."
+        }
+)
 public class UhcRunMode extends Modality {
 
     @Inject
     private GameManager gameManager;
 
-    public UhcRunMode() {
-        super(ModalityType.UHC, "uhc_run", "&bUhc Run", Material.ENCHANTED_GOLDEN_APPLE,
-                ChatUtils.format("&7- El apple rate esta subido"),
-                ChatUtils.format("&7- Hay comandos nuevos, como /fullbright"),
-                ChatUtils.format("&7- No hay limite de scenarios."));
+    public UhcRunMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

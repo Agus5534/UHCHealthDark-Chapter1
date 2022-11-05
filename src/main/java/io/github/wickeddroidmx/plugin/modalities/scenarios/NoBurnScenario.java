@@ -13,10 +13,16 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 
-@GameModality(modalityType = ModalityType.SCENARIO, name = "&cNo Burn", key = "no_burn", material = Material.LAVA_BUCKET)
+@GameModality(
+        modalityType = ModalityType.SCENARIO,
+        name = "&cNo Burn",
+        key = "no_burn",
+        material = Material.LAVA_BUCKET,
+        lore = {"&7- Los items no se queman."}
+)
 public class NoBurnScenario extends Modality {
     public NoBurnScenario() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Los items no se queman"));
+        super();
     }
 
     @EventHandler

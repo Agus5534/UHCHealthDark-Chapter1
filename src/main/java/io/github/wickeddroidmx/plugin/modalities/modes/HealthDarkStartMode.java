@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -23,10 +24,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "healthdark_start",
+        name = "&bHealthDark Start",
+        material = Material.DIAMOND_BLOCK,
+        lore = {"&7- Recibirás un item custom que hará referencia a un participante"},
+        experimental = true
+)
 public class HealthDarkStartMode extends Modality {
 
     @Inject
@@ -60,9 +70,8 @@ public class HealthDarkStartMode extends Modality {
             .setUnbreakable(true)
             .addItemFlag(ItemFlag.HIDE_UNBREAKABLE);
 
-    public HealthDarkStartMode() {
-        super(ModalityType.MODE, "healthdark_start", "&7HealthDark Start", Material.DIAMOND_SWORD,
-                ChatUtils.format("&7- Recibiras un item custom que hace referencia a un jugador."));
+    public HealthDarkStartMode() throws IllegalClassFormatException {
+        super();
 
         registerItem(FULL_IRON_GUAINAUT);
         registerItem(DOXXEO_WICKED);

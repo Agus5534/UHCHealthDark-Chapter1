@@ -1,7 +1,8 @@
-package io.github.wickeddroidmx.plugin.modalities.scenarios;
+package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -11,10 +12,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class HalfHeartScenario extends Modality {
-    public HalfHeartScenario() {
-        super(ModalityType.SCENARIO, "half_heart", "&cHalf Heart", Material.GOLDEN_CARROT,
-                ChatUtils.format("&7- Todos tendrán medio corazón y una notch"));
+import java.lang.instrument.IllegalClassFormatException;
+
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "half_heart",
+        name = "&cHalf Heart",
+        material = Material.GOLDEN_CARROT,
+        lore = {"&7- Todos comenzarán con medio corazón y una notch"}
+)
+public class HalfHeartMode extends Modality {
+    public HalfHeartMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

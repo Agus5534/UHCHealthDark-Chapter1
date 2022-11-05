@@ -1,9 +1,8 @@
-package io.github.wickeddroidmx.plugin.modalities.scenarios;
+package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
-import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
@@ -13,14 +12,19 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-@GameModality(name = "&aAnvil Discounts", key = "anvil_discounts",
-modalityType = ModalityType.SCENARIO, material = Material.ANVIL)
-public class AnvilDiscountsScenario extends Modality {
+@GameModality(
+        name = "&aAnvil Discounts",
+        key = "anvil_discounts",
+        modalityType = ModalityType.MODE,
+        material = Material.ANVIL,
+        lore = {"&7- Todos los yunques tendrán hasta 55% de descuento."}
+)
+public class AnvilDiscountsMode extends Modality {
 
     HashMap<ItemStack, Integer> itemsHash;
 
-    public AnvilDiscountsScenario() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Todos los yunques tendrán hasta 55% de descuento"));
+    public AnvilDiscountsMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

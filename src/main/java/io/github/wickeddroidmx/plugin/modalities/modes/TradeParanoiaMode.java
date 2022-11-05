@@ -1,5 +1,6 @@
-package io.github.wickeddroidmx.plugin.modalities.scenarios;
+package io.github.wickeddroidmx.plugin.modalities.modes;
 
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -10,21 +11,25 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 
-import java.util.Random;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class TradeParanoia extends Modality {
-    public TradeParanoia() {
-        super(ModalityType.SCENARIO, "trade_paranoia", "&aTrade Paranoia",  Material.EMERALD,
-                ChatUtils.format("&7- Al tradear con un aldeano hay un 7% de que salgan tus coords."));
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "trade_scenario",
+        name = "&aTrade Paranoia",
+        material = Material.EMERALD,
+        lore = {"&7- Al tradear con un aldeano hay un 7% de que salgan tus coords."}
+)
+public class TradeParanoiaMode extends Modality {
+    public TradeParanoiaMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler
     public void onPlayerTrade(PlayerTradeEvent e) {
         var player = e.getPlayer();
         var location = player.getLocation();
-
-        final String TRADE_PARANOIA = ChatUtils.format("&7[&cTrade Paranoia&7] &7» ");
 
         if (ThreadLocalRandom.current().nextInt(1,100) <= 7) {
             player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.0F, 1.0F);

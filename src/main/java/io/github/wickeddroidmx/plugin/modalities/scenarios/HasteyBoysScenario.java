@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.modalities.scenarios;
 import com.destroystokyo.paper.event.inventory.PrepareGrindstoneEvent;
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
 import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -19,15 +20,22 @@ import org.bukkit.persistence.PersistentDataType;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 
+@GameModality(
+        modalityType = ModalityType.SCENARIO,
+        key = "hastey_boys",
+        name = "&aHastey Boys",
+        material = Material.DIAMOND_PICKAXE,
+        lore = {"&7- Todas las herramientas tienen Eficiencia III & Irrompibilidad I"}
+)
 public class HasteyBoysScenario extends Modality {
 
     @Inject
     private Main plugin;
 
-    public HasteyBoysScenario() {
-        super(ModalityType.SCENARIO, "hastey_boys", "&bHastey Boys", Material.DIAMOND_PICKAXE,
-                ChatUtils.format("&7- Todas las herramientas tienen Eficiencia 3 e Irrompibilidad 1"));
+    public HasteyBoysScenario() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

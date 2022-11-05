@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -12,13 +13,22 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Random;
 
+@GameModality(
+        modalityType = ModalityType.SCENARIO,
+        key = "cut_clean",
+        name = "&bCut Clean",
+        material = Material.IRON_PICKAXE,
+        lore = {
+                "&7- Todos los minerales se cocinarán.",
+                "&7- Los animales soltarán su carne cocida"
+        }
+)
 public class CutCleanScenario extends Modality {
-    public CutCleanScenario() {
-        super(ModalityType.SCENARIO, "cut_clean", "&bCut Clean", Material.IRON_INGOT,
-                ChatUtils.format("&7- Todos los minerales se cocinan."),
-                ChatUtils.format("&7- Los animales sueltan comida cocinada."));
+    public CutCleanScenario() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler
@@ -39,6 +49,10 @@ public class CutCleanScenario extends Modality {
 
         if (!isTool(itemType) || item.containsEnchantment(Enchantment.SILK_TOUCH))
             return;
+
+        if(block.getDrops(item).isEmpty()) {
+            return;
+        }
 
         if (blockType == Material.COPPER_ORE
                 || blockType == Material.DEEPSLATE_COPPER_ORE

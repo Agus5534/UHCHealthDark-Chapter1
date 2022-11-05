@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
+import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
@@ -13,9 +14,11 @@ import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import io.github.wickeddroidmx.plugin.utils.items.ItemPersistentData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -27,7 +30,8 @@ import java.lang.instrument.IllegalClassFormatException;
         name = "&6Golden Head",
         material = Material.GOLDEN_APPLE,
         modalityType = ModalityType.MODE,
-        key = "golden_head"
+        key = "golden_head",
+        lore = {"&7- Se agregan &6Golden Heads &7al juego"}
 )
 public class GoldenHeadMode extends Modality {
 
@@ -38,11 +42,19 @@ public class GoldenHeadMode extends Modality {
     private ModeManager modeManager;
 
     public GoldenHeadMode() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Hay golden heads."));
+        super();
     }
 
     @EventHandler
-    public void onGameStart(GameStartEvent event) { addRecipe(); }
+    public void onGameStart(GameStartEvent event) {
+        addRecipe();
+        Bukkit.getOnlinePlayers().forEach(p -> p.discoverRecipe(new NamespacedKey(plugin, "golden_head")));
+    }
+
+    @EventHandler
+    public void onLaterScatter(PlayerLaterScatterEvent event) {
+        event.getPlayer().discoverRecipe(new NamespacedKey(plugin, "golden_head"));
+    }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -76,11 +88,13 @@ public class GoldenHeadMode extends Modality {
     }
 
     private void addRecipe() {
-        new FastRecipeShaped(plugin,
-                new ItemCreator(Material.GOLDEN_APPLE).name(ChatUtils.formatC("&6Golden Head")).setPersistentData(plugin, "golden_head", PersistentDataType.STRING, "true"),
-                "golden_head",
-                "OOO,OHO,OOO")
-                .setItem(new FastIngredient('O', Material.GOLD_INGOT), new FastIngredient('H', Material.PLAYER_HEAD))
-                .createRecipe();
+        var shapedRecipe = new ShapedRecipe(new NamespacedKey(plugin,"golden_head"), new ItemCreator(Material.GOLDEN_APPLE).name(ChatUtils.formatC("&6Golden Head")).setPersistentData(plugin, "golden_head", PersistentDataType.STRING, "true"));
+
+        shapedRecipe.shape("OOO","OHO","OOO");
+
+        shapedRecipe.setIngredient('O', Material.GOLD_INGOT);
+        shapedRecipe.setIngredient('H', Material.PLAYER_HEAD);
+
+        Bukkit.addRecipe(shapedRecipe);
     }
 }

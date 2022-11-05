@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -15,11 +16,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.instrument.IllegalClassFormatException;
+
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "second_life",
+        name = "&6Second Life",
+        material = Material.TOTEM_OF_UNDYING,
+        lore = {"&7- Todos inician con un totem."}
+)
 public class SecondLifeMode extends Modality {
 
-    public SecondLifeMode() {
-        super(ModalityType.MODE, "second_life", "&6Second Life", Material.TOTEM_OF_UNDYING,
-                ChatUtils.format("&7- Todos inician con un totem"));
+    public SecondLifeMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

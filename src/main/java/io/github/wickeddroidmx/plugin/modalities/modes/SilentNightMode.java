@@ -35,7 +35,9 @@ public class SilentNightMode extends Modality {
 
     private int taskID = 0;
 
-    public SilentNightMode() throws IllegalClassFormatException {}
+    public SilentNightMode() throws IllegalClassFormatException {
+        super();
+    }
 
 
     public DayLight getGameDayLight() {

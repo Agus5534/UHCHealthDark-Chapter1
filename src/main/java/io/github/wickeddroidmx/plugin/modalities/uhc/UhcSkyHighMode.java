@@ -5,6 +5,7 @@ import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
@@ -16,7 +17,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 
+@GameModality(
+        modalityType = ModalityType.UHC,
+        key = "skyhigh",
+        name = "&bUHC SkyHigh",
+        material = Material.ELYTRA,
+        lore = {"&7- PvP en capa +150"}
+)
 public class UhcSkyHighMode extends Modality {
     @Inject
     private PlayerManager playerManager;
@@ -27,9 +36,8 @@ public class UhcSkyHighMode extends Modality {
 
     int taskID;
 
-    public UhcSkyHighMode() {
-        super(ModalityType.UHC, "skyhigh", "&bUHC SkyHigh", Material.ELYTRA,
-                ChatUtils.format("&7- PVP en capa +150"));
+    public UhcSkyHighMode() throws IllegalClassFormatException {
+        super();
     }
 
 

@@ -11,12 +11,18 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.concurrent.ThreadLocalRandom;
 
-@GameModality(name = "&5Encyclopedia", modalityType = ModalityType.MODE,
-key = "encyclopedia", material = Material.ENCHANTED_BOOK, experimental = true)
+@GameModality(
+        name = "&5Encyclopedia",
+        modalityType = ModalityType.MODE,
+        key = "encyclopedia",
+        material = Material.ENCHANTED_BOOK,
+        lore = {"&7- Al encantar un libro este puede duplicarse"},
+        experimental = true
+)
 public class EncyclopediaMode extends Modality {
 
     public EncyclopediaMode() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Al encantar un libro puede duplicarse"));
+        super();
     }
 
     @EventHandler

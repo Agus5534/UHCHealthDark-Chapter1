@@ -14,9 +14,10 @@ import java.lang.instrument.IllegalClassFormatException;
 
 @GameModality(
         name = "&4Friendly Fire",
-        material = Material.REDSTONE,
+        material = Material.GOLDEN_AXE,
         modalityType = ModalityType.TEAM,
-        key = "friendly_fire"
+        key = "friendly_fire",
+        lore = {"&7- El FriendlyFire se activa."}
 )
 public class FriendlyFireMode extends Modality {
 
@@ -24,7 +25,7 @@ public class FriendlyFireMode extends Modality {
     private TeamManager teamManager;
 
     public FriendlyFireMode() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- El FriendlyFire se activa"));
+        super();
     }
 
     @EventHandler

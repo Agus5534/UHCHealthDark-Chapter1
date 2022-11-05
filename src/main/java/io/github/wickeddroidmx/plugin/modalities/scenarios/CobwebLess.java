@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -9,10 +10,18 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.instrument.IllegalClassFormatException;
+
+@GameModality(
+        modalityType = ModalityType.SCENARIO,
+        key = "cobweb_less",
+        name = "&7Cobweb Less",
+        material = Material.COBWEB,
+        lore = {"&7- Las cobwebs estarán vetadas."}
+)
 public class CobwebLess extends Modality {
-    public CobwebLess() {
-        super(ModalityType.SCENARIO, "cobweb_less", "&7Cobweb less", Material.COBWEB,
-                ChatUtils.format("&7No puedes usar cobwebs."));
+    public CobwebLess() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

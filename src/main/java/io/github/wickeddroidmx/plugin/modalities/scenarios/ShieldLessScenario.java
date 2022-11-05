@@ -19,12 +19,13 @@ import java.lang.instrument.IllegalClassFormatException;
         name = "&6Shield Less",
         modalityType = ModalityType.SCENARIO,
         key = "shield_less",
-        material = Material.SHIELD
+        material = Material.SHIELD,
+        lore = {"&7- Los escudos se encuentran vetados."}
 )
 public class ShieldLessScenario extends Modality {
 
     public ShieldLessScenario() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Los escudos se encuentran desactivados"));
+        super();
     }
 
     @EventHandler

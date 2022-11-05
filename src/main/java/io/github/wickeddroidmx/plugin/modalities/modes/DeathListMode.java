@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -15,17 +16,26 @@ import org.bukkit.event.EventHandler;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.*;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "death_list",
+        name = "&cDeath List",
+        material = Material.PAPER,
+        lore = {
+                "&7- Al iniciar la partida se te dará un papel con un nombre",
+                "&7- Al matar a esa persona, obtendrás una recompensa"
+        }
+)
 public class DeathListMode extends Modality {
 
     @Inject
     private TeamManager teamManager;
 
-    public DeathListMode() {
-        super(ModalityType.MODE, "death_list", "&cDeath List", Material.PAPER,
-                ChatUtils.format("&7- Al iniciar la partida se te dará un papel con un nombre"),
-                ChatUtils.format("&7- Al matar a esa persona se te dará una recompensa"));
+    public DeathListMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

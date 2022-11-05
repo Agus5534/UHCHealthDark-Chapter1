@@ -5,6 +5,7 @@ import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -21,7 +22,19 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "doggos",
+        name = "&fDoggos",
+        material = Material.WOLF_SPAWN_EGG,
+        lore = {
+                "&7- Al iniciar la partida obtendrás un perro",
+                "&7- Si al momento del meetup el perro vive",
+                "&7- Serás recompensado"
+        }
+)
 public class DoggosMode extends Modality {
 
     @Inject
@@ -30,10 +43,8 @@ public class DoggosMode extends Modality {
     @Inject
     private GameManager gameManager;
 
-    public DoggosMode() {
-        super(ModalityType.MODE, "doggos", "&fDoggos", Material.WOLF_SPAWN_EGG,
-                ChatUtils.format("&7- Al inciar la partida se te dará un perro custom"),
-                ChatUtils.format("&7- Al llegar a 0,0 y tener este perro se te dará un recompensa."));
+    public DoggosMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

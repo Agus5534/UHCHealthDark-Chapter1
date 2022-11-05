@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamScatteredEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -19,8 +20,20 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Objects;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "king",
+        name = "&eKing",
+        material = Material.GOLD_BLOCK,
+        lore = {
+                "&7- Se asignará un rey para cada equipo aleatoriamente.",
+                "&7- El rey tendrá doble barra de &cvida&7, &4Fuerza I&7 y &8Lentitud I.",
+                "&7- Si el rey muere, el resto de su equipo también lo hará."
+        }
+)
 public class KingMode extends Modality {
 
     @Inject
@@ -29,11 +42,8 @@ public class KingMode extends Modality {
     @Inject
     private TeamManager teamManager;
 
-    public KingMode() {
-        super(ModalityType.MODE, "king", "&eKing", Material.GOLD_INGOT,
-                ChatUtils.format("&7- Se asignará un rey para cada equipo aleatoriamente"),
-                ChatUtils.format("&7- El rey tendrá doble barra de vida, fuerza 1 y lentitud 1"),
-                ChatUtils.format("&7- Si se muere el king todo el equipo muere."));
+    public KingMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

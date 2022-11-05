@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -11,12 +12,19 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Objects;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "advanced_tactics",
+        name = "&cAdvanced Tactics",
+        material = Material.EMERALD,
+        lore = {"&7- Cada vez que consigas un logro tendrás un corazón."}
+)
 public class AdvancedTacticsMode extends Modality {
-    public AdvancedTacticsMode() {
-        super(ModalityType.MODE, "advanced_tactics", "&cAdvanced Tactics", Material.EMERALD,
-                ChatUtils.format("&7- Cada vez que consigas un logro tendrás un corazón."));
+    public AdvancedTacticsMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

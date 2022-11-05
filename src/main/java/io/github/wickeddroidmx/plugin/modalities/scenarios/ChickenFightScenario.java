@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -12,7 +13,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 import javax.inject.Inject;
+import java.lang.instrument.IllegalClassFormatException;
 
+@GameModality(
+        modalityType = ModalityType.SCENARIO,
+        key = "chicken_fight",
+        name = "&eChicken Fight",
+        material = Material.EGG,
+        lore = {"&7- Puedes montarte encima de tus compañeros."}
+)
 public class ChickenFightScenario extends Modality {
 
     @Inject
@@ -21,9 +30,8 @@ public class ChickenFightScenario extends Modality {
     @Inject
     private GameManager gameManager;
 
-    public ChickenFightScenario() {
-        super(ModalityType.SCENARIO, "chicken_fight", "&eChicken Fight", Material.EGG,
-                ChatUtils.format("&7- Puedes subirte arriba de tus compañeros."));
+    public ChickenFightScenario() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

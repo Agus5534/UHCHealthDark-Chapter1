@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -11,12 +12,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Objects;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "tanks",
+        name = "&cTanques",
+        material = Material.NETHERITE_CHESTPLATE,
+        lore = {"&7- Los jugadores tendrán doble barra de vida."}
+)
 public class TanksMode extends Modality {
-    public TanksMode() {
-        super(ModalityType.MODE, "tanks", "&cTanques", Material.DIAMOND,
-                ChatUtils.format("&7- Los jugadores tienen doble barra de vida."));
+    public TanksMode() throws IllegalClassFormatException {
+        super();
     }
 
 

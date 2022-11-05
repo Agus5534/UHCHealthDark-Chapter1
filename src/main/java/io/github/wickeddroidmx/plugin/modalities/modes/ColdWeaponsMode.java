@@ -22,12 +22,13 @@ import java.util.Collections;
         name = "&bCold Weapons",
         material = Material.BLUE_ICE,
         key = "cold_weapons",
-        modalityType = ModalityType.MODE
+        modalityType = ModalityType.MODE,
+        lore = {"&7- Flame y FireAspect se encuentran desactivados"}
 )
 public class ColdWeaponsMode extends Modality {
 
     public ColdWeaponsMode() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Flame y FireAspect se encuentran desactivados"));
+        super();
     }
 
     @EventHandler

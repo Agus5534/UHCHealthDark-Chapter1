@@ -23,7 +23,8 @@ import java.util.Random;
         modalityType = ModalityType.MODE,
         material = Material.WOODEN_SWORD,
         key = "damage_cycle",
-        experimental = true
+        experimental = true,
+        lore = {"&7- Cada 15 minutos un daño hace x10"}
 )
 public class DamageCycleMode extends Modality {
     int taskID = -1234567;
@@ -36,7 +37,7 @@ public class DamageCycleMode extends Modality {
     private GameManager gameManager;
 
     public DamageCycleMode() throws IllegalClassFormatException {
-        super(ChatUtils.format("&7- Cada 15 minutos un daño hace x7"));
+        super();
     }
 
 
@@ -60,7 +61,7 @@ public class DamageCycleMode extends Modality {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if(event.getCause() == getDamageCause()) {
-            event.setDamage(event.getDamage() * 7.0);
+            event.setDamage(event.getDamage() * 10.0);
         }
     }
 
@@ -76,7 +77,6 @@ public class DamageCycleMode extends Modality {
                 EntityDamageEvent.DamageCause.DROWNING,
                 EntityDamageEvent.DamageCause.BLOCK_EXPLOSION,
                 EntityDamageEvent.DamageCause.FALL,
-                EntityDamageEvent.DamageCause.FALLING_BLOCK,
                 EntityDamageEvent.DamageCause.FIRE,
                 EntityDamageEvent.DamageCause.FIRE_TICK,
                 EntityDamageEvent.DamageCause.LAVA,

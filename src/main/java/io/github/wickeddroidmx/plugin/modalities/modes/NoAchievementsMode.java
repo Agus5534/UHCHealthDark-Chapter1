@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -9,10 +10,18 @@ import org.bukkit.GameRule;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 
+import java.lang.instrument.IllegalClassFormatException;
+
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "no_achievements",
+        name = "&aNo Logros",
+        material = Material.EXPERIENCE_BOTTLE,
+        lore = {"&7- Los logros estarán ocultos al chat-"}
+)
 public class NoAchievementsMode extends Modality {
-    public NoAchievementsMode() {
-        super(ModalityType.MODE, "no_achievements", "&aNo Logros", Material.NETHER_STAR,
-                ChatUtils.format("&7- Los logros no se mostrarán."));
+    public NoAchievementsMode() throws IllegalClassFormatException {
+        super();
     }
 
     @EventHandler

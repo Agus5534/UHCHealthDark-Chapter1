@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
+import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -13,21 +14,29 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+@GameModality(
+        modalityType = ModalityType.MODE,
+        key = "ultra_drops_random",
+        name = "&6Ultra Drops Random",
+        material = Material.DIAMOND_SHOVEL,
+        lore = {"&7- Todos los drops serán aleatorios."},
+        experimental = true
+)
 public class UltraDropsRandomMode extends Modality {
     private final Material[] blockedMaterials;
 
     private final List<Material> possibleDrops = new ArrayList<>();
 
     List<String> errors = new ArrayList<>();
-    public UltraDropsRandomMode() {
-        super(ModalityType.MODE, "ultra_drops_random","&6Ultra Drops Random", Material.BEDROCK,
-                ChatUtils.format("&7- Todos los drops serán aleatorios"));
+    public UltraDropsRandomMode() throws IllegalClassFormatException {
+        super();
 
          blockedMaterials = new Material[] {
                  Material.AIR,
