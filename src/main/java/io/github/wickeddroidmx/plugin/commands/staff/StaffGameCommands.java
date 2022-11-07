@@ -13,6 +13,9 @@ import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.modalities.uhc.UhcVanillaMode;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
+import io.github.wickeddroidmx.plugin.poll.ConcursantTypes;
+import io.github.wickeddroidmx.plugin.poll.Poll;
+import io.github.wickeddroidmx.plugin.poll.PollManager;
 import io.github.wickeddroidmx.plugin.schedulers.GameTask;
 import io.github.wickeddroidmx.plugin.schedulers.ScatterTask;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
@@ -37,7 +40,7 @@ import java.util.stream.Collectors;
 
 @InjectAll
 @Command( names = "staffgame", permission = "healthdark.staff")
-@SubCommandClasses(value = {StaffGameCommands.SettingsSubCommand.class})
+@SubCommandClasses(value = {StaffGameCommands.SettingsSubCommand.class, StaffGameCommands.PollSubCommand.class})
 public class StaffGameCommands implements CommandClass  {
 
     private Main plugin;
@@ -50,6 +53,7 @@ public class StaffGameCommands implements CommandClass  {
     private UhcVanillaMode uhcVanillaMode;
     private DiscordManager discordManager;
     private ModeManager modeManager;
+    private PollManager pollManager;
 
 
     @javax.inject.Named("scoreboard-cache")
@@ -213,6 +217,39 @@ public class StaffGameCommands implements CommandClass  {
             gameManager.setAppleRate(n);
 
             target.sendMessage(ChatUtils.PREFIX + "El porcentaje de apple rate ha cambiado al " + n + "%");
+        }
+    }
+
+    @Command(names = "poll")
+    public class PollSubCommand implements CommandClass {
+        @Command(names = "create")
+        public void createCommand(@Sender Player target, @Named("concursantType") ConcursantTypes concursantTypes, @Named("duration") int duration, @Named("question") String question, @Named("answer1") String answerOne, @Named("answer2") String answerTwo) {
+            if(duration < 45 || duration > 900) {
+                target.sendMessage(ChatUtils.PREFIX + "Esa duración no está permitida.");
+                return;
+            }
+
+            if(pollManager.getActivePoll() != null) {
+                target.sendMessage(ChatUtils.PREFIX + "Ya hay una encuesta en curso.");
+                return;
+            }
+
+            if(question.equals("") || answerOne.equals("") || answerTwo.equals("")) {
+                target.sendMessage(ChatUtils.PREFIX + "La pregunta o las respuestas no pueden estar en blanco.");
+                return;
+            }
+
+            var poll = new Poll(
+                    plugin,
+                    question.replaceAll("-"," "),
+                    answerOne.replaceAll("-", " "),
+                    answerTwo.replaceAll("-", " "),
+                    duration,
+                    concursantTypes
+            );
+            pollManager.setPoll(poll);
+
+            target.sendMessage(ChatUtils.PREFIX + "Se ha creado la encuesta.");
         }
     }
 

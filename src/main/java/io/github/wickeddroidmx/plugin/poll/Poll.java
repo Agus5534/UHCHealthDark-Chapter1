@@ -2,8 +2,12 @@ package io.github.wickeddroidmx.plugin.poll;
 
 import io.github.wickeddroidmx.plugin.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Poll {
     @Inject
@@ -16,17 +20,26 @@ public class Poll {
 
     private boolean closed = false;
 
+    private final ConcursantTypes concursantTypes;
 
-    public Poll(String question, String ans1, String ans2, int pollDuration) {
+    private final BukkitTask bukkitTask;
+
+    private List<Player> concursants;
+
+
+    public Poll(Main plugin, String question, String ans1, String ans2, int pollDuration, ConcursantTypes concursantTypes) {
+        this.plugin = plugin;
         this.question = question;
         this.ans1 = ans1;
         this.ans2 = ans2;
         this.pollDuration = pollDuration;
+        this.concursantTypes = concursantTypes;
 
         ans1Votes = 0;
         ans2Votes = 0;
+        concursants = new ArrayList<>();
 
-        Bukkit.getScheduler().runTaskLater(plugin, ()-> closed = true, 20*pollDuration);
+        bukkitTask = Bukkit.getScheduler().runTaskLater(plugin, ()-> closed = true, 20*pollDuration);
     }
 
 
@@ -50,11 +63,19 @@ public class Poll {
         return question;
     }
 
-    public void addVoteAns1() {
+    private void addVoteAns1() {
         ans1Votes++;
     }
 
-    public void addVoteAns2() {
+    public void registerVote(Player player, int answerNumber) {
+        if(answerNumber == 1) {
+            addVoteAns1();
+        } else { addVoteAns2(); }
+
+        addConcursant(player);
+    }
+
+    private void addVoteAns2() {
         ans2Votes++;
     }
 
@@ -66,7 +87,23 @@ public class Poll {
         return ans2Votes;
     }
 
+    public List<Player> getConcursants() {
+        return concursants;
+    }
+
     public int getPollDuration() {
         return pollDuration;
+    }
+
+    public ConcursantTypes getConcursantTypes() {
+        return concursantTypes;
+    }
+
+    public void addConcursant(Player player) {
+        this.concursants.add(player);
+    }
+
+    public BukkitTask getBukkitTask() {
+        return bukkitTask;
     }
 }

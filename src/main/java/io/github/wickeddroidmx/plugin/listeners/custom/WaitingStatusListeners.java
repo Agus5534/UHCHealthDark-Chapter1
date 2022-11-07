@@ -19,6 +19,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
@@ -43,7 +44,7 @@ public class WaitingStatusListeners implements Listener {
 
 
 
-    List<Player> donatorsList = new ArrayList<>();
+    public static List<Player> donatorsList = new ArrayList<>();
 
     List<Player> onCooldown = new ArrayList<>();
 
@@ -57,6 +58,13 @@ public class WaitingStatusListeners implements Listener {
     public void onDrop(PlayerDropItemEvent event) {
         if(gameManager.getGameState() == GameState.WAITING) {
             if(event.getPlayer().getGameMode() == GameMode.CREATIVE) { return; }
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void blockFromTo(BlockFromToEvent event) {
+        if(gameManager.getGameState() == GameState.WAITING) {
             event.setCancelled(true);
         }
     }

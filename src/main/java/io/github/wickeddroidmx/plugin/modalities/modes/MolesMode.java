@@ -25,7 +25,7 @@ import java.util.Random;
 @GameModality(
         name = "&4Moles",
         key = "moles",
-        material = Material.IRON_SWORD,
+        material = Material.BOW,
         modalityType = ModalityType.MODE,
         lore = {
                 "&7- Equipos de 3 jugadores.",

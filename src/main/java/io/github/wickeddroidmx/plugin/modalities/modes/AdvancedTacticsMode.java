@@ -19,7 +19,7 @@ import java.util.Objects;
         modalityType = ModalityType.MODE,
         key = "advanced_tactics",
         name = "&cAdvanced Tactics",
-        material = Material.EMERALD,
+        material = Material.DIAMOND,
         lore = {"&7- Cada vez que consigas un logro tendrás un corazón."}
 )
 public class AdvancedTacticsMode extends Modality {

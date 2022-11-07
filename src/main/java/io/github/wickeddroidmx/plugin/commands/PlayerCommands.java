@@ -1,8 +1,12 @@
 package io.github.wickeddroidmx.plugin.commands;
 
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.listeners.custom.WaitingStatusListeners;
+import io.github.wickeddroidmx.plugin.menu.UhcPollMenu;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
+import io.github.wickeddroidmx.plugin.poll.ConcursantTypes;
+import io.github.wickeddroidmx.plugin.poll.PollManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -36,6 +40,9 @@ public class PlayerCommands implements CommandClass {
 
     @Inject
     private TeamManager teamManager;
+
+    @Inject
+    private PollManager pollManager;
 
     @Command(
             names = {"fullbright", "fb", "bright"}
@@ -171,6 +178,28 @@ public class PlayerCommands implements CommandClass {
         uhcPlayer.setCobbleOnly(!uhcPlayer.isCobbleOnly());
     }
 
+    @Command(
+            names = "pollvote"
+    )
+    public void pollVoteCommand(@Sender Player sender) {
+        if(pollManager.getActivePoll() == null) {
+            sender.sendMessage(ChatUtils.PREFIX + "No hay ninguna encuesta activa");
+            return;
+        }
+
+        if(pollManager.getActivePoll().isClosed()) {
+            sender.sendMessage(ChatUtils.PREFIX + "No hay ninguna encuesta activa");
+            return;
+        }
+
+        if(!canVote(sender)) {
+            sender.sendMessage(ChatUtils.PREFIX + "No estás habilitado para votar.");
+            return;
+        }
+
+        sender.openInventory(new UhcPollMenu().getPollInventory(pollManager));
+    }
+
     public int getAmount(Player player, Material material) {
         if (material == null)
             return 0;
@@ -182,5 +211,19 @@ public class PlayerCommands implements CommandClass {
             amount += slot.getAmount();
         }
         return amount;
+    }
+
+    public boolean canVote(Player player) {
+        var concursantType = pollManager.getActivePoll().getConcursantTypes();
+
+        if(pollManager.getActivePoll().getConcursants().contains(player)) { return false; }
+
+        if(concursantType == ConcursantTypes.EXPERIMENT) {
+            if(!WaitingStatusListeners.donatorsList.contains(player)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

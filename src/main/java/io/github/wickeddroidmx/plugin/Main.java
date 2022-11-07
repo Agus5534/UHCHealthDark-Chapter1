@@ -8,6 +8,7 @@ import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.module.MainModule;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
+import io.github.wickeddroidmx.plugin.poll.PollManager;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.services.Loader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -44,8 +45,8 @@ public class Main extends JavaPlugin {
     private PlayerManager playerManager;
     private TeamManager teamManager;
     private GameManager gameManager;
-
     private ModeManager modeManager;
+    private PollManager pollManager;
 
     private WorldGenerator worldGenerator;
 
@@ -78,6 +79,8 @@ public class Main extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, ()-> pollManager.updatePollStatus(this),2L, 10L);
 
     }
 

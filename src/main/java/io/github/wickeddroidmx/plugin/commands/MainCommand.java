@@ -32,7 +32,7 @@ public class MainCommand implements CommandClass {
             names = "ironman"
     )
     public void ironMan(@Sender Player sender) {
-        sender.openInventory(uhcMenu.getIronManMenu());
+        //sender.openInventory(uhcMenu.getIronManMenu());
     }
 
     @Command(

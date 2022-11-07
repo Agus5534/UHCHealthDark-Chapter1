@@ -1,6 +1,12 @@
 package io.github.wickeddroidmx.plugin.poll;
 
+import io.github.wickeddroidmx.plugin.utils.bossbar.BossBarCreator;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import net.kyori.adventure.bossbar.BossBar;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitWorker;
 
 import javax.inject.Singleton;
 
@@ -8,6 +14,8 @@ import javax.inject.Singleton;
 public class PollManager {
 
     private Poll activePoll;
+
+    private BossBarCreator bossBarCreator;
 
     public PollManager() {
         activePoll = null;
@@ -50,5 +58,67 @@ public class PollManager {
         }
 
         return Winner.NOBODY_YET;
+    }
+
+    public void updatePollStatus(JavaPlugin plugin) {
+        if(this.activePoll == null) { return; }
+
+        if(this.activePoll.isClosed()) {
+            Bukkit.getOnlinePlayers().forEach(p -> bossBarCreator.hideBossBar(p));
+            announceWinner();
+            this.activePoll = null;
+            return;
+        }
+
+        if(bossBarCreator == null) {
+            bossBarCreator = new BossBarCreator(
+                    plugin,
+                    ChatColor.GOLD + this.activePoll.getQuestion(),
+                    BossBar.Color.GREEN,
+                    BossBar.Overlay.NOTCHED_20,
+                    1.0F
+            );
+        }
+
+        bossBarCreator.setName(ChatUtils.formatC(ChatColor.GOLD + this.activePoll.getQuestion()));
+        Bukkit.getOnlinePlayers().forEach(p -> bossBarCreator.showBossBar(p));
+    }
+
+    private void announceWinner() {
+        var message = ChatUtils.formatC(ChatUtils.PREFIX + String.format("¡La encuesta ha finalizado! \n" +
+                "Ha ganado '&6%s&7' con &6%d &7votos. \n" +
+                "La otra pregunta ha quedado con &6%d &7votos.",
+                getWinnerAnswer(),
+                votesWinner(),
+                votesLoser()));
+
+        Bukkit.broadcast(message);
+    }
+
+    private String getWinnerAnswer() {
+        switch (getWinner()) {
+            case DRAW -> { return "Empate."; }
+            case ANSWER1 -> { return this.activePoll.getAns1(); }
+            case ANSWER2 -> { return this.activePoll.getAns2(); }
+            default -> { return "Desconocido"; }
+        }
+    }
+
+    private int votesWinner() {
+        switch (getWinner()) {
+            case DRAW -> { return this.activePoll.getAns1Votes(); }
+            case ANSWER1 -> { return this.activePoll.getAns1Votes(); }
+            case ANSWER2 -> { return this.activePoll.getAns2Votes(); }
+            default -> { return -1; }
+        }
+    }
+
+    private int votesLoser() {
+        switch (getWinner()) {
+            case DRAW -> { return this.activePoll.getAns1Votes(); }
+            case ANSWER1 -> { return this.activePoll.getAns2Votes(); }
+            case ANSWER2 -> { return this.activePoll.getAns1Votes(); }
+            default -> { return -1; }
+        }
     }
 }
