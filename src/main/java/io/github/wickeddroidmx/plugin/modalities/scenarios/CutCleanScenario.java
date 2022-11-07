@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
+import io.github.wickeddroidmx.plugin.events.game.GameCutCleanEvent;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
@@ -113,6 +114,63 @@ public class CutCleanScenario extends Modality {
             }else {
                 e.getDrops().add(new ItemStack(Material.COOKED_CHICKEN, amount));
                 e.getDrops().add(new ItemStack(Material.FEATHER, random.nextInt(1)+1));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onCutClean(GameCutCleanEvent e) {
+        var player = e.getPlayer();
+
+        var block = e.getBlock();
+        var blockType = block.getType();
+
+        var item = player.getInventory().getItemInMainHand();
+        var itemType = item.getType();
+
+        if (blockType == Material.GRAVEL) {
+            e.setDropItems(false);
+
+            block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.FLINT));
+        }
+
+        if (!isTool(itemType) || item.containsEnchantment(Enchantment.SILK_TOUCH))
+            return;
+
+        if(block.getDrops(item).isEmpty()) {
+            return;
+        }
+
+        if (blockType == Material.COPPER_ORE
+                || blockType == Material.DEEPSLATE_COPPER_ORE
+                || blockType == Material.IRON_ORE
+                || blockType == Material.GOLD_ORE
+                || blockType == Material.ANCIENT_DEBRIS
+                || blockType == Material.DEEPSLATE_IRON_ORE
+                || blockType == Material.DEEPSLATE_GOLD_ORE) {
+            e.setDropItems(false);
+
+            switch (blockType) {
+                case COPPER_ORE, DEEPSLATE_COPPER_ORE -> {
+                    block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.COPPER_INGOT));
+
+                    spawnXP(block.getLocation(), 2);
+                }
+                case IRON_ORE, DEEPSLATE_IRON_ORE -> {
+                    block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.IRON_INGOT));
+
+                    spawnXP(block.getLocation(), 2);
+                }
+                case GOLD_ORE, DEEPSLATE_GOLD_ORE -> {
+                    block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.GOLD_INGOT));
+
+                    spawnXP(block.getLocation(), 2);
+                }
+                case ANCIENT_DEBRIS -> {
+                    block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.NETHERITE_SCRAP));
+
+                    spawnXP(block.getLocation(), 4);
+                }
             }
         }
     }

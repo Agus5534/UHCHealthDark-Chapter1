@@ -83,6 +83,8 @@ public class ModeManager {
     private NuggetsScenario nuggetsScenario;
     private StarterBookScenario starterBookScenario;
 
+    private DoubleOresScenario doubleOresScenario;
+
     private NoBurnScenario noBurnScenario;
     private CobwebLess cobwebLess;
     private ShieldLessScenario shieldLessScenario;
@@ -146,7 +148,8 @@ public class ModeManager {
                 goldenHeadMode,
                 damageCycleMode,
                 silentNightMode,
-                suspiciousStewLessScenario
+                suspiciousStewLessScenario,
+                doubleOresScenario
         );
     }
 
