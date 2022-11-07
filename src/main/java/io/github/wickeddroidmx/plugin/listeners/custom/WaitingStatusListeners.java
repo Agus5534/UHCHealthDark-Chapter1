@@ -25,6 +25,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
@@ -140,7 +141,7 @@ public class WaitingStatusListeners implements Listener {
     public void onAssignRank(PlayerAssignRankEvent event) {
         if(donatorsList.contains(event.getPlayer())) { return; }
 
-        if(event.getDonatorRank() != Ranks.DonatorRank.NONE) {
+        if(!event.getDonatorRanks().isEmpty()) {
             donatorsList.add(event.getPlayer());
         }
     }
@@ -210,6 +211,26 @@ public class WaitingStatusListeners implements Listener {
         if(event.getLocation().getWorld().getName().equalsIgnoreCase("world")) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onClickInventory(InventoryClickEvent event) {
+        if(event.getCurrentItem() == null) { return; }
+
+        if(!event.getCurrentItem().hasItemMeta()) { return; }
+
+        var persistentDataDonator = new ItemPersistentData(plugin, "donator", event.getCurrentItem().getItemMeta());
+        var persistentDataGlobal = new ItemPersistentData(plugin, "global", event.getCurrentItem().getItemMeta());
+
+        if(persistentDataDonator.hasData(PersistentDataType.STRING)) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if(persistentDataGlobal.hasData(PersistentDataType.STRING)) {
+            event.setCancelled(true);
+        }
+
     }
 
     private void addCooldown(Player player, int seconds) {
