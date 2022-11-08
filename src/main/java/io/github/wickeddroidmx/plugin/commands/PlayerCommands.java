@@ -173,6 +173,11 @@ public class PlayerCommands implements CommandClass {
             return;
         }
 
+        if(!gameManager.isRunMode()) {
+            sender.sendMessage(ChatUtils.PREFIX + "No se encuentra activo UHC Run.");
+            return;
+        }
+
         sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("Se ha %s el cobbleonly.", (uhcPlayer.isCobbleOnly() ? "&cdesactivado" : "&aactivado"))));
 
         uhcPlayer.setCobbleOnly(!uhcPlayer.isCobbleOnly());
