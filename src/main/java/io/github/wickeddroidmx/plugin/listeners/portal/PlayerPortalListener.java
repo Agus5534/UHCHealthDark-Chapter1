@@ -26,36 +26,26 @@ public class PlayerPortalListener implements Listener {
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent e) {
         Player player = e.getPlayer();
+        e.setCanCreatePortal(true);
 
-        if (e.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
-            e.setCanCreatePortal(true);
+        if(e.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+            if(e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER) {
+                var toLocation = e.getTo();
+                toLocation.setWorld(Bukkit.getWorld("uhc_world"));
 
-            if (e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER) {
-                var loc = new Location(Bukkit.getWorld("uhc_world"), e.getFrom().getX() * 8, e.getFrom().getY(), e.getFrom().getZ() * 8);
-                loc.setY(loc.getWorld().getHighestBlockYAt(loc));
-
-                if(isOutsideBorder(loc)) {
-                    int size = (int) Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
-                    var safeLoc = new Location(Bukkit.getWorld("uhc_world"), new Random(ThreadLocalRandom.current().nextInt(1500)).nextInt((size/2)-4), e.getFrom().getY(), new Random(ThreadLocalRandom.current().nextInt(1500)).nextInt((size/2)-4));
-                    var highestLoc = safeLoc.getWorld().getHighestBlockAt(safeLoc);
-
-                    safeLoc.setY(highestLoc.getY());
-
-                    if(highestLoc.getType() == Material.WATER) {
-                        safeLoc.setY(highestLoc.getY()+1);
-
-                        highestLoc.setType(Material.NETHERRACK);
-                    }
-
-                    e.setTo(safeLoc);
-                    return;
+                while (isOutsideBorder(toLocation)) {
+                    toLocation = fixLocation(toLocation);
                 }
 
-                e.setTo(loc);
-            } else if (e.getFrom().getWorld().getEnvironment() == World.Environment.NORMAL) {
-                e.setTo(new Location(Bukkit.getWorld("world_nether"), e.getFrom().getBlockX() / 8.0, e.getFrom().getBlockY(), e.getFrom().getBlockZ() / 8.0));
+                e.setTo(toLocation);
+                return;
             }
-        } else if(e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+
+            e.setTo(new Location(Bukkit.getWorld("world_nether"), e.getFrom().getBlockX() / 8.0, e.getFrom().getBlockY(), e.getFrom().getBlockZ() / 8.0));
+        }
+
+
+        if(e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
             if(e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END) {
                 var world = Bukkit.getWorld("uhc_world");
 
@@ -88,5 +78,19 @@ public class PlayerPortalListener implements Listener {
         double z = location.getZ();
 
         return ((x > size || (-x) > size) || (z > size || (-z) > size));
+    }
+
+    private Location fixLocation(Location location) {
+        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
+        double x = size / 2;
+        double z = size / 2;
+
+        double newX = (location.getX() < 0 ? (location.getX() < -x ? x+20 : location.getX()) : (location.getX() > x ? x-20 : location.getX()));
+        double newZ = (location.getZ() < 0 ? (location.getZ() < -z ? z+20 : location.getZ()) : (location.getZ() > z ? z-20 : location.getZ()));
+
+        var newLoc = new Location(location.getWorld(), newX, 16, newZ);
+        newLoc.setY(newLoc.getWorld().getHighestBlockYAt(newLoc));
+
+        return newLoc;
     }
 }
