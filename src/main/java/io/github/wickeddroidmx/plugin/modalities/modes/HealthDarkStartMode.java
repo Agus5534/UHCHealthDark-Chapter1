@@ -9,6 +9,7 @@ import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.entities.EntityPersistentData;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import io.github.wickeddroidmx.plugin.utils.items.ItemPersistentData;
 import net.kyori.adventure.text.Component;
@@ -18,16 +19,20 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @GameModality(
         modalityType = ModalityType.MODE,
@@ -58,9 +63,8 @@ public class HealthDarkStartMode extends Modality {
             new ItemCreator(Material.IRON_BOOTS).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 3).setUnbreakable(true).addItemFlag(ItemFlag.HIDE_UNBREAKABLE)
     };
 
-    private final ItemStack DOXXEO_WICKED = new ItemCreator(Material.COMPASS).name(ChatUtils.format("&bDoxxeo de Wicked"))
-            .lore(ChatUtils.formatC("&7- Al darle click derecho revelarás las coords de alguien. (Solo se puede usar una vez)"))
-            .setPersistentData(plugin,"doxxeo_wicked", PersistentDataType.STRING, "true");
+    private final ItemStack DOXXEO_WICKED;
+    private final ItemStack LIFE_AGUS;
     private final ItemStack DIENTE_RAWR = new ItemCreator(Material.IRON_AXE).name(ChatUtils.formatC("&7El diente de rawr"))
             .enchants(Enchantment.DAMAGE_ALL, 3)
             .setUnbreakable(true)
@@ -72,11 +76,24 @@ public class HealthDarkStartMode extends Modality {
 
     public HealthDarkStartMode() throws IllegalClassFormatException {
         super();
+        DOXXEO_WICKED = new ItemCreator(Material.COMPASS) //CONTIENE PERSISTENTDATA
+                .name(ChatUtils.formatC("&bDoxxeo de Wicked"))
+                .lore(ChatUtils.formatC("&7- Al darle click derecho revelarás las coords de alguien. (Solo se puede usar una vez)"))
+                .setPersistentData(plugin,"doxxeo_wicked", PersistentDataType.STRING, "true");
+
+        LIFE_AGUS = new ItemCreator(Material.NETHER_STAR)
+                .name(ChatUtils.formatC("&8Aguante de Agus"))
+                .lore(
+                        ChatUtils.formatC("&7- Mantenlo en tu inventario sin modificar."),
+                        ChatUtils.formatC("&7- La muerte no parece algo posible...")
+                )
+                        .setPersistentData(plugin, "not_succumb", PersistentDataType.STRING, "true");
 
         registerItem(FULL_IRON_GUAINAUT);
         registerItem(DOXXEO_WICKED);
         registerItem(DIENTE_RAWR);
         registerItem(MONTESEX_DRAGON);
+        registerItem(LIFE_AGUS);
     }
 
     @EventHandler
@@ -138,6 +155,44 @@ public class HealthDarkStartMode extends Modality {
         player.sendMessage(ChatUtils.format(String.format("Coordenadas de &6%s &7| X: %d | Y: %d | Z: %d | Mundo: %s", randomPlayer.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName())));
         player.getInventory().getItemInMainHand().setType(Material.AIR);
 
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if(!(event.getEntity() instanceof Player)) { return; }
+
+        var player = (Player)event.getEntity();
+
+        if(player.getHealth() - event.getDamage() <= 0) {
+            var persistentData = new EntityPersistentData(plugin, "not_succumb", player);
+            if(player.getInventory().contains(LIFE_AGUS)) {
+
+                event.setDamage(0.01D);
+                player.setHealth(0.5D);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 65,4));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,300, 20));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 600, 0));
+
+                player.getInventory().remove(LIFE_AGUS);
+                Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + String.format("%s no sucumbió", player.getName())));
+
+                persistentData.setData(PersistentDataType.STRING, "true");
+            }
+
+            if(persistentData.hasData(PersistentDataType.STRING)) {
+                if(persistentData.getData(PersistentDataType.STRING).equals("true")) {
+                    if(ThreadLocalRandom.current().nextInt(1,100) < 18) {
+                        event.setDamage(0.01D);
+                        player.setHealth(0.5D);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 65,4));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,300, 20));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 600, 0));
+
+                        Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + String.format("%s no sucumbió", player.getName())));
+                    }
+                }
+            }
+        }
     }
 
     public List<ItemStack[]> getItems() {
