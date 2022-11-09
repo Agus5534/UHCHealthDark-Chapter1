@@ -24,6 +24,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -88,8 +89,8 @@ public class HealthDarkStartMode extends Modality {
         LIFE_AGUS = new ItemCreator(Material.NETHER_STAR)
                 .name(ChatUtils.formatC("&8Aguante de Agus"))
                 .lore(
-                        ChatUtils.formatC("&7- Dejarte caer no "),
-                        ChatUtils.formatC("&7- ")
+                        ChatUtils.formatC("&7- Dejarte sucumbir no es una opción viable"),
+                        ChatUtils.formatC("&7- Click derecho para activar.")
                 )
                 .setPersistentData(plugin, "not_succumb", PersistentDataType.STRING, "true");
 
@@ -130,36 +131,36 @@ public class HealthDarkStartMode extends Modality {
            return;
         }
 
-        var persistentData = new ItemPersistentData(plugin,"doxxeo_wicked", item.getItemMeta());
+        if(containsPersistentData(item.getItemMeta(), "doxxeo_wicked", PersistentDataType.STRING, "true")) {
+            List<Player> pList = new ArrayList<>();
 
-        if(!persistentData.hasData(PersistentDataType.STRING)) {
-            return;
+            Bukkit.getOnlinePlayers()
+                    .stream()
+                    .filter(random -> !uhcTeam.getTeamPlayers().contains(random.getUniqueId()))
+                    .filter(random -> random.getGameMode() != GameMode.SPECTATOR)
+                    .forEach(p -> pList.add(p));
+
+            if(pList.isEmpty()) {
+                return;
+            }
+
+
+            var randomPlayer = pList.get(new Random().nextInt(pList.size()));
+            var location = randomPlayer.getLocation();
+
+            player.sendMessage(ChatUtils.format(String.format("Coordenadas de &6%s &7| X: %d | Y: %d | Z: %d | Mundo: %s", randomPlayer.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName())));
+            player.getInventory().getItemInMainHand().setType(Material.AIR);
         }
 
-        if(!persistentData.getData(PersistentDataType.STRING).equals("true")) {
-            return;
+        if(containsPersistentData(item.getItemMeta(), "not_succumb", PersistentDataType.STRING, "true")) {
+            var persistentDataSuccumb = new EntityPersistentData(plugin, "not_succumb", player);
+
+            persistentDataSuccumb.setData(PersistentDataType.INTEGER, 100);
+
+            player.getInventory().getItemInMainHand().setType(Material.AIR);
+
+            player.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "Has ganado la habilidad &bNot Succumb&7."));
         }
-
-        List<Player> pList = new ArrayList<>();
-
-        Bukkit.getOnlinePlayers()
-                .stream()
-                .filter(random -> !uhcTeam.getTeamPlayers().contains(random.getUniqueId()))
-                .filter(random -> random.getGameMode() != GameMode.SPECTATOR)
-                .forEach(p -> pList.add(p));
-
-        if(pList.isEmpty()) {
-            return;
-        }
-
-
-        var randomPlayer = pList.get(new Random().nextInt(pList.size()));
-        var location = randomPlayer.getLocation();
-
-        player.sendMessage(ChatUtils.format(String.format("Coordenadas de &6%s &7| X: %d | Y: %d | Z: %d | Mundo: %s", randomPlayer.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName())));
-        player.getInventory().getItemInMainHand().setType(Material.AIR);
-
-        //TODO LIFE_AGUS click event
 
     }
 
@@ -201,6 +202,18 @@ public class HealthDarkStartMode extends Modality {
 
     public void registerItem(ItemStack... itemStacks) {
         items.add(itemStacks);
+    }
+
+    public boolean containsPersistentData(ItemMeta meta, String data, PersistentDataType type, Object value) {
+        if(meta == null) { return false; }
+
+        ItemPersistentData itemPersistentData = new ItemPersistentData(plugin, data, meta);
+
+        if(!itemPersistentData.hasData(type)) { return false; }
+
+        if(!itemPersistentData.getData(type).equals(value)) { return false; }
+
+        return true;
     }
 
 }
