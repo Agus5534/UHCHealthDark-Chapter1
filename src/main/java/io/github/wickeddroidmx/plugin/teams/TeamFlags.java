@@ -5,7 +5,8 @@ public enum TeamFlags {
     BLOCK_PREFIX_CHANGE("blockPrefixChange"),
     HIDE_NICKNAMES("hideNickNames"),
     HIDE_TAB_NICKNAMES("hideTabNickNames"),
-    FRIENDLY_FIRE("friendlyFire");
+    FRIENDLY_FIRE("friendlyFire"),
+    BLOCK_PREFIX_SPECIAL_CHARACTERS("blockPrefixSpecialCharacters");
 
     private final String name;
 

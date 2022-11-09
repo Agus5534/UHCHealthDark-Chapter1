@@ -1,7 +1,6 @@
 package io.github.wickeddroidmx.plugin.commands.teams;
 
 import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
-import io.github.wickeddroidmx.plugin.events.team.PlayerPromotedTeamEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
@@ -21,6 +20,8 @@ import org.bukkit.entity.Player;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Command(
         names="team"
@@ -169,6 +170,13 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
+        if(uhcTeam.containsFlag(TeamFlags.BLOCK_PREFIX_SPECIAL_CHARACTERS)) {
+            if(containsSpecialCharacters(text)) {
+                sender.sendMessage(ChatUtils.formatC(ChatUtils.TEAM + "El prefix contiene caracteres prohibidos."));
+                return;
+            }
+        }
+
         if(uhcTeam.getTeam().getPrefix() != null) {
             if(teamPrefixes.contains(ChatColor.stripColor(text + " | "))) {
                 sender.sendMessage(ChatUtils.TEAM + "Ya hay un team con ese prefix.");
@@ -231,5 +239,12 @@ public class TeamCommands implements CommandClass {
         }
 
         sender.openInventory(uhcTeamMenu.getTeamList());
+    }
+
+    private boolean containsSpecialCharacters(String s) {
+        Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+        Matcher matcher = pattern.matcher(s);
+
+        return matcher.find();
     }
 }
