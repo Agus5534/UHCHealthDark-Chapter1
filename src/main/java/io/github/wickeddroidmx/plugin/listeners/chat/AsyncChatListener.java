@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.listeners.chat;
 
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
+import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.chat.Rank;
@@ -34,8 +35,8 @@ public class AsyncChatListener implements Listener {
             return;
 
         if (uhcPlayer.isChat()) {
-            if (player.getGameMode() == GameMode.SPECTATOR || uhcPlayer.isDeath()) {
-                player.sendMessage(ChatUtils.PREFIX + "No puedes utilizar el chat de equipo una vez muerto.");
+            if (player.getGameMode() == GameMode.SPECTATOR || uhcPlayer.isDeath() || uhcTeam.containsFlag(TeamFlags.BLOCK_TEAM_CHAT)) {
+                player.sendMessage(ChatUtils.PREFIX + "No puedes utilizar el chat de equipo en este momento.");
 
                 uhcPlayer.setChat(false);
 

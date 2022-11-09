@@ -6,7 +6,9 @@ public enum TeamFlags {
     HIDE_NICKNAMES("hideNickNames"),
     HIDE_TAB_NICKNAMES("hideTabNickNames"),
     FRIENDLY_FIRE("friendlyFire"),
-    BLOCK_PREFIX_SPECIAL_CHARACTERS("blockPrefixSpecialCharacters");
+    BLOCK_PREFIX_SPECIAL_CHARACTERS("blockPrefixSpecialCharacters"),
+
+    BLOCK_TEAM_CHAT("blockTeamChat");
 
     private final String name;
 

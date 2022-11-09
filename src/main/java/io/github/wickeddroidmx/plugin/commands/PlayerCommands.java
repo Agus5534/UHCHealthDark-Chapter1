@@ -7,6 +7,7 @@ import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.poll.ConcursantTypes;
 import io.github.wickeddroidmx.plugin.poll.PollManager;
+import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -89,6 +90,19 @@ public class PlayerCommands implements CommandClass {
 
         if (uhcPlayer == null) {
             sender.sendMessage(ChatUtils.PREFIX + "No puedes usar este comando.");
+            return;
+        }
+
+        var uhcTeam = teamManager.getPlayerTeam(sender.getUniqueId());
+
+        if(uhcTeam == null) {
+            sender.sendMessage(ChatUtils.PREFIX + "No tienes un team.");
+            return;
+        }
+
+        if(uhcTeam.containsFlag(TeamFlags.BLOCK_TEAM_CHAT)) {
+            uhcPlayer.setChat(false);
+            sender.sendMessage(ChatUtils.PREFIX + "Tu team no puede usar el team chat.");
             return;
         }
 
