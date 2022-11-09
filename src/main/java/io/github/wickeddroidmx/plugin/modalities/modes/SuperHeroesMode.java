@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @GameModality(
         modalityType = ModalityType.MODE,
@@ -61,8 +62,7 @@ public class SuperHeroesMode extends Modality {
     }
 
     private void giveSuper(Player player) {
-        var random = new Random();
-        var integer = random.nextInt(5);
+        var integer = ThreadLocalRandom.current().nextInt(1,5);
 
         switch (integer) {
             case 1 -> {
