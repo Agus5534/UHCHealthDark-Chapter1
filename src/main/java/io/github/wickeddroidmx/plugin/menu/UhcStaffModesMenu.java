@@ -28,7 +28,8 @@ public class UhcStaffModesMenu {
     private ModeManager modeManager;
 
     public Inventory getModeInventory(ModalityType modalityType) {
-        return GUIBuilder.builderPaginated(Modality.class, "Modalidades - %page%")
+        String guiNAME = modalityType.name().toLowerCase() + "S Menu - %page%";
+        return GUIBuilder.builderPaginated(Modality.class, guiNAME)
                 .fillBorders(ItemClickable
                         .builderCancellingEvent()
                         .setItemStack(ItemBuilder
@@ -86,7 +87,7 @@ public class UhcStaffModesMenu {
     }
 
     public Inventory getUHCInventory() {
-        return GUIBuilder.builderPaginated(Modality.class, "Modalidades de UHC - %page%", 3)
+        return GUIBuilder.builderPaginated(Modality.class, "UHCS Menu - %page%", 3)
                 .fillBorders(ItemClickable
                         .builderCancellingEvent()
                         .setItemStack(ItemBuilder
