@@ -143,6 +143,13 @@ public class StaffGameCommands implements CommandClass  {
                                     .map(modality -> removeColors(modality.getName()))
                                     .collect(Collectors.joining(", "))
                             ) +
+                            String.format("> **Settings:** %s\\n\\n", modeManager.getModesActive(ModalityType.SETTING).size() == 0
+                                    ? "No hay settings activas."
+                                    : modeManager.getModesActive(ModalityType.SETTING)
+                                    .stream()
+                                    .map(modality -> removeColors(modality.getName()))
+                                    .collect(Collectors.joining(", "))
+                            ) +
                             String.format("> **Cobweb limit:** %s\\n\\n",gameManager.getCobwebLimit()) +
                             String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup()))+
                             String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
