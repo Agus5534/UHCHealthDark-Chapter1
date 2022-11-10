@@ -19,7 +19,7 @@ import java.lang.instrument.IllegalClassFormatException;
         material = Material.COBBLESTONE,
         modalityType = ModalityType.SETTING,
         key = "cobble_only",
-        lore = {"Toda piedra dropea cobblestone."}
+        lore = {"&7- Toda piedra dropea cobblestone."}
 )
 public class CobbleOnlySetting extends Modality {
 

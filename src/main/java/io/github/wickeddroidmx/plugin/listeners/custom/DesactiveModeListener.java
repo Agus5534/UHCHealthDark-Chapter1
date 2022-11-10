@@ -18,6 +18,7 @@ public class DesactiveModeListener implements Listener {
                 case MODE -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("El modo %s &7se ha &cdesactivado &7correctamente.", modality.getName())));
                 case UHC -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("Se ha desactivado correctamente %s.", modality.getName())));
                 case SCENARIO -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("El scenario %s &7se ha &cdesactivado &7correctamente.", modality.getName())));
+                case SETTING -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("La setting %s &7se ha &cdesactivado &7correctamente.", modality.getName())));
             }
 
             player.playSound(player.getLocation(), Sound.BLOCK_SOUL_SAND_BREAK, 1.0F, 1.0F);

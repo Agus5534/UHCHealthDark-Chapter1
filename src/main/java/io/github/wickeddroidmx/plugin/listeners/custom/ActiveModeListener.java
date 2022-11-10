@@ -18,6 +18,7 @@ public class ActiveModeListener implements Listener {
                 case MODE -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("El modo %s &7se ha &aactivado &7correctamente.", modality.getName())));
                 case UHC -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("Se ha cambiado correctamente a %s.", modality.getName())));
                 case SCENARIO -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("El scenario %s &7se ha &aactivado &7correctamente.", modality.getName())));
+                case SETTING -> player.sendMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("La setting %s &7se ha &aactivado &7correctamente.", modality.getName())));
             }
 
             if(modality.isExperimental()) {
