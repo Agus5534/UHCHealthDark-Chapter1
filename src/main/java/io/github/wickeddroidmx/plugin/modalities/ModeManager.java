@@ -82,13 +82,12 @@ public class ModeManager {
     private DoggosMode doggosMode;
     private NuggetsScenario nuggetsScenario;
     private StarterBookScenario starterBookScenario;
-
     private DoubleOresScenario doubleOresScenario;
-
     private NoBurnScenario noBurnScenario;
     private CobwebLess cobwebLess;
     private ShieldLessScenario shieldLessScenario;
     private SuspiciousStewLessScenario suspiciousStewLessScenario;
+    private CobbleOnlyScenario cobbleOnlyScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
@@ -149,7 +148,8 @@ public class ModeManager {
                 damageCycleMode,
                 silentNightMode,
                 suspiciousStewLessScenario,
-                doubleOresScenario
+                doubleOresScenario,
+                cobbleOnlyScenario
         );
     }
 

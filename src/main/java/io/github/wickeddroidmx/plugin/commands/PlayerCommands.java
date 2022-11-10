@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.commands;
 
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.listeners.custom.WaitingStatusListeners;
 import io.github.wickeddroidmx.plugin.menu.UhcPollMenu;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
@@ -182,13 +183,13 @@ public class PlayerCommands implements CommandClass {
     public void cobbleOnlyCommand(@Sender Player sender) {
         var uhcPlayer = playerManager.getPlayer(sender.getUniqueId());
 
-        if (uhcPlayer == null) {
+        if (uhcPlayer == null || gameManager.getGameState() == GameState.WAITING) {
             sender.sendMessage(ChatUtils.PREFIX + "No puedes usar este comando.");
             return;
         }
 
-        if(!gameManager.isRunMode()) {
-            sender.sendMessage(ChatUtils.PREFIX + "No se encuentra activo UHC Run.");
+        if(!modeManager.isActiveMode("cobble_only")) {
+            sender.sendMessage(ChatUtils.PREFIX + "No se encuentra activo Cobble Only.");
             return;
         }
 
