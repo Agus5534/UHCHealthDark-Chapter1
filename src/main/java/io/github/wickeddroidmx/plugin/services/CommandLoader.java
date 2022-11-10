@@ -25,7 +25,7 @@ public class CommandLoader implements Loader {
     private StaffCommands staffCommands;
     private StaffGameCommands staffGameCommands;
     private StaffTeamCommands staffTeamCommands;
-    private StaffModeCommands staffModeCommands;
+    //private StaffModeCommands staffModeCommands;
     private StaffMeetupCommands staffMeetupCommands;
     private StaffWorldCommands staffWorldCommands;
 
@@ -38,7 +38,7 @@ public class CommandLoader implements Loader {
                 playerCommands,
                 staffGameCommands,
                 staffTeamCommands,
-                staffModeCommands,
+                //staffModeCommands,
                 staffMeetupCommands,
                 staffWorldCommands
         );
