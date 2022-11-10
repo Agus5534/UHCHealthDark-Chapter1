@@ -99,7 +99,7 @@ public class ModeManager {
 
     private final HashMap<String, Modality> modeMap = new HashMap<>();
 
-    public void     registerModes() {
+    public void registerModes() {
         registerMode(
                 tanksMode,
                 kingMode,

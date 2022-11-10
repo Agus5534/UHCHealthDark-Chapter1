@@ -75,6 +75,12 @@ public class UhcTeam {
             this.team = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(owner.getName());
 
         addPlayer(owner);
+
+        for(var flag : TeamFlags.values()) {
+            if(flag.isDefaultEnabled()) {
+                this.addFlag(flag);
+            }
+        }
     }
 
     public void addPlayer(Player player) {
