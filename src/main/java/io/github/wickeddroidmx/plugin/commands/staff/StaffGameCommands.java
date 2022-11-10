@@ -136,7 +136,7 @@ public class StaffGameCommands implements CommandClass  {
                                     .map(modality -> removeColors(modality.getName()))
                                     .collect(Collectors.joining(", "))
                             ) +
-                            String.format("> **Modos:** %s\\n\\n", modeManager.getModesActive(ModalityType.MODE).size() == 0
+                            String.format("> **Modos:** %s\\n", modeManager.getModesActive(ModalityType.MODE).size() == 0
                                     ? "No hay modos activos."
                                     : modeManager.getModesActive(ModalityType.MODE)
                                     .stream()
