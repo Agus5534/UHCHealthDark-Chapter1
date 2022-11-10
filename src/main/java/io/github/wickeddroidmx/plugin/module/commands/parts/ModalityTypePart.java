@@ -23,7 +23,7 @@ public class ModalityTypePart implements ArgumentPart {
             var modality = ModalityType.valueOf(stack.next());
             return modality;
         } catch (Exception e) {
-            throw new ArgumentParseException("That ConcursantType not exist!");
+            throw new ArgumentParseException("That ModalityType not exist!");
         }
     }
 
