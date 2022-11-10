@@ -1,27 +1,24 @@
-package io.github.wickeddroidmx.plugin.modalities.scenarios;
+package io.github.wickeddroidmx.plugin.modalities.settings;
 
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
-import io.github.wickeddroidmx.plugin.modalities.ModeManager;
-import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 
 @GameModality(
-        modalityType = ModalityType.SCENARIO,
+        modalityType = ModalityType.SETTING,
         name = "&cNo Burn",
         key = "no_burn",
         material = Material.LAVA_BUCKET,
         lore = {"&7- Los items no se queman."}
 )
-public class NoBurnScenario extends Modality {
-    public NoBurnScenario() throws IllegalClassFormatException {
+public class NoBurnSetting extends Modality {
+    public NoBurnSetting() throws IllegalClassFormatException {
         super();
     }
 

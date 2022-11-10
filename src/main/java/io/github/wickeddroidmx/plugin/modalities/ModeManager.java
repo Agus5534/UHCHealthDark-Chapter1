@@ -2,10 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities;
 
 import io.github.wickeddroidmx.plugin.modalities.modes.*;
 import io.github.wickeddroidmx.plugin.modalities.scenarios.*;
-import io.github.wickeddroidmx.plugin.modalities.settings.CobbleOnlySetting;
-import io.github.wickeddroidmx.plugin.modalities.settings.NoMobsSetting;
-import io.github.wickeddroidmx.plugin.modalities.settings.StarterBookSetting;
-import io.github.wickeddroidmx.plugin.modalities.settings.SuspiciousStewLessSetting;
+import io.github.wickeddroidmx.plugin.modalities.settings.*;
 import io.github.wickeddroidmx.plugin.modalities.teams.ChosenMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.FriendlyFireMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.LoveAtFirstSightMode;
@@ -85,7 +82,6 @@ public class ModeManager {
     private DoggosMode doggosMode;
     private NuggetsScenario nuggetsScenario;
     private DoubleOresScenario doubleOresScenario;
-    private NoBurnScenario noBurnScenario;
     private CobwebLess cobwebLess;
     private ShieldLessScenario shieldLessScenario;
 
@@ -99,6 +95,7 @@ public class ModeManager {
     private StarterBookSetting starterBookSetting;
     private SuspiciousStewLessSetting suspiciousStewLessSetting;
     private NoMobsSetting noMobsSetting;
+    private NoBurnSetting noBurnSetting;
 
     private final HashMap<String, Modality> modeMap = new HashMap<>();
 
@@ -145,7 +142,7 @@ public class ModeManager {
                 chosenMode,
                 uhcSkyHighMode,
                 anvilDiscountsMode,
-                noBurnScenario,
+                noBurnSetting,
                 encyclopediaMode,
                 coldWeaponsMode,
                 shieldLessScenario,
