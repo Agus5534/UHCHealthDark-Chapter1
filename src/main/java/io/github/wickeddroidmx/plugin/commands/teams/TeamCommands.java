@@ -202,7 +202,7 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
-        if(uhcTeam.containsFlag(TeamFlags.BLOCK_COLOR_CHANGE)) {
+        if(uhcTeam.containsFlag(TeamFlags.BLOCK_COLOR_CHANGE) || uhcTeam.containsFlag(TeamFlags.HIDE_TAB_NICKNAMES)) {
             sender.sendMessage(ChatUtils.PREFIX + "El team tiene esta característica desactivada.");
             return;
         }
@@ -212,7 +212,7 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
-        uhcTeam.sendMessage(String.format("%s ha cambiado el color del equipo a %s", sender.getName(), color.toString()));
+        uhcTeam.sendMessage(String.format("%s ha cambiado el color del equipo a %s", sender.getName(), color.name()));
 
         uhcTeam.setColor(color);
         uhcTeam.getTeam().setColor(uhcTeam.getColor());
