@@ -28,7 +28,7 @@ public class UhcStaffModesMenu {
     private ModeManager modeManager;
 
     public Inventory getModeInventory(ModalityType modalityType) {
-        String guiNAME = modalityType.name().toLowerCase() + "S Menu - %page%";
+        String guiNAME = modalityType.name().toUpperCase() + "S Menu - %page%";
         return GUIBuilder.builderPaginated(Modality.class, guiNAME)
                 .fillBorders(ItemClickable
                         .builderCancellingEvent()
