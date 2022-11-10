@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.modalities.modes.*;
 import io.github.wickeddroidmx.plugin.modalities.scenarios.*;
 import io.github.wickeddroidmx.plugin.modalities.settings.CobbleOnlySetting;
 import io.github.wickeddroidmx.plugin.modalities.settings.StarterBookSetting;
+import io.github.wickeddroidmx.plugin.modalities.settings.SuspiciousStewLessSetting;
 import io.github.wickeddroidmx.plugin.modalities.teams.ChosenMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.FriendlyFireMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.LoveAtFirstSightMode;
@@ -87,7 +88,6 @@ public class ModeManager {
     private NoBurnScenario noBurnScenario;
     private CobwebLess cobwebLess;
     private ShieldLessScenario shieldLessScenario;
-    private SuspiciousStewLessScenario suspiciousStewLessScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
@@ -97,6 +97,7 @@ public class ModeManager {
     //SETTING
     private CobbleOnlySetting cobbleOnlySetting;
     private StarterBookSetting starterBookSetting;
+    private SuspiciousStewLessSetting suspiciousStewLessSetting;
 
     private final HashMap<String, Modality> modeMap = new HashMap<>();
 
@@ -151,7 +152,7 @@ public class ModeManager {
                 goldenHeadMode,
                 damageCycleMode,
                 silentNightMode,
-                suspiciousStewLessScenario,
+                suspiciousStewLessSetting,
                 doubleOresScenario,
                 cobbleOnlySetting
         );
