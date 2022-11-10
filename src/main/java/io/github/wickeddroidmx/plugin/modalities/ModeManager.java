@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.modalities;
 import io.github.wickeddroidmx.plugin.modalities.modes.*;
 import io.github.wickeddroidmx.plugin.modalities.scenarios.*;
 import io.github.wickeddroidmx.plugin.modalities.settings.CobbleOnlySetting;
+import io.github.wickeddroidmx.plugin.modalities.settings.NoMobsSetting;
 import io.github.wickeddroidmx.plugin.modalities.settings.StarterBookSetting;
 import io.github.wickeddroidmx.plugin.modalities.settings.SuspiciousStewLessSetting;
 import io.github.wickeddroidmx.plugin.modalities.teams.ChosenMode;
@@ -79,7 +80,6 @@ public class ModeManager {
     private CutCleanScenario cutCleanScenario;
     private FireLessScenario fireLessScenario;
     private SiphonScenario siphonScenario;
-    private NoMobsScenario noMobsScenario;
     private TeamInventoryScenario teamInventoryScenario;
     private RegretFulWolfsScenario regretFulWolfsScenario;
     private DoggosMode doggosMode;
@@ -98,6 +98,7 @@ public class ModeManager {
     private CobbleOnlySetting cobbleOnlySetting;
     private StarterBookSetting starterBookSetting;
     private SuspiciousStewLessSetting suspiciousStewLessSetting;
+    private NoMobsSetting noMobsSetting;
 
     private final HashMap<String, Modality> modeMap = new HashMap<>();
 
@@ -128,7 +129,7 @@ public class ModeManager {
                 backpackMode,
                 noNametagMode,
                 noAchievementsMode,
-                noMobsScenario,
+                noMobsSetting,
                 advancedTacticsMode,
                 regretFulWolfsScenario,
                 nuggetsScenario,
