@@ -48,7 +48,7 @@ public class UhcStaffModesMenu {
                     var ic = new ItemCreator(event.getCurrentItem());
 
                     if(!mode.isEnabled()) {
-                        if (modalityType == ModalityType.SCENARIO && gameManager.isScenarioLimit() && modeManager.getModesActive(ModalityType.SCENARIO).size() > 0)
+                        if (modalityType == ModalityType.SCENARIO && gameManager.isScenarioLimit() && modeManager.getModesActive(ModalityType.SCENARIO).size() > 1)
                             return true;
 
                         mode.activeMode();
