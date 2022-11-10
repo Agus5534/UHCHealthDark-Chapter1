@@ -1,9 +1,8 @@
-package io.github.wickeddroidmx.plugin.modalities.scenarios;
+package io.github.wickeddroidmx.plugin.modalities.settings;
 
 
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
-import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
@@ -18,16 +17,16 @@ import java.lang.instrument.IllegalClassFormatException;
 @GameModality(
         name = "&8Cobble Only",
         material = Material.COBBLESTONE,
-        modalityType = ModalityType.SCENARIO,
+        modalityType = ModalityType.SETTING,
         key = "cobble_only",
         lore = {"Toda piedra dropea cobblestone."}
 )
-public class CobbleOnlyScenario extends Modality {
+public class CobbleOnlySetting extends Modality {
 
     @Inject
     private PlayerManager playerManager;
 
-    public CobbleOnlyScenario() throws IllegalClassFormatException {
+    public CobbleOnlySetting() throws IllegalClassFormatException {
         super();
     }
 

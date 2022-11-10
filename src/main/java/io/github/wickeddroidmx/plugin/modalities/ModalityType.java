@@ -4,5 +4,6 @@ public enum ModalityType {
     SCENARIO,
     TEAM,
     UHC,
-    MODE;
+    MODE,
+    SETTING;
 }

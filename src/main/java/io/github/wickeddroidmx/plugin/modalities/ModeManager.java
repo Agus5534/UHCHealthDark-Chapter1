@@ -2,6 +2,8 @@ package io.github.wickeddroidmx.plugin.modalities;
 
 import io.github.wickeddroidmx.plugin.modalities.modes.*;
 import io.github.wickeddroidmx.plugin.modalities.scenarios.*;
+import io.github.wickeddroidmx.plugin.modalities.settings.CobbleOnlySetting;
+import io.github.wickeddroidmx.plugin.modalities.settings.StarterBookSetting;
 import io.github.wickeddroidmx.plugin.modalities.teams.ChosenMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.FriendlyFireMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.LoveAtFirstSightMode;
@@ -81,18 +83,20 @@ public class ModeManager {
     private RegretFulWolfsScenario regretFulWolfsScenario;
     private DoggosMode doggosMode;
     private NuggetsScenario nuggetsScenario;
-    private StarterBookScenario starterBookScenario;
     private DoubleOresScenario doubleOresScenario;
     private NoBurnScenario noBurnScenario;
     private CobwebLess cobwebLess;
     private ShieldLessScenario shieldLessScenario;
     private SuspiciousStewLessScenario suspiciousStewLessScenario;
-    private CobbleOnlyScenario cobbleOnlyScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
 
     private UhcSkyHighMode uhcSkyHighMode;
+
+    //SETTING
+    private CobbleOnlySetting cobbleOnlySetting;
+    private StarterBookSetting starterBookSetting;
 
     private final HashMap<String, Modality> modeMap = new HashMap<>();
 
@@ -133,7 +137,7 @@ public class ModeManager {
                 cobwebLess,
                 ultraDropsRandomMode,
                 dropsRandomMode,
-                starterBookScenario,
+                starterBookSetting,
                 secondLifeMode,
                 molesMode,
                 chosenMode,
@@ -149,7 +153,7 @@ public class ModeManager {
                 silentNightMode,
                 suspiciousStewLessScenario,
                 doubleOresScenario,
-                cobbleOnlyScenario
+                cobbleOnlySetting
         );
     }
 
