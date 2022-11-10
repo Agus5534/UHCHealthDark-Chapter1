@@ -237,7 +237,7 @@ public class PlayerCommands implements CommandClass {
 
         if(pollManager.getActivePoll().getConcursants().contains(player)) { return false; }
 
-        if(concursantType == ConcursantTypes.EXPERIMENT) {
+        if(concursantType == ConcursantTypes.DONATOR) {
             if(!WaitingStatusListeners.donatorsList.contains(player)) {
                 return false;
             }
