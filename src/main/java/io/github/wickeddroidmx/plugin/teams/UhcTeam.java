@@ -217,17 +217,12 @@ public class UhcTeam {
         return name;
     }
 
-    @Deprecated(forRemoval = true)
-    public boolean isBlockChangeName() {
-        return this.teamFlags.contains(TeamFlags.BLOCK_NAME_CHANGE);
-    }
-
     public void sendMessage(String s) {
         getTeamPlayers().forEach(tP -> {
             var op = Bukkit.getOfflinePlayer(tP);
 
             if(op.isOnline()) {
-                op.getPlayer().sendMessage(ChatUtils.TEAM + s);
+                op.getPlayer().sendMessage(ChatUtils.formatC(ChatUtils.TEAM + s));
             }
         });
     }

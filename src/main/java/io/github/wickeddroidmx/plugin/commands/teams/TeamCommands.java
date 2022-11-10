@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
+import io.github.wickeddroidmx.plugin.listeners.custom.WaitingStatusListeners;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamFlags;
@@ -11,6 +12,7 @@ import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.Named;
 import me.fixeddev.commandflow.annotated.annotation.Text;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import org.bukkit.Bukkit;
@@ -84,6 +86,35 @@ public class TeamCommands implements CommandClass {
     }
 
     @Command(
+            names = "canmembersmodifyteam"
+    )
+    public void canMembersModifyCommand(@Sender Player sender, @Named("canMembersModifyTeam") boolean b) {
+        var uhcTeam = teamManager.getPlayerTeam(sender.getUniqueId());
+
+        if (uhcTeam == null) {
+            sender.sendMessage(ChatUtils.PREFIX + "No tienes un equipo.");
+            return;
+        }
+
+        if(!uhcTeam.getOwner().equals(sender)) {
+            sender.sendMessage(ChatUtils.PREFIX + "No eres el owner del team.");
+            return;
+        }
+
+        if(uhcTeam.containsFlag(TeamFlags.ANYONE_CAN_MODIFY) == b) {
+            sender.sendMessage(ChatUtils.PREFIX + "El team ya tiene esa flag en ese valor.");
+            return;
+        }
+
+        if(b) { uhcTeam.addFlag(TeamFlags.ANYONE_CAN_MODIFY); } else { uhcTeam.removeFlag(TeamFlags.ANYONE_CAN_MODIFY); }
+
+        uhcTeam.sendMessage(
+                String.format("El permiso de los miembros a modificar el team se ha %s",
+                        (b ? "&aactivado" : "&cdesactivado"))
+        );
+    }
+
+    @Command(
             names = "accept"
     )
     public void acceptCommand(@Sender Player sender, Player target) {
@@ -126,6 +157,7 @@ public class TeamCommands implements CommandClass {
     )
     public void nameCommand(@Sender Player sender, @Text String text) {
         var uhcTeam = teamManager.getPlayerTeam(sender.getUniqueId());
+        var teamOwner = playerManager.getPlayer(uhcTeam.getOwner().getUniqueId());
 
         if (uhcTeam == null) {
             sender.sendMessage(ChatUtils.PREFIX + "No tienes un equipo.");
@@ -142,9 +174,48 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
+        if(teamOwner != null) {
+            if(teamOwner.isAlive()) {
+                if(!uhcTeam.containsFlag(TeamFlags.ANYONE_CAN_MODIFY) && !teamOwner.equals(sender)) {
+                    sender.sendMessage(ChatUtils.PREFIX + "No eres el owner del team.");
+                    return;
+                }
+            }
+        }
+
         uhcTeam.sendMessage(ChatUtils.format(String.format("El nombre del equipo ha cambiado a &6%s", text)));
 
         uhcTeam.setName(text);
+    }
+
+    @Command(names = "color")
+    public void colorCommand(@Sender Player sender, @Named("color") ChatColor color) {
+        var uhcTeam = teamManager.getPlayerTeam(sender.getUniqueId());
+
+        if (uhcTeam == null) {
+            sender.sendMessage(ChatUtils.PREFIX + "No tienes un equipo.");
+            return;
+        }
+
+        if(!WaitingStatusListeners.donatorsList.contains(sender)) {
+            sender.sendMessage(ChatUtils.PREFIX + "No tienes permiso de usar este comando.");
+            return;
+        }
+
+        if(uhcTeam.containsFlag(TeamFlags.BLOCK_COLOR_CHANGE)) {
+            sender.sendMessage(ChatUtils.PREFIX + "El team tiene esta característica desactivada.");
+            return;
+        }
+
+        if(color == ChatColor.MAGIC) {
+            sender.sendMessage(ChatUtils.PREFIX + "Este color se encuentra vetado.");
+            return;
+        }
+
+        uhcTeam.sendMessage(String.format("%s ha cambiado el color del equipo a %s", sender.getName(), color.toString()));
+
+        uhcTeam.setColor(color);
+        uhcTeam.getTeam().setColor(uhcTeam.getColor());
     }
 
     @Command(
@@ -188,12 +259,13 @@ public class TeamCommands implements CommandClass {
 
         if(teamOwner != null) {
             if(teamOwner.isAlive()) {
-                if(!sender.equals(uhcTeam.getOwner())) {
+                if(!uhcTeam.containsFlag(TeamFlags.ANYONE_CAN_MODIFY) && !teamOwner.equals(sender)) {
                     sender.sendMessage(ChatUtils.PREFIX + "No eres el owner del team.");
                     return;
                 }
             }
         }
+
 
         if (text.length() > 16) {
             sender.sendMessage(ChatUtils.PREFIX + "Has pasado el limite de caracteres.");

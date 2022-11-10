@@ -77,6 +77,11 @@ public class PlayerCommands implements CommandClass {
             return;
         }
 
+        if(uhcTeam.containsFlag(TeamFlags.BLOCK_TEAM_LOCATION)) {
+            sender.sendMessage(ChatUtils.TEAM + "El team tiene la característica desactivada.");
+            return;
+        }
+
         if (sender.getGameMode() == GameMode.SPECTATOR)
             return;
 

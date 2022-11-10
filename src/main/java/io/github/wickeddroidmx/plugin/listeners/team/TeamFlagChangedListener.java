@@ -14,22 +14,6 @@ public class TeamFlagChangedListener implements Listener {
         var team = event.getUhcTeam();
         var flag = event.getFlag();
 
-
-        if(flag == TeamFlags.HIDE_TAB_NICKNAMES) {
-            if(event.isNewValue()) {
-                team.getTeam().setColor(ChatColor.MAGIC);
-            } else {
-                team.getTeam().setColor(team.getColor());
-            }
-        }
-
-        if(flag == TeamFlags.FRIENDLY_FIRE) {
-            team.setFriendlyFire(event.isNewValue());
-        }
-
-        if(flag == TeamFlags.HIDE_NICKNAMES) {
-            var optStatus = (event.isNewValue() ? Team.OptionStatus.FOR_OTHER_TEAMS : Team.OptionStatus.ALWAYS);
-            team.getTeam().setOption(Team.Option.NAME_TAG_VISIBILITY, optStatus);
-        }
+        flag.getPredicate().test(event);
     }
 }
