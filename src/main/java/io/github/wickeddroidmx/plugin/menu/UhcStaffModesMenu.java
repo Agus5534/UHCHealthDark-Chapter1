@@ -5,6 +5,7 @@ import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -67,13 +68,13 @@ public class UhcStaffModesMenu {
 
                     return true;
                 }).build())
-                .setNextPageItem(page -> ItemClickable.builder(53)
+                .setNextPageItem(page -> ItemClickable.builder(52)
                         .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
                                 .setName("Siguiente pagina - " + page)
                                 .build()
                         )
                         .build())
-                .setPreviousPageItem(page -> ItemClickable.builder(45)
+                .setPreviousPageItem(page -> ItemClickable.builder(46)
                         .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
                                 .setName("Anterior pagina - " + page)
                                 .build()
@@ -83,6 +84,10 @@ public class UhcStaffModesMenu {
                 .setEntities(modeManager.getAllModes(modalityType).stream().sorted(Comparator.comparing(Modality::isEnabled)).collect(Collectors.toList()))
                 .setBounds(10, 44)
                 .setItemsPerRow(7)
+                .addItem(getClickable(modalityType, ModalityType.MODE), 0)
+                .addItem(getClickable(modalityType, ModalityType.SCENARIO), 8)
+                .addItem(getClickable(modalityType, ModalityType.SETTING), 45)
+                .addItem(getClickable(modalityType, ModalityType.TEAM), 53)
                 .build();
     }
 
@@ -127,6 +132,17 @@ public class UhcStaffModesMenu {
                 .setEntities(modeManager.getAllModes(ModalityType.UHC))
                 .setBounds(10, 17)
                 .setItemsPerRow(7)
+                .build();
+    }
+
+    private ItemClickable getClickable(ModalityType actual, ModalityType modalityType) {
+        String name = (modalityType == actual ? "Recargar" : modalityType.name());
+        return ItemClickable.builder()
+                .setItemStack(new ItemCreator(Material.GREEN_STAINED_GLASS_PANE).name(ChatColor.AQUA + name))
+                .setAction(e -> {
+                    e.getWhoClicked().openInventory(getModeInventory(modalityType));
+                    return true;
+                })
                 .build();
     }
 }
