@@ -11,6 +11,7 @@ import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.poll.PollManager;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.services.Loader;
+import io.github.wickeddroidmx.plugin.services.UhcIdLoader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.chat.Rank;
@@ -69,16 +70,7 @@ public class Main extends JavaPlugin {
 
         createScoreboard();
 
-        try {
-            int id = getRootObject("https://agus5534.tech/hd-uhcid.json").get("id").getAsInt();
-            String date = getRootObject("https://agus5534.tech/hd-uhcid.json").get("last_update").getAsString();
-            gameManager.setUhcId(id);
-
-            Bukkit.getLogger().info(String.format("Utilizando UHC ID %s que fue actualizado por última vez en %s", id, date));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        gameManager.setUhcId(new UhcIdLoader().getID());
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, ()-> pollManager.updatePollStatus(this),2L, 10L);
 
@@ -112,16 +104,6 @@ public class Main extends JavaPlugin {
         }
 
 
-    }
-
-    private JsonObject getRootObject(String url) throws Exception{
-        URL link = new URL(url);
-        URLConnection request = link.openConnection();
-        request.connect();
-
-        JsonParser jp = new JsonParser();
-        JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-        return root.getAsJsonObject();
     }
 
     public WorldGenerator getWorldGenerator() {

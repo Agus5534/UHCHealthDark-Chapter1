@@ -19,6 +19,7 @@ import io.github.wickeddroidmx.plugin.poll.PollManager;
 import io.github.wickeddroidmx.plugin.schedulers.GameTask;
 import io.github.wickeddroidmx.plugin.schedulers.ScatterTask;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
+import io.github.wickeddroidmx.plugin.services.UhcIdLoader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
@@ -197,6 +198,8 @@ public class StaffGameCommands implements CommandClass  {
             gameManager.setUhcId(uhcId);
 
             sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha cambiado al UHC &6#" + uhcId));
+
+            new UhcIdLoader().getID();
         }
 
         @Command(
