@@ -49,7 +49,6 @@ public class ModeManager {
 
     private ColdWeaponsMode coldWeaponsMode;
 
-    private GoldenHeadMode goldenHeadMode;
 
     private DamageCycleMode damageCycleMode;
 
@@ -96,6 +95,8 @@ public class ModeManager {
     private SuspiciousStewLessSetting suspiciousStewLessSetting;
     private NoMobsSetting noMobsSetting;
     private NoBurnSetting noBurnSetting;
+    private GoldenHeadSetting goldenHeadSetting;
+    private SpawnerLastBreathSetting spawnerLastBreathSetting;
 
     private final HashMap<String, Modality> modeMap = new HashMap<>();
 
@@ -147,12 +148,13 @@ public class ModeManager {
                 coldWeaponsMode,
                 shieldLessScenario,
                 friendlyFireMode,
-                goldenHeadMode,
+                goldenHeadSetting,
                 damageCycleMode,
                 silentNightMode,
                 suspiciousStewLessSetting,
                 doubleOresScenario,
-                cobbleOnlySetting
+                cobbleOnlySetting,
+                spawnerLastBreathSetting
         );
     }
 
