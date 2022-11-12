@@ -214,9 +214,7 @@ public class StaffTeamCommands implements CommandClass {
         @Command(
                 names = "player"
         )
-        public void teamDeleteCommand(@Sender Player sender, @Named("teamMember") Player target) {
-            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
-
+        public void teamDeleteCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam) {
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
                 return;
@@ -266,7 +264,7 @@ public class StaffTeamCommands implements CommandClass {
         @Command(
                 names = "team"
         )
-        public void createCommand(@Sender Player sender,@Named("teamowner") Player target, @Text @OptArg @Named("teamname") String name) {
+        public void createCommand(@Sender Player sender, @Named("teamowner") Player target, @Text @OptArg @Named("teamname") String name) {
             var teamPlayer = teamManager.getTeam(target.getUniqueId());
 
             if (teamPlayer != null) {
@@ -381,8 +379,7 @@ public class StaffTeamCommands implements CommandClass {
     @Command(names = "modify")
     public class ModifyTeamSubCommand implements CommandClass {
         @Command(names = "prefix")
-        public void modifyPrefixCommand(@Sender Player sender, @Named("teamMember") Player target, @Text @Named("newPrefix") String prefix) {
-            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
+        public void modifyPrefixCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Text @Named("newPrefix") String prefix) {
 
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
@@ -397,9 +394,7 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(names = "color")
-        public void modifyColorCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("color") ChatColor color) {
-            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
-
+        public void modifyColorCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Named("color") ChatColor color) {
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
                 return;
@@ -415,9 +410,7 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(names = "name")
-        public void modifyNameCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("name") @Text String name) {
-            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
-
+        public void modifyNameCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Named("name") @Text String name) {
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
                 return;
@@ -429,9 +422,7 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(names = "owner")
-        public void modifyOwnerCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("newOwner") Player newOwner) {
-            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
-
+        public void modifyOwnerCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Named("newOwner") Player newOwner) {
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
                 return;
@@ -453,9 +444,7 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(names = "flag")
-        public void flagCommand(@Sender Player sender, @Named("teamMember") Player target, @Named("flag") TeamFlags flag, @Named("newValue") boolean value) {
-            var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
-
+        public void flagCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Named("flag") TeamFlags flag, @Named("newValue") boolean value) {
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
                 return;
