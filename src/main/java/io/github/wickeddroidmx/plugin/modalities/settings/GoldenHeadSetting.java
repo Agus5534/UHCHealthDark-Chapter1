@@ -1,4 +1,4 @@
-package io.github.wickeddroidmx.plugin.modalities.modes;
+package io.github.wickeddroidmx.plugin.modalities.settings;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
@@ -8,8 +8,6 @@ import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.utils.crafts.FastIngredient;
-import io.github.wickeddroidmx.plugin.utils.crafts.FastRecipeShaped;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import io.github.wickeddroidmx.plugin.utils.items.ItemPersistentData;
 import org.bukkit.Bukkit;
@@ -29,11 +27,11 @@ import java.lang.instrument.IllegalClassFormatException;
 @GameModality(
         name = "&6Golden Head",
         material = Material.GOLDEN_APPLE,
-        modalityType = ModalityType.MODE,
+        modalityType = ModalityType.SETTING,
         key = "golden_head",
         lore = {"&7- Se agregan &6Golden Heads &7al juego"}
 )
-public class GoldenHeadMode extends Modality {
+public class GoldenHeadSetting extends Modality {
 
     @Inject
     private Main plugin;
@@ -41,7 +39,7 @@ public class GoldenHeadMode extends Modality {
     @Inject
     private ModeManager modeManager;
 
-    public GoldenHeadMode() throws IllegalClassFormatException {
+    public GoldenHeadSetting() throws IllegalClassFormatException {
         super();
     }
 
