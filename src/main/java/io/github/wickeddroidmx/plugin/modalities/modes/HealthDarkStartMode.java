@@ -132,6 +132,8 @@ public class HealthDarkStartMode extends Modality {
         }
 
         if(containsPersistentData(item.getItemMeta(), "doxxeo_wicked", PersistentDataType.STRING, "true")) {
+            player.getInventory().getItemInMainHand().setType(Material.AIR);
+
             List<Player> pList = new ArrayList<>();
 
             Bukkit.getOnlinePlayers()
@@ -149,15 +151,14 @@ public class HealthDarkStartMode extends Modality {
             var location = randomPlayer.getLocation();
 
             player.sendMessage(ChatUtils.format(String.format("Coordenadas de &6%s &7| X: %d | Y: %d | Z: %d | Mundo: %s", randomPlayer.getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld().getName())));
-            player.getInventory().getItemInMainHand().setType(Material.AIR);
         }
 
         if(containsPersistentData(item.getItemMeta(), "not_succumb", PersistentDataType.STRING, "true")) {
+            player.getInventory().getItemInMainHand().setType(Material.AIR);
+
             var persistentDataSuccumb = new EntityPersistentData(plugin, "not_succumb", player);
 
             persistentDataSuccumb.setData(PersistentDataType.INTEGER, 100);
-
-            player.getInventory().getItemInMainHand().setType(Material.AIR);
 
             player.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "Has ganado la habilidad &bNot Succumb&7."));
         }
@@ -181,6 +182,9 @@ public class HealthDarkStartMode extends Modality {
             int n = (int)persistentData.getData(PersistentDataType.INTEGER);
 
             if(ThreadLocalRandom.current().nextInt(1,100) < n) {
+                persistentData.removeData();
+                persistentData.setData(PersistentDataType.INTEGER, (n-35));
+
                 event.setDamage(0.01D);
                 player.setHealth(1.0D);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100,4));
@@ -188,9 +192,6 @@ public class HealthDarkStartMode extends Modality {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 600, 0));
 
                 Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + String.format("%s no sucumbió", player.getName())));
-
-                persistentData.removeData();
-                persistentData.setData(PersistentDataType.INTEGER, n-35);
             }
 
         }

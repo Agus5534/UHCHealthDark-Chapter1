@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.listeners.entities;
 
+import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
 import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -9,9 +10,11 @@ import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import net.kyori.adventure.text.Component;
+import net.minecraft.world.level.block.BlockMobSpawner;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -96,6 +99,13 @@ public class EntityDamageListener implements Listener {
                 } catch (IOException err) {
                     err.printStackTrace();
                 }
+
+                Bukkit.getPluginManager().callEvent(
+                        new ThreadMessageLogEvent(
+                                String.format("> %s ya no puede ser ironman", player.getName()),
+                                gameManager.getUhcId()
+                        )
+                );
             }
 
             if (ironManCache.size() == 1) {
@@ -120,6 +130,13 @@ public class EntityDamageListener implements Listener {
                         new DiscordWebhook.EmbedObject()
                                 .setTitle(ironPlayer.getName() + " Es el ironman de la partida")
                                 .setColor(Color.GREEN)
+                );
+
+                Bukkit.getPluginManager().callEvent(
+                        new ThreadMessageLogEvent(
+                                String.format("> %s es el ironman de la partida", ironPlayer.getName()),
+                                gameManager.getUhcId()
+                        )
                 );
 
                 try {
