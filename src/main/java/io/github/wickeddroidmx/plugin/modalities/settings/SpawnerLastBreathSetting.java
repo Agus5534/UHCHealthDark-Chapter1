@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
+import java.util.concurrent.ThreadLocalRandom;
 
 @GameModality(
         name = "&6Spawner Last Breath",
@@ -41,12 +42,13 @@ public class SpawnerLastBreathSetting extends Modality {
         var item = event.getPlayer().getInventory().getItemInMainHand();
 
         spawner.resetTimer();
-        spawner.setMaxSpawnDelay(2);
+        spawner.setSpawnCount(ThreadLocalRandom.current().nextInt(1, 4));
         spawner.setMinSpawnDelay(1);
-        spawner.setDelay(1);
+        spawner.setMaxSpawnDelay(4);
+        spawner.setDelay(-1);
 
         event.setCancelled(true);
 
-        Bukkit.getScheduler().runTaskLater(plugin, ()->event.getBlock().breakNaturally(item), 5L);
+        Bukkit.getScheduler().runTaskLater(plugin, ()->event.getBlock().breakNaturally(item), 11L);
     }
 }
