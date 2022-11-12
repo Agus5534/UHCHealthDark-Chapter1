@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.listeners.custom;
 
+import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
@@ -56,6 +57,13 @@ public class GameStartListener implements Listener {
             player.sendTitle(ChatUtils.format("&6¡UHC Iniciado!"), ChatUtils.format("&7El UHC ha iniciado"), 20, 60, 20);
             cache.add(player.getUniqueId(), new GameScoreboard(player, modeManager ,gameManager, playerManager, teamManager));
         });
+
+        Bukkit.getPluginManager().callEvent(
+                new ThreadMessageLogEvent(
+                        "> La partida ha comenzado",
+                        gameManager.getUhcId()
+                )
+        );
 
         var hook = new DiscordWebhook(HookType.LOGS.getUrl());
 

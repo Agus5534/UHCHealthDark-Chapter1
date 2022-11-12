@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.listeners.custom;
 
+import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
@@ -75,6 +76,14 @@ public class GameTickListener implements Listener {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0F, 1.0F);
             });
 
+
+            Bukkit.getPluginManager().callEvent(
+                    new ThreadMessageLogEvent(
+                            "> El PvP ha comenzado",
+                            gameManager.getUhcId()
+                    )
+            );
+
             var hook = new DiscordWebhook(HookType.LOGS.getUrl());
 
             hook.setUsername("Partida");
@@ -94,6 +103,14 @@ public class GameTickListener implements Listener {
 
         if (seconds == gameManager.getTimeForMeetup()) {
             gameManager.setGameState(GameState.MEETUP);
+
+
+            Bukkit.getPluginManager().callEvent(
+                    new ThreadMessageLogEvent(
+                            "> El meetup ha comenzado",
+                            gameManager.getUhcId()
+                    )
+            );
 
             var hook = new DiscordWebhook(HookType.LOGS.getUrl());
 

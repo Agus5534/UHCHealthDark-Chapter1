@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.listeners.custom;
 
+import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
 import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
@@ -76,5 +77,15 @@ public class PlayerScatteredListener implements Listener {
                 Math.round(e.getLocation().getY()),
                 Math.round(e.getLocation().getZ()),
                 e.getLocation().getWorld().getName()));
+
+
+        Bukkit.getPluginManager().callEvent(
+                new ThreadMessageLogEvent(
+                        "Late Scatter",
+                        String.format("El jugador %s fue scattereado", player.getName()),
+                        ThreadMessageLogEvent.EMBED_TYPE.BLANK,
+                        gameManager.getUhcId()
+                )
+        );
     }
 }

@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.listeners.players;
 
+import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -41,6 +42,16 @@ public class PlayerDeathListener implements Listener {
 
         if (gameManager.getGameState() == GameState.WAITING)
             return;
+
+
+        Bukkit.getPluginManager().callEvent(
+                new ThreadMessageLogEvent(
+                        String.format("Muerte de %s", player.getName()),
+                        e.getDeathMessage(),
+                        ThreadMessageLogEvent.EMBED_TYPE.DEATH,
+                        gameManager.getUhcId()
+                )
+        );
 
         var hook = new DiscordWebhook("https://discord.com/api/webhooks/920007596004474930/O3f90OX8H6z3Vhqgh-AEvXFwDNzNZfLV9CwmYYrjIniSzFUKcrrVREvhZpdbZ4QYisla");
 
