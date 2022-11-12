@@ -6,14 +6,21 @@ import io.github.wickeddroidmx.plugin.module.commands.parts.ConcursantTypesPart;
 import io.github.wickeddroidmx.plugin.module.commands.parts.factory.*;
 import io.github.wickeddroidmx.plugin.poll.ConcursantTypes;
 import io.github.wickeddroidmx.plugin.teams.TeamFlags;
+import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import me.fixeddev.commandflow.annotated.part.AbstractModule;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
 
+import javax.inject.Inject;
+
 public class ExtraBukkitModule extends AbstractModule {
 
-    public ExtraBukkitModule(){
+
+    private TeamManager teamManager;
+
+    public ExtraBukkitModule(TeamManager teamManager){
+        this.teamManager = teamManager;
     }
 
     public void configure() {
@@ -22,7 +29,7 @@ public class ExtraBukkitModule extends AbstractModule {
         this.bindFactory(TeamFlags.class, new TeamFlagsFactory());
         this.bindFactory(ConcursantTypes.class, new ConcursantTypesFactory());
         this.bindFactory(ModalityType.class, new ModalityTypeFactory());
-        this.bindFactory(UhcTeam.class, new UhcTeamFactory());
+        this.bindFactory(UhcTeam.class, new UhcTeamFactory(teamManager));
     }
 
 }

@@ -19,12 +19,11 @@ import java.util.List;
 
 public class UhcTeamPart implements ArgumentPart {
     private final String name;
+    private final TeamManager teamManager;
 
-    @Inject
-    private TeamManager teamManager;
-
-    public UhcTeamPart(String name) {
+    public UhcTeamPart(String name, TeamManager teamManager) {
         this.name = name;
+        this.teamManager = teamManager;
     }
 
     public String getName() {
@@ -56,15 +55,20 @@ public class UhcTeamPart implements ArgumentPart {
     }
 
     private UhcTeam existsTeam(ArgumentStack stack) {
+       String s = stack.next();
+
        try {
-           Bukkit.getPlayer(stack.next());
+           var player = Bukkit.getPlayer(s);
+
+           if(player == null) {
+               throw new ArgumentParseException("Given argument is not a valid player!");
+           }
        } catch (Exception e) {
            throw new ArgumentParseException("Given argument is not a valid player!");
        }
 
-       var player = Bukkit.getPlayer(stack.next());
-       if(teamOwners().contains(player)) {
-           return teamManager.getTeam(player.getUniqueId());
+       if(teamOwnersName().contains(s)) {
+           return teamManager.getPlayerTeam(Bukkit.getPlayer(s).getUniqueId());
        } else {
            throw new ArgumentParseException("That team doesn't exist!");
        }
@@ -74,6 +78,14 @@ public class UhcTeamPart implements ArgumentPart {
         List<Player> owners = new ArrayList<>();
 
         teamManager.getUhcTeams().values().forEach(uT -> owners.add(uT.getOwner()));
+
+        return owners;
+    }
+
+    private List<String> teamOwnersName() {
+        List<String> owners = new ArrayList<>();
+
+        teamOwners().forEach(player -> owners.add(player.getName()));
 
         return owners;
     }
