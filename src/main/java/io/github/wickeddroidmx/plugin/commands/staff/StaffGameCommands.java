@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.commands.staff;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
+import io.github.wickeddroidmx.plugin.events.game.ChangeGameTimeEvent;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamScatteredEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
@@ -23,10 +24,7 @@ import io.github.wickeddroidmx.plugin.services.UhcIdLoader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
-import me.fixeddev.commandflow.annotated.annotation.Command;
-import me.fixeddev.commandflow.annotated.annotation.Named;
-import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
-import me.fixeddev.commandflow.annotated.annotation.Text;
+import me.fixeddev.commandflow.annotated.annotation.*;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
@@ -205,7 +203,26 @@ public class StaffGameCommands implements CommandClass  {
         @Command(
                 names = "time"
         )
-        public void timeCommand(@Sender Player sender) {
+        public void timeCommand(@Sender Player sender, @Named("pvp") @OptArg Integer pvp, @Named("meetup") @OptArg Integer meetup) {
+            if(pvp != null && meetup != null) {
+                if(pvp > meetup) {
+                    sender.sendMessage(ChatUtils.PREFIX + "El tiempo meetup no puede ser mayor al de pvp.");
+                    return;
+                }
+
+                Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(meetup, pvp));
+            }
+
+            if(pvp != null) {
+                Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(gameManager.getTimeForMeetup(), pvp));
+                return;
+            }
+
+            if(meetup != null) {
+                Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(meetup, gameManager.getTimeForPvP()));
+                return;
+            }
+
             sender.openInventory(uhcStaffMenu.getTimeInventory());
         }
 
