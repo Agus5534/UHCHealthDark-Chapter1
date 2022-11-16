@@ -19,4 +19,16 @@ public class ChatUtils {
     public static Component formatC(String text) {
         return Component.text(ChatColor.translateAlternateColorCodes('&', text));
     }
+
+    public static Component formatComponentPrefix(String text) {
+        return Component.text(ChatColor.translateAlternateColorCodes('&', PREFIX + text));
+    }
+
+    public static Component formatComponentTeam(String text) {
+        return Component.text(ChatColor.translateAlternateColorCodes('&', TEAM + text));
+    }
+
+    public static Component formatComponentNotification(String text) {
+        return Component.text(ChatColor.translateAlternateColorCodes('&', NOTIFICATION + text));
+    }
 }
