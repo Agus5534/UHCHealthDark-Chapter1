@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.modalities.settings.*;
 import io.github.wickeddroidmx.plugin.modalities.teams.ChosenMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.FriendlyFireMode;
 import io.github.wickeddroidmx.plugin.modalities.teams.LoveAtFirstSightMode;
+import io.github.wickeddroidmx.plugin.modalities.teams.UnknownTeamsMode;
 import io.github.wickeddroidmx.plugin.modalities.uhc.UhcRunMode;
 import io.github.wickeddroidmx.plugin.modalities.uhc.UhcSkyHighMode;
 import me.yushust.inject.InjectAll;
@@ -56,15 +57,15 @@ public class ModeManager {
 
     private AnvilDiscountsMode anvilDiscountsMode;
 
-    // Team
-    private LoveAtFirstSightMode loveAtFirstSightMode;
-
-    private ChosenMode chosenMode;
-
     private FriendlyFireMode friendlyFireMode;
     private GraveRobbersMode graveRobbersMode;
     private HalfHeartMode halfHeartMode;
     private TradeParanoiaMode tradeParanoiaMode;
+
+    // Team
+    private LoveAtFirstSightMode loveAtFirstSightMode;
+    private ChosenMode chosenMode;
+    private UnknownTeamsMode unknownTeamsMode;
 
     //Scenarios
     private GunsNRosesScenario gunsNRosesScenario;
@@ -154,7 +155,8 @@ public class ModeManager {
                 suspiciousStewLessSetting,
                 doubleOresScenario,
                 cobbleOnlySetting,
-                spawnerLastBreathSetting
+                spawnerLastBreathSetting,
+                unknownTeamsMode
         );
     }
 
