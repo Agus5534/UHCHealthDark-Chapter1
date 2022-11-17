@@ -24,7 +24,8 @@ public class GameManager {
     timeForMeetup,
     worldBorder,
     cobwebLimit,
-    borderDelay;
+    borderDelay,
+    revealTime;
 
     private long seconds;
     private GameState gameState;
@@ -61,6 +62,7 @@ public class GameManager {
         this.currentTime = 0;
         this.timeForPvP = 3600;
         this.timeForMeetup = 7200;
+        this.revealTime = 5400;
         this.borderDelay = 300;
     }
 
@@ -78,6 +80,10 @@ public class GameManager {
 
     public void setSeconds(long seconds) {
         this.seconds = seconds;
+    }
+
+    public void setRevealTime(int revealTime) {
+        this.revealTime = revealTime;
     }
 
     public void setScenarioLimit(boolean scenarioLimit) {
@@ -166,6 +172,10 @@ public class GameManager {
 
     public int getBorderDelay() {
         return borderDelay;
+    }
+
+    public int getRevealTime() {
+        return revealTime;
     }
 
     public void setBorderDelay(int borderDelay) {

@@ -42,7 +42,6 @@ public class MolesMode extends Modality {
     @Inject
     private TeamManager teamManager;
 
-
     List<Player> molesList;
     HashMap<Player, Player> molesTeams;
     public MolesMode() throws IllegalClassFormatException {

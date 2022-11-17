@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.listeners.custom.WaitingStatusListeners;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;
+import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
@@ -41,6 +42,9 @@ public class TeamCommands implements CommandClass {
 
     @Inject
     private PlayerManager playerManager;
+
+    @Inject
+    private ModeManager modeManager;
 
     @Command(
             names = "invite"
@@ -305,6 +309,11 @@ public class TeamCommands implements CommandClass {
             names = "list"
     )
     public void listCommand(@Sender Player sender) {
+        if(modeManager.isActiveMode("unknown_team")) {
+            sender.sendMessage(ChatUtils.formatComponentTeam("La lista no se encuentra disponible"));
+            return;
+        }
+
         if (teamManager.getUhcTeams().size() == 0) {
             sender.sendMessage(ChatUtils.PREFIX + "No se ha creado ningún equipo.");
             return;

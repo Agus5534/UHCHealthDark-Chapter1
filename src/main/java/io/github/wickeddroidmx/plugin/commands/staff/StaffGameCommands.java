@@ -245,6 +245,36 @@ public class StaffGameCommands implements CommandClass  {
 
             target.sendMessage(ChatUtils.PREFIX + "El porcentaje de apple rate ha cambiado al " + n + "%");
         }
+
+        @Command(
+                names = "revealtime"
+        )
+        public void revealTime(@Sender Player sender, @Named("minutes") int min) {
+            int sec = min * 60;
+
+            if(sec > gameManager.getTimeForMeetup() + 300) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("El tiempo de revelación no puede ser mayor a 5 minutos después del meetup"));
+                return;
+            }
+
+            if(sec < 300) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("El tiempo de revelación no puede ser menos a 5 minutos"));
+                return;
+            }
+
+            if(gameManager.getCurrentTime() > sec) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("Ese minuto de la partida ya ha pasado!"));
+                return;
+            }
+
+
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Has cambiado el minuto de revelación a " + min));
+            gameManager.setRevealTime(sec);
+
+            if(!modeManager.isActiveMode("unknown_team")) {
+                sender.sendMessage(ChatUtils.formatComponentNotification("No se encuentra activo el modo &6Unknown Teams"));
+            }
+        }
     }
 
     @Command(names = "poll")
