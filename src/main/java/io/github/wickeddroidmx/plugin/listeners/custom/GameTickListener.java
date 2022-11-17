@@ -76,13 +76,14 @@ public class GameTickListener implements Listener {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0F, 1.0F);
             });
 
-
-            Bukkit.getPluginManager().callEvent(
-                    new ThreadMessageLogEvent(
-                            "> El PvP ha comenzado",
-                            gameManager.getUhcId()
-                    )
-            );
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+                Bukkit.getPluginManager().callEvent(
+                        new ThreadMessageLogEvent(
+                                "> El PvP ha comenzado",
+                                gameManager.getUhcId()
+                        )
+                );
+            }, 5L);
 
             var hook = new DiscordWebhook(HookType.LOGS.getUrl());
 
@@ -105,12 +106,14 @@ public class GameTickListener implements Listener {
             gameManager.setGameState(GameState.MEETUP);
 
 
-            Bukkit.getPluginManager().callEvent(
-                    new ThreadMessageLogEvent(
-                            "> El meetup ha comenzado",
-                            gameManager.getUhcId()
-                    )
-            );
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+                Bukkit.getPluginManager().callEvent(
+                        new ThreadMessageLogEvent(
+                                "> El meetup ha comenzado",
+                                gameManager.getUhcId()
+                        )
+                );
+            }, 5L);
 
             var hook = new DiscordWebhook(HookType.LOGS.getUrl());
 

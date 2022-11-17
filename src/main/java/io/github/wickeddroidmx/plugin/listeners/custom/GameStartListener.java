@@ -58,12 +58,14 @@ public class GameStartListener implements Listener {
             cache.add(player.getUniqueId(), new GameScoreboard(player, modeManager ,gameManager, playerManager, teamManager));
         });
 
-        Bukkit.getPluginManager().callEvent(
-                new ThreadMessageLogEvent(
-                        "> La partida ha comenzado",
-                        gameManager.getUhcId()
-                )
-        );
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
+            Bukkit.getPluginManager().callEvent(
+                    new ThreadMessageLogEvent(
+                            "> La partida ha comenzado",
+                            gameManager.getUhcId()
+                    )
+            );
+        }, 5L);
 
         var hook = new DiscordWebhook(HookType.LOGS.getUrl());
 
