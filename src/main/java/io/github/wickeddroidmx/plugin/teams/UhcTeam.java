@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
@@ -27,6 +28,8 @@ public class UhcTeam {
     private ChatColor color;
 
     private List<TeamFlags> teamFlags;
+
+    private Location spawnLocation;
 
     private ChatColor[] textColors = {
             ChatColor.AQUA,
@@ -53,6 +56,7 @@ public class UhcTeam {
 
         this.alive = true;
         this.friendlyFire = false;
+        this.spawnLocation = null;
 
         this.owner = owner;
         this.playersAlive = 0;
@@ -155,6 +159,14 @@ public class UhcTeam {
     public void setFriendlyFire(boolean friendlyFire) {
         this.friendlyFire = friendlyFire;
         getTeam().setAllowFriendlyFire(friendlyFire);
+    }
+
+    public Location getSpawnLocation() {
+        return spawnLocation;
+    }
+
+    public void setSpawnLocation(Location spawnLocation) {
+        this.spawnLocation = spawnLocation;
     }
 
     public void incrementKills() {

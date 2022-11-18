@@ -2,14 +2,18 @@ package io.github.wickeddroidmx.plugin.commands.staff;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
+import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.menu.PlayerInventoryMenu;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
+import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.Named;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -59,7 +63,7 @@ public class StaffCommands implements CommandClass {
     @Command(
             names = { "ls", "laterscatter", "revive" }, permission = "healthdark.staff"
     )
-    public void laterScatterCommand(@Sender Player sender, Player target) {
+    public void laterScatterCommand(@Sender Player sender, @Named("player") Player target, @OptArg @Named("team") UhcTeam uhcTeam) {
         var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
         var teamPlayer = teamManager.getPlayerTeam(target.getUniqueId());
         var random = new Random();
@@ -76,13 +80,25 @@ public class StaffCommands implements CommandClass {
                 return;
             }
 
-            if (teamPlayer == null) {
+            if (teamPlayer == null && uhcTeam == null) {
                 teamManager.createTeam(target);
 
                 Bukkit.getPluginManager().callEvent(new TeamCreateEvent(teamManager.getPlayerTeam(target.getUniqueId()), target));
             }
 
-            target.teleport(new Location(Bukkit.getWorld("uhc_world"), random.nextInt(gameManager.getWorldBorder()), 100, random.nextInt(gameManager.getWorldBorder())));
+            if(uhcTeam != null) {
+                Bukkit.getPluginManager().callEvent(new PlayerJoinedTeamEvent(uhcTeam, target));
+
+                if(uhcTeam.getSpawnLocation() == null) {
+                    target.teleport(new Location(Bukkit.getWorld("uhc_world"), random.nextInt(gameManager.getWorldBorder()), 100, random.nextInt(gameManager.getWorldBorder())));
+                } else {
+                    target.teleport(uhcTeam.getSpawnLocation());
+                }
+            }
+
+            if(uhcTeam == null) {
+                target.teleport(new Location(Bukkit.getWorld("uhc_world"), random.nextInt(gameManager.getWorldBorder()), 100, random.nextInt(gameManager.getWorldBorder())));
+            }
 
             target.setGameMode(GameMode.SURVIVAL);
             target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 5));

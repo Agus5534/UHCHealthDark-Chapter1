@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
+import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import net.kyori.adventure.text.Component;
@@ -28,6 +29,9 @@ public class PlayerScatteredListener implements Listener {
 
     @Inject
     private PlayerManager playerManager;
+
+    @Inject
+    private TeamManager teamManager;
 
     @Inject
     @Named("ironman-cache")
@@ -64,6 +68,13 @@ public class PlayerScatteredListener implements Listener {
                 Math.round(e.getLocation().getY()),
                 Math.round(e.getLocation().getZ()),
                 e.getLocation().getWorld().getName()));
+
+        var team = teamManager.getPlayerTeam(e.getPlayer().getUniqueId());
+
+        if(team == null) { return; }
+        if(team.getSpawnLocation() == null) {
+            team.setSpawnLocation(e.getLocation());
+        }
     }
 
     @EventHandler
@@ -87,5 +98,13 @@ public class PlayerScatteredListener implements Listener {
                         gameManager.getUhcId()
                 )
         );
+
+
+        var team = teamManager.getPlayerTeam(e.getPlayer().getUniqueId());
+
+        if(team == null) { return; }
+        if(team.getSpawnLocation() == null) {
+            team.setSpawnLocation(e.getLocation());
+        }
     }
 }
