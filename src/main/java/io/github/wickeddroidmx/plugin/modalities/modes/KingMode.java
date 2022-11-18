@@ -83,6 +83,7 @@ public class KingMode extends Modality {
 
             var king = uhcTeam.getKing();
 
+            if(!king.isOnline()) { continue; }
             if(king.getGameMode() != GameMode.SURVIVAL) { continue; }
 
             king.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 220, 0, false, false, false));
