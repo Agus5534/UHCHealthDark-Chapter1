@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.listeners.portal;
 
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import net.minecraft.world.level.levelgen.structure.WorldGenNetherPieces;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,9 +34,7 @@ public class PlayerPortalListener implements Listener {
                 var toLocation = e.getTo();
                 toLocation.setWorld(Bukkit.getWorld("uhc_world"));
 
-                while (isOutsideBorder(toLocation)) {
-                    toLocation = fixLocation(toLocation);
-                }
+                toLocation = fixLocation(toLocation);
 
                 e.setTo(toLocation);
                 return;
@@ -73,7 +72,7 @@ public class PlayerPortalListener implements Listener {
 
 
     public boolean isOutsideBorder(Location location) {
-        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
+        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize() / 2;
         double x = location.getX();
         double z = location.getZ();
 
@@ -82,14 +81,30 @@ public class PlayerPortalListener implements Listener {
 
     private Location fixLocation(Location location) {
         var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
+
+        var newLoc = new Location(location.getWorld(), location.getX(), 16, location.getZ());
         double x = size / 2;
         double z = size / 2;
 
-        double newX = (location.getX() < 0 ? (location.getX() < -x ? x+20 : location.getX()) : (location.getX() > x ? x-20 : location.getX()));
-        double newZ = (location.getZ() < 0 ? (location.getZ() < -z ? z+20 : location.getZ()) : (location.getZ() > z ? z-20 : location.getZ()));
+        while (isOutsideBorder(newLoc)) {
+            double newX = (location.getX() < 0 ? (location.getX() < -x ? x+27 : location.getX()) : (location.getX() > x ? x-27 : location.getX()));
+            double newZ = (location.getZ() < 0 ? (location.getZ() < -z ? z+27 : location.getZ()) : (location.getZ() > z ? z-27 : location.getZ()));
 
-        var newLoc = new Location(location.getWorld(), newX, 16, newZ);
+            newLoc = new Location(location.getWorld(), newX, 16, newZ);
+        }
+
+        String log = String.format("[PORTAL] Intentando teletransportar desde X: %d Y: %d Z: %d a X: %d Y: %d Z: %d",
+                Math.round(location.getX()),
+                Math.round(location.getY()),
+                Math.round(location.getZ()),
+                Math.round(newLoc.getX()),
+                Math.round(newLoc.getY()),
+                Math.round(newLoc.getZ()));
+
+        Bukkit.getLogger().info(log);
+
         newLoc.setY(newLoc.getWorld().getHighestBlockYAt(newLoc));
+
 
         return newLoc;
     }
