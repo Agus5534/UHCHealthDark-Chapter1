@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamScatteredEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -10,6 +11,7 @@ import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -42,31 +44,49 @@ public class KingMode extends Modality {
     @Inject
     private TeamManager teamManager;
 
+    @Inject
+    private Main plugin;
+
     public KingMode() throws IllegalClassFormatException {
         super();
     }
 
     @EventHandler
     public void onGameStart(GameStartEvent e) {
-        for (var uhcTeam : teamManager.getUhcTeams().values()) {
-            var king = uhcTeam.getTeamPlayers()
-                    .stream()
-                    .map(Bukkit::getPlayer)
-                    .filter(Objects::nonNull)
-                    .filter(Player::isOnline)
-                    .findAny()
-                    .orElse(uhcTeam.getOwner());
+        Bukkit.getScheduler().runTaskLater(plugin, ()-> {
+            for (var uhcTeam : teamManager.getUhcTeams().values()) {
+                var king = uhcTeam.getTeamPlayers()
+                        .stream()
+                        .map(Bukkit::getPlayer)
+                        .filter(Objects::nonNull)
+                        .filter(Player::isOnline)
+                        .findAny()
+                        .orElse(uhcTeam.getOwner());
 
 
-            Objects.requireNonNull(king.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(40.0D);
-            king.setHealth(40.0D);
+                Objects.requireNonNull(king.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(40.0D);
+                king.setHealth(king.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
 
-            king.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 0));
-            king.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0));
+                uhcTeam.setKing(king);
 
-            uhcTeam.setKing(king);
+                Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> addEffects(), 1L, 19L);
 
-            Bukkit.broadcast(Component.text(ChatUtils.PREFIX + ChatUtils.format(String.format("El king del equipo &6%s &7es &6%s", uhcTeam.getName(), king.getName()))));
+                Bukkit.broadcast(Component.text(ChatUtils.PREFIX + ChatUtils.format(String.format("El king del equipo &6%s &7es &6%s", uhcTeam.getName(), king.getName()))));
+            }
+        }, 20L);
+    }
+
+    private void addEffects() {
+        for(var uhcTeam :teamManager.getUhcTeams().values()) {
+            if(uhcTeam.getKing() == null) { continue; }
+            if(!this.isEnabled()) { continue; }
+
+            var king = uhcTeam.getKing();
+
+            if(king.getGameMode() != GameMode.SURVIVAL) { continue; }
+
+            king.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 220, 0, false, false, false));
+            king.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 220, 0, false, false, false));
         }
     }
 
@@ -76,7 +96,7 @@ public class KingMode extends Modality {
         var team = teamManager.getPlayerTeam(player.getUniqueId());
 
         if (team != null) {
-            if (team.getKing() == player) {
+            if (team.getKing().equals(player)) {
                 team.getTeamPlayers()
                         .stream()
                         .map(Bukkit::getPlayer)
@@ -89,8 +109,4 @@ public class KingMode extends Modality {
         }
     }
 
-    @EventHandler
-    public void onPlayerItemConsume(PlayerItemConsumeEvent e) {
-
-    }
 }
