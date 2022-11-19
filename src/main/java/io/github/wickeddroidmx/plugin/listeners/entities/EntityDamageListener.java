@@ -9,6 +9,7 @@ import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.level.block.BlockMobSpawner;
 import org.bukkit.Bukkit;
@@ -35,7 +36,6 @@ public class EntityDamageListener implements Listener {
 
     @Inject
     private ModeManager modeManager;
-
     @Inject
     @Named("ironman-cache")
     private ListCache<UUID> ironManCache;
@@ -50,6 +50,10 @@ public class EntityDamageListener implements Listener {
 
         if (entity instanceof Player player) {
             if (gameManager.getGameState() == GameState.WAITING || gameManager.getGameState() == GameState.FINISHING) {
+                if(e.getCause() == EntityDamageEvent.DamageCause.VOID) {
+                    player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+                }
+
                 e.setCancelled(true);
                 return;
             }
