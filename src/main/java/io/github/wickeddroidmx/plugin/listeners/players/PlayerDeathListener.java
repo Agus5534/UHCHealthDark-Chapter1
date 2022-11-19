@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.listeners.players;
 
 import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -18,6 +19,8 @@ import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Named;
 import java.awt.Color;
@@ -30,6 +33,7 @@ public class PlayerDeathListener implements Listener {
     private PlayerManager playerManager;
     private TeamManager teamManager;
     private GameManager gameManager;
+    private Main plugin;
 
     @Named("user-cache")
     private MapCache<UUID, User> userCache;
@@ -77,6 +81,16 @@ public class PlayerDeathListener implements Listener {
                 Math.round(location.getZ()),
                 location.getWorld().getName()));
 
+        Bukkit.getScheduler().runTaskLater(plugin, ()-> {
+            player.spigot().respawn();
+
+            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+
+            player.setGameMode(GameMode.ADVENTURE);
+
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 15, false, false, false));
+        }, 5L);
+
         if (player.getKiller() != null) {
             var killer = player.getKiller();
             var uhcKiller = playerManager.getPlayer(killer.getUniqueId());
@@ -109,7 +123,6 @@ public class PlayerDeathListener implements Listener {
 
             Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0F, 1.0F));
 
-            player.setGameMode(GameMode.SPECTATOR);
             gameManager.getSpectatorTeam().addEntry(player.getName());
         }
 
