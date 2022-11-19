@@ -15,12 +15,14 @@ import io.github.wickeddroidmx.plugin.services.UhcIdLoader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.chat.Rank;
+import io.github.wickeddroidmx.plugin.utils.region.Region;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
 import me.yushust.inject.Injector;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.RenderType;
@@ -48,9 +50,8 @@ public class Main extends JavaPlugin {
     private GameManager gameManager;
     private ModeManager modeManager;
     private PollManager pollManager;
-
     private WorldGenerator worldGenerator;
-
+    private Region ARENA;
     private Rank rank;
 
     @Override
@@ -58,8 +59,12 @@ public class Main extends JavaPlugin {
         Injector.create(new MainModule(this))
                         .injectMembers(this);
 
-
         loader.load();
+
+        ARENA = new Region(
+                new Location(Bukkit.getWorlds().get(0), 188, 55, 179),
+                new Location(Bukkit.getWorlds().get(0), 302, 12, 308)
+        );
 
         Bukkit.getScoreboardManager().getMainScoreboard().getTeams()
                 .forEach(Team::unregister);
@@ -108,5 +113,9 @@ public class Main extends JavaPlugin {
 
     public WorldGenerator getWorldGenerator() {
         return worldGenerator;
+    }
+
+    public Region getARENA() {
+        return ARENA;
     }
 }

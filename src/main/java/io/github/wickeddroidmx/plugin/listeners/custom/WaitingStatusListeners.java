@@ -12,6 +12,8 @@ import io.github.wickeddroidmx.plugin.utils.items.ItemPersistentData;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,10 +23,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDropItemEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -59,13 +58,17 @@ public class WaitingStatusListeners implements Listener {
     public void onDrop(PlayerDropItemEvent event) {
         if(gameManager.getGameState() == GameState.WAITING) {
             if(event.getPlayer().getGameMode() == GameMode.CREATIVE) { return; }
+
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void blockFromTo(BlockFromToEvent event) {
+    public void onInteractCrop(PlayerInteractEvent event) {
         if(gameManager.getGameState() == GameState.WAITING) {
+            if(!event.getAction().equals(Action.PHYSICAL)) { return; }
+            if(!event.getClickedBlock().getType().equals(Material.FARMLAND)) { return; }
+
             event.setCancelled(true);
         }
     }
@@ -207,6 +210,7 @@ public class WaitingStatusListeners implements Listener {
     @EventHandler
     public void onSpawn(EntitySpawnEvent event) {
         if(event.getEntity() instanceof Player) { return; }
+        if(event.getEntity() instanceof Arrow) { return; }
 
         if(event.getLocation().getWorld().getName().equalsIgnoreCase("world")) {
             event.setCancelled(true);
@@ -231,6 +235,26 @@ public class WaitingStatusListeners implements Listener {
             event.setCancelled(true);
         }
 
+    }
+
+    @EventHandler
+    public void onEntityDamageEvent(EntityDamageEvent event) {
+        if(!(event.getEntity() instanceof Player)) { return; }
+        if(gameManager.getGameState() != GameState.WAITING) { return; }
+
+        var player = (Player)event.getEntity();
+
+        if(player.getHealth() - event.getDamage() > 0.0) { return; }
+
+        event.setDamage(0.0);
+
+        player.getInventory().clear();
+        player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 30, 20, false, false, false));
+
+        player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+        player.setGameMode(GameMode.ADVENTURE);
     }
 
     private void addCooldown(Player player, int seconds) {

@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.listeners.entities;
 
 import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -36,6 +37,9 @@ public class EntityDamageListener implements Listener {
 
     @Inject
     private ModeManager modeManager;
+
+    @Inject
+    private Main plugin;
     @Inject
     @Named("ironman-cache")
     private ListCache<UUID> ironManCache;
@@ -50,6 +54,10 @@ public class EntityDamageListener implements Listener {
 
         if (entity instanceof Player player) {
             if (gameManager.getGameState() == GameState.WAITING || gameManager.getGameState() == GameState.FINISHING) {
+                if(plugin.getARENA().isInsideRegion(entity.getLocation())) {
+                    return;
+                }
+
                 if(e.getCause() == EntityDamageEvent.DamageCause.VOID) {
                     player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
                 }
