@@ -61,6 +61,7 @@ public class ModeManager {
     private GraveRobbersMode graveRobbersMode;
     private HalfHeartMode halfHeartMode;
     private TradeParanoiaMode tradeParanoiaMode;
+    private BestPVEMode bestPVEMode;
 
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
@@ -156,7 +157,8 @@ public class ModeManager {
                 doubleOresScenario,
                 cobbleOnlySetting,
                 spawnerLastBreathSetting,
-                unknownTeamsMode
+                unknownTeamsMode,
+                bestPVEMode
         );
     }
 
