@@ -35,8 +35,8 @@ public class SiphonScenario extends Modality {
         var killer = player.getKiller();
 
         if (killer != null) {
-            if (killer.getHealth() <= 5) {
-                killer.setHealth(Objects.requireNonNull(killer.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue());
+            if (killer.getHealth() <= 10.0) {
+                killer.setHealth(killer.getHealth()+5.0);
             } else {
                 killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 200, 2));
             }
