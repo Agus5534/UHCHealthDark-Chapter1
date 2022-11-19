@@ -11,6 +11,7 @@ import io.github.wickeddroidmx.plugin.poll.PollManager;
 import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
@@ -148,7 +149,12 @@ public class PlayerCommands implements CommandClass {
             if (item.getEnchantments().size() > 0 || item.getType() == Material.ENCHANTED_BOOK) {
                 inventory.removeItem(inventory.getItemInMainHand());
 
-                inventory.addItem(new ItemStack((item.getType() == Material.ENCHANTED_BOOK ? Material.BOOK : item.getType())));
+                inventory.addItem(new ItemCreator(
+                        (item.getType() == Material.ENCHANTED_BOOK) ?
+                                new ItemCreator(Material.BOOK) :
+                                item
+                ).removeEnchantments());
+
                 sender.playSound(sender.getLocation(), Sound.BLOCK_GRINDSTONE_USE, 1.0F, 1.0F);
             }
         }
