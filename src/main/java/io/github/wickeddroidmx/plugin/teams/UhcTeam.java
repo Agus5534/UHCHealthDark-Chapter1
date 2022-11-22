@@ -22,7 +22,9 @@ public class UhcTeam {
     private final Inventory inventory;
     private Player owner,
             mole,
-            king;
+            king,
+            littlebrother,
+            bigbrother;
     private boolean alive, friendlyFire;
 
     private ChatColor color;
@@ -53,6 +55,8 @@ public class UhcTeam {
         this.teamPlayers = new HashSet<>();
         this.mole = null;
         this.king = null;
+        this.littlebrother = null;
+        this.bigbrother = null;
 
         this.alive = true;
         this.friendlyFire = false;
@@ -227,6 +231,22 @@ public class UhcTeam {
 
     public String getName() {
         return name;
+    }
+
+    public Player getBigbrother() {
+        return bigbrother;
+    }
+
+    public Player getLittlebrother() {
+        return littlebrother;
+    }
+
+    public void setBigbrother(Player bigbrother) {
+        this.bigbrother = bigbrother;
+    }
+
+    public void setLittlebrother(Player littlebrother) {
+        this.littlebrother = littlebrother;
     }
 
     public void sendMessage(String s) {
