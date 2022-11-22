@@ -18,6 +18,7 @@ import io.github.wickeddroidmx.plugin.utils.chat.Rank;
 import io.github.wickeddroidmx.plugin.utils.region.Region;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
+import me.yushust.inject.InjectIgnore;
 import me.yushust.inject.Injector;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -51,6 +52,7 @@ public class Main extends JavaPlugin {
     private ModeManager modeManager;
     private PollManager pollManager;
     private WorldGenerator worldGenerator;
+    @InjectIgnore
     private Region ARENA;
     private Rank rank;
 
@@ -79,6 +81,7 @@ public class Main extends JavaPlugin {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, ()-> pollManager.updatePollStatus(this),2L, 10L);
 
+        Bukkit.getWorlds().get(0).setPVP(true);
     }
 
     @Override

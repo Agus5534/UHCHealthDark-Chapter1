@@ -236,7 +236,20 @@ public class WaitingStatusListeners implements Listener {
         }
 
     }
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if(!(event.getEntity() instanceof Player)) { return; }
+        if(!(event.getDamager() instanceof Player)) { return; }
 
+        var entity = (Player)event.getEntity();
+        var damager = (Player)event.getDamager();
+
+        if(gameManager.getGameState() == GameState.WAITING) {
+            if(!plugin.getARENA().isInsideRegion(entity.getLocation()) && !plugin.getARENA().isInsideRegion(damager.getLocation())) {
+                event.setCancelled(true);
+            }
+        }
+    }
     @EventHandler
     public void onEntityDamageEvent(EntityDamageEvent event) {
         if(!(event.getEntity() instanceof Player)) { return; }

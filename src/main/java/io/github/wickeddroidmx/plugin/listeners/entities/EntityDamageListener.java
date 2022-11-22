@@ -54,16 +54,14 @@ public class EntityDamageListener implements Listener {
 
         if (entity instanceof Player player) {
             if (gameManager.getGameState() == GameState.WAITING || gameManager.getGameState() == GameState.FINISHING) {
-                if(plugin.getARENA().isInsideRegion(entity.getLocation())) {
+                if(!plugin.getARENA().isInsideRegion(entity.getLocation())) {
+                    if(e.getCause() == EntityDamageEvent.DamageCause.VOID) {
+                        player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+                    }
+
+                    e.setCancelled(true);
                     return;
                 }
-
-                if(e.getCause() == EntityDamageEvent.DamageCause.VOID) {
-                    player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-                }
-
-                e.setCancelled(true);
-                return;
             }
 
             if (player.getGameMode() == GameMode.SPECTATOR || player.getGameMode() == GameMode.CREATIVE) {
