@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.experiments;
 
 import io.github.wickeddroidmx.plugin.experiments.list.GAME_ARENA;
+import io.github.wickeddroidmx.plugin.experiments.list.IRONMAN_COMMAND;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,10 +16,12 @@ import java.util.Set;
 @Singleton
 public class ExperimentManager {
     private GAME_ARENA game_arena;
+    private IRONMAN_COMMAND ironman_command;
 
     public void registerExperiments() {
         registerExperiments(
-                game_arena
+                game_arena,
+                ironman_command
         );
     }
 
