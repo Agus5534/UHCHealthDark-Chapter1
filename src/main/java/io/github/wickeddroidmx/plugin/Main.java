@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
+import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.module.MainModule;
@@ -52,6 +53,7 @@ public class Main extends JavaPlugin {
     private ModeManager modeManager;
     private PollManager pollManager;
     private WorldGenerator worldGenerator;
+    private ExperimentManager experimentManager;
     @InjectIgnore
     private Region ARENA;
     private Rank rank;

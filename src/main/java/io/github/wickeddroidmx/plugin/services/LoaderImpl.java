@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.services;
 
+import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ public class LoaderImpl implements Loader {
     private ListenerLoader listenerLoader;
     private CommandLoader commandLoader;
     private ModeManager modeManager;
+    private ExperimentManager experimentManager;
 
     @Override
     public void load() {
@@ -17,6 +19,7 @@ public class LoaderImpl implements Loader {
         commandLoader.load();
 
         modeManager.registerModes();
+        experimentManager.registerExperiments();
 
         Bukkit.getLogger().info("Plugin prendido correctamente.");
     }
