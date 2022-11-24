@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.experiments;
 import io.github.wickeddroidmx.plugin.experiments.list.GAME_ARENA;
 import io.github.wickeddroidmx.plugin.experiments.list.IRONMAN_COMMAND;
 import me.yushust.inject.InjectAll;
+import me.yushust.inject.InjectIgnore;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -25,7 +26,9 @@ public class ExperimentManager {
         );
     }
 
+    @InjectIgnore
     private final Set<Experiment> experimentSet = new HashSet<>();
+    @InjectIgnore
     private final HashMap<String, Experiment> stringExperimentHashMap = new HashMap<>();
 
     private void registerExperiments(Experiment... experiments) {
