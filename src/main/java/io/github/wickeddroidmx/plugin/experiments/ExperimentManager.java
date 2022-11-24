@@ -49,4 +49,8 @@ public class ExperimentManager {
     public Experiment getExperimentByKey(String key) {
         return stringExperimentHashMap.get(key);
     }
+
+    public HashMap<String, Experiment> getStringExperimentHashMap() {
+        return stringExperimentHashMap;
+    }
 }

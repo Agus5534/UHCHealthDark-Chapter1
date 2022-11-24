@@ -33,8 +33,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class WaitingStatusListeners implements Listener {
     @Inject
@@ -45,6 +44,7 @@ public class WaitingStatusListeners implements Listener {
 
 
     public static List<Player> donatorsList = new ArrayList<>();
+    public static HashMap<Player, Collection<Ranks.StaffRank>> playerRanksHashMap = new HashMap<>();
 
     List<Player> onCooldown = new ArrayList<>();
 
@@ -147,6 +147,8 @@ public class WaitingStatusListeners implements Listener {
         if(!event.getDonatorRanks().isEmpty()) {
             donatorsList.add(event.getPlayer());
         }
+
+        playerRanksHashMap.put(event.getPlayer(), event.getStaffRanks().values());
     }
 
     @EventHandler

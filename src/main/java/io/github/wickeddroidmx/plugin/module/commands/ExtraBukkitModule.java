@@ -1,5 +1,7 @@
 package io.github.wickeddroidmx.plugin.module.commands;
 
+import io.github.wickeddroidmx.plugin.experiments.Experiment;
+import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.module.commands.parts.ChatColorPart;
 import io.github.wickeddroidmx.plugin.module.commands.parts.ConcursantTypesPart;
@@ -18,9 +20,11 @@ public class ExtraBukkitModule extends AbstractModule {
 
 
     private TeamManager teamManager;
+    private ExperimentManager experimentManager;
 
-    public ExtraBukkitModule(TeamManager teamManager){
+    public ExtraBukkitModule(TeamManager teamManager, ExperimentManager experimentManager) {
         this.teamManager = teamManager;
+        this.experimentManager = experimentManager;
     }
 
     public void configure() {
@@ -30,6 +34,7 @@ public class ExtraBukkitModule extends AbstractModule {
         this.bindFactory(ConcursantTypes.class, new ConcursantTypesFactory());
         this.bindFactory(ModalityType.class, new ModalityTypeFactory());
         this.bindFactory(UhcTeam.class, new UhcTeamFactory(teamManager));
+        this.bindFactory(Experiment.class, new ExperimentsFactory(experimentManager));
     }
 
 }

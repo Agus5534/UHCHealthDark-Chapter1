@@ -1,5 +1,7 @@
 package io.github.wickeddroidmx.plugin.commands;
 
+import io.github.agus5534.hdbot.Ranks;
+import io.github.wickeddroidmx.plugin.experiments.Experiment;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.listeners.custom.WaitingStatusListeners;
@@ -14,6 +16,7 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
+import me.fixeddev.commandflow.annotated.annotation.Named;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -23,6 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.inject.Inject;
 import java.util.Comparator;
@@ -135,7 +139,7 @@ public class PlayerCommands implements CommandClass {
         }
     }
 
-    @Command( names = {"cleanitem", "ci", "clean"} )
+    @Command( names = {"cleanitem", "clean"} )
     public void cutCleanCommand(@Sender Player sender) {
         if (!modeManager.isActiveMode("uhc_run")) {
             sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("No puedes utilizar este comando en uhc's vanillas."));
@@ -229,6 +233,44 @@ public class PlayerCommands implements CommandClass {
         }
 
         sender.openInventory(new UhcPollMenu().getPollInventory(pollManager));
+    }
+
+    @Command(
+            names = "experiment"
+    )
+    public void experimentCommand(@Sender Player sender, @Named("experiment") Experiment experiment) {
+        var ranks = WaitingStatusListeners.playerRanksHashMap.get(sender);
+
+        if(ranks == null) {
+            sender.kick(ChatUtils.formatC("&4No se ha podido validarte!"));
+            return;
+        }
+
+        if(!ranks.contains(Ranks.StaffRank.TESTER)) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No estás autorizado a utilizar este comando."));
+            return;
+        }
+
+        if(!experiment.isEnabled()) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Ese experimento está desactivado"));
+            return;
+        }
+
+        if(experiment.isStaff() && !sender.hasPermission("healthdark.staff")) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No tienes permiso de activar este experimento"));
+            return;
+        }
+
+        var b = experiment.toggleExperimentStatus(sender);
+
+        sender.sendMessage(
+                ChatUtils.formatComponentPrefix(
+                        String.format("Has &%s &7el experimento %s",
+                                (b ? "&aactivado" : "&cdesactivado"),
+                                experiment.getKey())
+                )
+        );
+
     }
 
     public int getAmount(Player player, Material material) {
