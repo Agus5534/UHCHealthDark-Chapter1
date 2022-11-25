@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.experiments;
 
+import io.github.wickeddroidmx.plugin.experiments.list.COBWEB_WARN_EXPERIMENT;
 import io.github.wickeddroidmx.plugin.experiments.list.GAME_ARENA;
 import io.github.wickeddroidmx.plugin.experiments.list.IRONMAN_COMMAND;
 import me.yushust.inject.InjectAll;
@@ -18,11 +19,13 @@ import java.util.Set;
 public class ExperimentManager {
     private GAME_ARENA game_arena;
     private IRONMAN_COMMAND ironman_command;
+    private COBWEB_WARN_EXPERIMENT cobweb_warn_experiment;
 
     public void registerExperiments() {
         registerExperiments(
                 game_arena,
-                ironman_command
+                ironman_command,
+                cobweb_warn_experiment
         );
     }
 
