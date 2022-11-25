@@ -57,21 +57,6 @@ public class PlayerDeathListener implements Listener {
                 )
         );
 
-        var hook = new DiscordWebhook("https://discord.com/api/webhooks/920007596004474930/O3f90OX8H6z3Vhqgh-AEvXFwDNzNZfLV9CwmYYrjIniSzFUKcrrVREvhZpdbZ4QYisla");
-
-        hook.addEmbed(
-                new DiscordWebhook.EmbedObject()
-                        .setTitle("Muerte de " + player.getName())
-                        .setDescription(e.getDeathMessage())
-                        .setColor(Color.RED)
-        );
-
-        try {
-            hook.execute();
-        } catch (IOException err) {
-            err.printStackTrace();
-        }
-
         var location = e.getEntity().getLocation();
 
         Bukkit.getLogger().info(String.format("%s murió en X: %d Y: %d Z: %d en %s",

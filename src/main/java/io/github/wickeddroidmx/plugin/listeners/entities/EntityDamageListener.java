@@ -95,21 +95,6 @@ public class EntityDamageListener implements Listener {
 
                 ironManCache.remove(uuid);
 
-                var hook = new DiscordWebhook("https://discord.com/api/webhooks/920007596004474930/O3f90OX8H6z3Vhqgh-AEvXFwDNzNZfLV9CwmYYrjIniSzFUKcrrVREvhZpdbZ4QYisla");
-
-                hook.setUsername("Ironman");
-                hook.addEmbed(
-                        new DiscordWebhook.EmbedObject()
-                                .setTitle(player.getName() + " ya no puede ser ironman")
-                                .setColor(Color.RED)
-                );
-
-                try {
-                    hook.execute();
-                } catch (IOException err) {
-                    err.printStackTrace();
-                }
-
                 Bukkit.getPluginManager().callEvent(
                         new ThreadMessageLogEvent(
                                 String.format("> %s ya no puede ser ironman", player.getName()),
@@ -133,27 +118,12 @@ public class EntityDamageListener implements Listener {
                 Bukkit.getOnlinePlayers().forEach(onlinePlayer -> onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0f, 1.0F));
 
 
-                var hook = new DiscordWebhook("https://discord.com/api/webhooks/920007596004474930/O3f90OX8H6z3Vhqgh-AEvXFwDNzNZfLV9CwmYYrjIniSzFUKcrrVREvhZpdbZ4QYisla");
-
-                hook.setUsername("Ironman");
-                hook.addEmbed(
-                        new DiscordWebhook.EmbedObject()
-                                .setTitle(ironPlayer.getName() + " Es el ironman de la partida")
-                                .setColor(Color.GREEN)
-                );
-
                 Bukkit.getPluginManager().callEvent(
                         new ThreadMessageLogEvent(
                                 String.format("> %s es el ironman de la partida", ironPlayer.getName()),
                                 gameManager.getUhcId()
                         )
                 );
-
-                try {
-                    hook.execute();
-                } catch (IOException err) {
-                    err.printStackTrace();
-                }
 
             }
         }

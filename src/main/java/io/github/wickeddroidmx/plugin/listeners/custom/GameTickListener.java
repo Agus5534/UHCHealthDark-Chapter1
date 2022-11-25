@@ -84,21 +84,6 @@ public class GameTickListener implements Listener {
                         )
                 );
             }, 5L);
-
-            var hook = new DiscordWebhook(HookType.LOGS.getUrl());
-
-            hook.setUsername("Partida");
-            hook.addEmbed(
-                    new DiscordWebhook.EmbedObject()
-                            .setTitle("El PvP se ha iniciado")
-                            .setColor(Color.YELLOW)
-            );
-
-            try {
-                hook.execute();
-            } catch (IOException err) {
-                err.printStackTrace();
-            }
         }
 
 
@@ -114,21 +99,6 @@ public class GameTickListener implements Listener {
                         )
                 );
             }, 5L);
-
-            var hook = new DiscordWebhook(HookType.LOGS.getUrl());
-
-            hook.setUsername("Partida");
-            hook.addEmbed(
-                    new DiscordWebhook.EmbedObject()
-                            .setTitle("El Meetup ha iniciado")
-                            .setColor(Color.YELLOW)
-            );
-
-            try {
-                hook.execute();
-            } catch (IOException err) {
-                err.printStackTrace();
-            }
 
             if(gameManager.getTimeForMeetup() == 300) {
                 Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(20, gameManager.getBorderDelay(), false)));

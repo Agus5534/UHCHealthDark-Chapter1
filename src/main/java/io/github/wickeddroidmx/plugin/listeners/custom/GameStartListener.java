@@ -67,21 +67,6 @@ public class GameStartListener implements Listener {
             );
         }, 5L);
 
-        var hook = new DiscordWebhook(HookType.LOGS.getUrl());
-
-        hook.setUsername("Partida");
-        hook.addEmbed(
-                new DiscordWebhook.EmbedObject()
-                        .setTitle("La partida ha iniciado")
-                        .setColor(Color.YELLOW)
-        );
-
-        try {
-            hook.execute();
-        } catch (IOException err) {
-            err.printStackTrace();
-        }
-
         gameManager.setGameState(GameState.PLAYING);
         gameManager.setSeconds(System.currentTimeMillis());
         gameManager.setScatteredPlayers(false);
