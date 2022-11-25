@@ -256,6 +256,7 @@ public class WaitingStatusListeners implements Listener {
     public void onEntityDamageEvent(EntityDamageEvent event) {
         if(!(event.getEntity() instanceof Player)) { return; }
         if(gameManager.getGameState() != GameState.WAITING) { return; }
+        if(!event.getEntity().getLocation().getWorld().getName().equalsIgnoreCase("world")) { return; }
 
         var player = (Player)event.getEntity();
 
