@@ -69,6 +69,10 @@ public class GoldenHeadSetting extends Modality {
         var persistentData = new ItemPersistentData(plugin,"golden_head", item.getItemMeta());
         var player = event.getPlayer();
 
+        if(player.hasPotionEffect(PotionEffectType.ABSORPTION) && player.getAbsorptionAmount() <= 0.0D) {
+            player.removePotionEffect(PotionEffectType.ABSORPTION);
+        }
+
         if(!persistentData.hasData(PersistentDataType.STRING)) { return; }
         if(persistentData.getData(PersistentDataType.STRING) == null) { return; }
 
