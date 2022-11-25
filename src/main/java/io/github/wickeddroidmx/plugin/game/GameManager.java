@@ -57,7 +57,7 @@ public class GameManager {
         this.cape = 150;
         this.appleRate = 5;
 
-        this.cobwebLimit = 12;
+        this.cobwebLimit = 16;
         this.seconds = 0;
         this.currentTime = 0;
         this.timeForPvP = 3600;
