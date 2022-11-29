@@ -204,7 +204,7 @@ public class StaffGameCommands implements CommandClass  {
                 names = "time"
         )
         public void timeCommand(@Sender Player sender, @Named("pvp") @OptArg Integer pvp, @Named("meetup") @OptArg Integer meetup) {
-            if(pvp != -1 && meetup != null) {
+            if(pvp != null && meetup != null) {
                 if(pvp > meetup) {
                     sender.sendMessage(ChatUtils.PREFIX + "El tiempo meetup no puede ser mayor al de pvp.");
                     return;
@@ -213,7 +213,7 @@ public class StaffGameCommands implements CommandClass  {
                 Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(meetup, pvp));
             }
 
-            if(pvp != -1) {
+            if(pvp != null) {
                 Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(gameManager.getTimeForMeetup(), pvp));
                 return;
             }
