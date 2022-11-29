@@ -171,6 +171,11 @@ public class CutCleanScenario extends Modality {
 
                     spawnXP(block.getLocation(), 4);
                 }
+                case DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE -> {
+                    block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.DIAMOND));
+
+                    spawnXP(block.getLocation(), 4);
+                }
             }
         }
     }
