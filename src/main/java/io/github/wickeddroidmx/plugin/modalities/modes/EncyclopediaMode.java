@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.enchantment.EnchantItemEvent;
@@ -34,8 +35,21 @@ public class EncyclopediaMode extends Modality {
         int n = ThreadLocalRandom.current().nextInt(1,100);
 
         var player = event.getEnchanter();
-        var enchantedItem = event.getItem().clone();
-        enchantedItem.addUnsafeEnchantments(event.getEnchantsToAdd());
+        var enchantedItem = new ItemCreator(event.getItem().clone());
+
+        enchantedItem.removeEnchantments();
+
+        event.getItem().getEnchantments().forEach((enchantment, integer) -> {
+            if(!enchantedItem.containsEnchantment(enchantment)) {
+                enchantedItem.enchants(enchantment, integer);
+            }
+        });
+
+        event.getEnchantsToAdd().forEach((enchantment, integer) -> {
+            if(!enchantedItem.containsEnchantment(enchantment)) {
+                enchantedItem.enchants(enchantment, integer);
+            }
+        });
 
         if(n > 93) {
             player.getInventory().addItem(enchantedItem);
