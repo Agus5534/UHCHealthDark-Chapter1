@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.commands;
 
 import io.github.agus5534.hdbot.Ranks;
 import io.github.wickeddroidmx.plugin.experiments.Experiment;
+import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.listeners.custom.WaitingStatusListeners;
@@ -50,6 +51,8 @@ public class PlayerCommands implements CommandClass {
 
     @Inject
     private PollManager pollManager;
+    @Inject
+    private ExperimentManager experimentManager;
 
     @Command(
             names = {"fullbright", "fb", "bright"}
@@ -271,6 +274,18 @@ public class PlayerCommands implements CommandClass {
                 )
         );
 
+    }
+
+    @Command(
+            names = {"arena", "gamearena"}
+    )
+    public void arenaCommand(@Sender Player sender) {
+        if(!experimentManager.hasExperiment(sender, "GAME_ARENA_COMMAND_EXPERIMENT")) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No estás autorizado a utilizar esto."));
+            return;
+        }
+
+        sender.sendMessage(ChatUtils.formatComponentPrefix("Comando en desarrollo"));
     }
 
     public int getAmount(Player player, Material material) {
