@@ -15,7 +15,7 @@ public abstract class UHCScoreboard extends FastBoard {
     public UHCScoreboard(Player player, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
         super(player);
 
-        this.updateTitle(ChatUtils.format("&6UHC&7HealthDark &7- &6#" + gameManager.getUhcId()));
+        this.updateTitle(ChatUtils.format("&6UHC &bHealthDark &7- &6#" + gameManager.getUhcId()));
 
         this.update(modeManager, gameManager, playerManager, teamManager);
     }
