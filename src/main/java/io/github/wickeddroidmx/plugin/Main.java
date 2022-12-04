@@ -25,6 +25,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.RenderType;
@@ -56,6 +57,8 @@ public class Main extends JavaPlugin {
     private ExperimentManager experimentManager;
     @InjectIgnore
     private Region ARENA;
+    @InjectIgnore
+    private Region ARENA_WATER;
     private Rank rank;
 
     @Override
@@ -68,6 +71,11 @@ public class Main extends JavaPlugin {
         ARENA = new Region(
                 new Location(Bukkit.getWorlds().get(0), 188, 55, 179),
                 new Location(Bukkit.getWorlds().get(0), 302, 12, 308)
+        );
+
+        ARENA_WATER = new Region(
+                new Location(Bukkit.getWorlds().get(0), 230, 12, 265),
+                new Location(Bukkit.getWorlds().get(0), 222, 56, 273)
         );
 
         Bukkit.getScoreboardManager().getMainScoreboard().getTeams()
@@ -84,6 +92,10 @@ public class Main extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, ()-> pollManager.updatePollStatus(this),2L, 10L);
 
         Bukkit.getWorlds().get(0).setPVP(true);
+
+        Bukkit.getScheduler().runTaskLater(this, ()-> {
+            clearArena();
+        }, 300L);
     }
 
     @Override
@@ -93,6 +105,18 @@ public class Main extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void clearArena() {
+        getARENA().getBlocksTypeOf(Material.OAK_LEAVES).forEach(block -> block.setType(Material.AIR));
+        getARENA().getBlocksTypeOf(Material.COBWEB).forEach(block -> block.setType(Material.AIR));
+        getARENA().getBlocksTypeOf(Material.LAVA).forEach(block -> block.setType(Material.AIR));
+        getARENA().getBlocksTypeOf(Material.OBSIDIAN).forEach(block -> block.setType(Material.AIR));
+        getARENA().getBlocksTypeOf(Material.WATER).forEach(block -> {
+            if(!getARENA_WATER().isInsideRegion(block.getLocation())) {
+                block.setType(Material.AIR);
+            }
+        });
     }
 
 
@@ -122,5 +146,9 @@ public class Main extends JavaPlugin {
 
     public Region getARENA() {
         return ARENA;
+    }
+
+    public Region getARENA_WATER() {
+        return ARENA_WATER;
     }
 }

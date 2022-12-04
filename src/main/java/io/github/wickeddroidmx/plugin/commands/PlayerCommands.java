@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.commands;
 
 import io.github.agus5534.hdbot.Ranks;
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.experiments.Experiment;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -19,10 +20,8 @@ import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Named;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -30,10 +29,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.units.qual.C;
 
 import javax.inject.Inject;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerCommands implements CommandClass {
 
@@ -53,6 +49,8 @@ public class PlayerCommands implements CommandClass {
     private PollManager pollManager;
     @Inject
     private ExperimentManager experimentManager;
+    @Inject
+    private Main plugin;
 
     @Command(
             names = {"fullbright", "fb", "bright"}
@@ -280,12 +278,47 @@ public class PlayerCommands implements CommandClass {
             names = {"arena", "gamearena"}
     )
     public void arenaCommand(@Sender Player sender) {
+        HashMap<Integer, ItemStack> kit = new HashMap<>();
+
         if(!experimentManager.hasExperiment(sender, "GAME_ARENA_COMMAND_EXPERIMENT")) {
             sender.sendMessage(ChatUtils.formatComponentPrefix("No estás autorizado a utilizar esto."));
             return;
         }
 
-        sender.sendMessage(ChatUtils.formatComponentPrefix("Comando en desarrollo"));
+        if(plugin.getARENA().isInsideRegion(sender.getLocation())) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Ya estás en la arena!"));
+            return;
+        }
+
+        kit.put(0, new ItemCreator(Material.IRON_SWORD));
+        kit.put(1, new ItemCreator(Material.STONE_AXE));
+        kit.put(2, new ItemCreator(Material.BOW).enchants(Enchantment.ARROW_DAMAGE, 1));
+        kit.put(3, new ItemCreator(Material.GOLDEN_APPLE).amount(3));
+        kit.put(4, new ItemCreator(Material.OAK_LEAVES).amount(64));
+        kit.put(5, new ItemCreator(Material.WATER_BUCKET));
+        kit.put(6, new ItemCreator(Material.LAVA_BUCKET));
+        kit.put(7, new ItemCreator(Material.COBWEB).amount(8));
+        kit.put(8, new ItemCreator(Material.SHEARS).enchants(Enchantment.DURABILITY, 3));
+        kit.put(29, new ItemCreator(Material.ARROW).amount(16));
+        kit.put(32, new ItemCreator(Material.WATER_BUCKET));
+        kit.put(33, new ItemCreator(Material.LAVA_BUCKET));
+        kit.put(36, new ItemCreator(Material.IRON_BOOTS).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
+        kit.put(37, new ItemCreator(Material.IRON_LEGGINGS).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
+        kit.put(38, new ItemCreator(Material.IRON_CHESTPLATE).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
+        kit.put(39, new ItemCreator(Material.IRON_HELMET).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2).enchants(Enchantment.DURABILITY, 1));
+        kit.put(40, new ItemCreator(Material.SHIELD));
+
+        sender.getInventory().clear();
+
+        for(var i : kit.keySet()) {
+            sender.getInventory().setItem(i, kit.get(i));
+        }
+
+        sender.setGameMode(GameMode.SURVIVAL);
+        sender.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20, 200));
+        sender.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 40, 200));
+
+        sender.teleport(new Location(Bukkit.getWorlds().get(0), 225, 22, 244));
     }
 
     public int getAmount(Player player, Material material) {

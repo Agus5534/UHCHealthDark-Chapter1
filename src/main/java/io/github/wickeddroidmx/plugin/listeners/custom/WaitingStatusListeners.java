@@ -53,6 +53,7 @@ public class WaitingStatusListeners implements Listener {
     ItemStack SPEED_BOOST;
     ItemStack STUN;
     ItemStack RETURN_LOBBY;
+    ItemStack TELEPORT_ARENA;
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
@@ -101,7 +102,7 @@ public class WaitingStatusListeners implements Listener {
                 return;
             }
 
-            addCooldown(damager, 20);
+            addCooldown(damager, 16);
             addStun(victim);
         }
     }
@@ -130,12 +131,17 @@ public class WaitingStatusListeners implements Listener {
             if(!donatorsList.contains(p)) { return; }
 
             p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 65, 1, false, false, false));
-            addCooldown(p, 10);
+            addCooldown(p, 9);
         }
 
         if(isGlobalItem("lobby", item)) {
             event.getPlayer().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-            addCooldown(p, 7);
+            addCooldown(p, 5);
+        }
+
+        if(isGlobalItem("arena", item)) {
+            event.getPlayer().chat("/gamearena");
+            addCooldown(p, 5);
         }
 
     }
@@ -176,6 +182,10 @@ public class WaitingStatusListeners implements Listener {
             RETURN_LOBBY = new ItemCreator(Material.NETHER_STAR).name(ChatUtils.formatC("&bVolver al Spawn")).lore(ChatUtils.formatC("&7- Vuelve al lobby")).setPersistentData(plugin, "global", PersistentDataType.STRING, "lobby");
         }
 
+        if(TELEPORT_ARENA == null) {
+            TELEPORT_ARENA = new ItemCreator(Material.EMERALD).looksEnchanted().name(ChatUtils.formatC("&bIr a la arena")).lore(ChatUtils.formatC("&7- Ve a la arena")).setPersistentData(plugin, "global", PersistentDataType.STRING, "arena");
+        }
+
         if(gameManager.getGameState() != GameState.WAITING) {
             return;
         }
@@ -184,6 +194,7 @@ public class WaitingStatusListeners implements Listener {
 
         Bukkit.getScheduler().runTaskLater(plugin, ()-> {
             player.getInventory().setItem(8, RETURN_LOBBY);
+            player.getInventory().setItem(7, TELEPORT_ARENA);
 
             if(!donatorsList.contains(player)) { return; }
 
@@ -196,7 +207,26 @@ public class WaitingStatusListeners implements Listener {
         if(event.getPlayer().getGameMode() != GameMode.SURVIVAL) { return; }
 
         if(event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
-            event.setCancelled(true);
+            var blockLoc = event.getBlock().getLocation();
+            var blockType = event.getBlock().getType();
+
+            if(!plugin.getARENA().isInsideRegion(blockLoc)) {
+                event.setCancelled(true);
+                return;
+            }
+
+            if(blockType != Material.LAVA
+            && blockType != Material.WATER
+            && blockType != Material.COBWEB
+            && blockType != Material.OAK_LEAVES) {
+                event.setCancelled(true);
+                return;
+            }
+
+            if(plugin.getARENA_WATER().isInsideRegion(blockLoc)) {
+                event.setCancelled(true);
+            }
+
         }
     }
 
@@ -205,8 +235,42 @@ public class WaitingStatusListeners implements Listener {
         if(event.getPlayer().getGameMode() != GameMode.SURVIVAL) { return; }
 
         if(event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
+            var blockLoc = event.getBlock().getLocation();
+            var blockType = event.getBlock().getType();
+
+            if(!plugin.getARENA().isInsideRegion(blockLoc)) {
+                event.setCancelled(true);
+                return;
+            }
+
+            if(blockType != Material.LAVA
+            && blockType != Material.WATER
+            && blockType != Material.COBWEB
+            && blockType != Material.OAK_LEAVES) {
+                event.setCancelled(true);
+                return;
+            }
+
+            if(plugin.getARENA_WATER().isInsideRegion(blockLoc)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void playerBucketFill(PlayerBucketFillEvent event) {
+        if(!event.getBlock().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
+            return;
+        }
+
+        if(!plugin.getARENA().isInsideRegion(event.getBlock().getLocation())) {
             event.setCancelled(true);
         }
+
+        if(plugin.getARENA_WATER().isInsideRegion(event.getBlock().getLocation())) {
+            event.setCancelled(true);
+        }
+
     }
 
     @EventHandler
@@ -271,6 +335,15 @@ public class WaitingStatusListeners implements Listener {
 
         player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
         player.setGameMode(GameMode.ADVENTURE);
+
+        Bukkit.getScheduler().runTaskLater(plugin, ()-> {
+            player.getInventory().setItem(8, RETURN_LOBBY);
+            player.getInventory().setItem(7, TELEPORT_ARENA);
+
+            if(!donatorsList.contains(player)) { return; }
+
+            player.getInventory().addItem(STUN, SPEED_BOOST);
+        },2L);
     }
 
     private void addCooldown(Player player, int seconds) {

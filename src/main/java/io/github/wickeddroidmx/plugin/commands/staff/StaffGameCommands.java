@@ -28,8 +28,12 @@ import me.fixeddev.commandflow.annotated.annotation.*;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.io.IOException;
 import java.util.Date;
@@ -66,6 +70,16 @@ public class StaffGameCommands implements CommandClass  {
             Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + "No se puede iniciar la partida, hay un mundo recreandose."));
             return;
         }
+
+        Bukkit.getScheduler().runTask(plugin, ()-> Bukkit.getOnlinePlayers().forEach(player -> {
+            player.getInventory().clear();
+            player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 30, 20, false, false, false));
+
+            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            player.setGameMode(GameMode.ADVENTURE);
+        }));
 
         Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getOnlinePlayers().forEach(player -> {
             var uhcPlayer = playerManager.getPlayer(player.getUniqueId());
@@ -116,6 +130,14 @@ public class StaffGameCommands implements CommandClass  {
     )
     public void hostCommand(@Sender Player sender) {
         gameManager.setHost(sender);
+    }
+
+    @Command(
+            names = "cleararena"
+    )
+    public void clearArenaCommand(@Sender Player sender) {
+        sender.sendMessage(ChatUtils.formatComponentPrefix("Limpiando arena"));
+        plugin.clearArena();
     }
 
     @Command(
