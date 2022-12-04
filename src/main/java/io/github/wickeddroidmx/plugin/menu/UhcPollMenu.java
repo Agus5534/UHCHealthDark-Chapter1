@@ -24,18 +24,18 @@ public class UhcPollMenu {
                                 "xaxxxxxcx",
                                 "xxxxxxxxx")
                 .setLayoutItem('x', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.GRAY_STAINED_GLASS_PANE).name(ChatColor.AQUA + pollManager.getActivePoll().getQuestion())).build())
-                .setLayoutItem('a', ItemClickable.builder().setItemStack(new ItemCreator(Material.GREEN_CONCRETE).name(ChatColor.GOLD + pollManager.getActivePoll().getAns1())).setAction(e -> {
+                .setLayoutItem('a', ItemClickable.builder().setItemStack(new ItemCreator(Material.MAGENTA_CONCRETE).name(ChatColor.GOLD + pollManager.getActivePoll().getAns1())).setAction(e -> {
                     pollManager.getActivePoll().registerVote((Player)e.getWhoClicked(), 1);
                     e.getWhoClicked().closeInventory(InventoryCloseEvent.Reason.CANT_USE);
-                    Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + String.format("%s votó por '&6%s&7'",
+                    Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + String.format("%s votó la opción '&6%s&7'",
                             e.getWhoClicked().getName(),
                             pollManager.getActivePoll().getAns1())));
                     return true;
                 }).build())
-                .setLayoutItem('c', ItemClickable.builder().setItemStack(new ItemCreator(Material.RED_CONCRETE).name(ChatColor.GOLD + pollManager.getActivePoll().getAns2())).setAction(e -> {
+                .setLayoutItem('c', ItemClickable.builder().setItemStack(new ItemCreator(Material.PURPLE_CONCRETE).name(ChatColor.GOLD + pollManager.getActivePoll().getAns2())).setAction(e -> {
                     pollManager.getActivePoll().registerVote((Player)e.getWhoClicked(), 2);
                     e.getWhoClicked().closeInventory(InventoryCloseEvent.Reason.CANT_USE);
-                    Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + String.format("%s votó por '&6%s&7'",
+                    Bukkit.broadcast(ChatUtils.formatC(ChatUtils.PREFIX + String.format("%s votó la opción '&6%s&7'",
                             e.getWhoClicked().getName(),
                             pollManager.getActivePoll().getAns2())));
                     return true;

@@ -183,7 +183,7 @@ public class PlayerCommands implements CommandClass {
     }
 
     @Command(
-            names="bs"
+            names={ "bs", "bookstuff" }
     )
     public boolean bsCommand(@Sender Player sender) {
         var uhcTeam = teamManager.getPlayerTeam(sender.getUniqueId());

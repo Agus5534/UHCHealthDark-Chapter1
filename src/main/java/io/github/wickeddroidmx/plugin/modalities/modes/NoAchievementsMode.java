@@ -17,7 +17,7 @@ import java.lang.instrument.IllegalClassFormatException;
         key = "no_achievements",
         name = "&aNo Logros",
         material = Material.EXPERIENCE_BOTTLE,
-        lore = {"&7- Los logros estarán ocultos al chat-"}
+        lore = {"&7- Los logros estarán ocultos al chat."}
 )
 public class NoAchievementsMode extends Modality {
     public NoAchievementsMode() throws IllegalClassFormatException {

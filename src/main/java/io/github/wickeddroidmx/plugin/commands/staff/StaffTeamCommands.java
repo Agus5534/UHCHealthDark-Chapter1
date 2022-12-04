@@ -21,7 +21,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.checkerframework.checker.units.qual.C;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -334,12 +333,12 @@ public class StaffTeamCommands implements CommandClass {
 
             sender.sendMessage(ChatUtils.PREFIX + "Se ha hecho el double dates correctamente");
         }
-        @Command(names = "chosen")
-        public void chosenCommand(@Sender Player sender) {
+        @Command(names = "captains")
+        public void captainsCommand(@Sender Player sender) {
             int teamSize = teamManager.getTeamSize();
             int toSelect = Bukkit.getOnlinePlayers().size() / teamSize;
 
-            if(!modeManager.isActiveMode("chosen")) {
+            if(!modeManager.isActiveMode("captains")) {
                 sender.sendMessage(ChatUtils.PREFIX + "No está activo el modo Chosen");
                 return;
             }

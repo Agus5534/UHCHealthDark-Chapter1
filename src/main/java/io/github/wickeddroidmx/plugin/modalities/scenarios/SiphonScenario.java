@@ -21,7 +21,7 @@ import java.util.Objects;
         material = Material.GOLDEN_APPLE,
         lore = {
                 "&7- Al matar a alguien se te cura la vida si tienes menos de 5 corazones",
-                "&7- Si tienes más recibes 3 corazones de Absorption"
+                "&7- Si tienes más recibes 4 corazones de Absorption"
         }
 )
 public class SiphonScenario extends Modality {
@@ -36,7 +36,7 @@ public class SiphonScenario extends Modality {
 
         if (killer != null) {
             if (killer.getHealth() <= 10.0) {
-                killer.setHealth(killer.getHealth()+5.0);
+                killer.setHealth(killer.getHealth()+7.5);
             } else {
                 killer.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 200, 2));
             }

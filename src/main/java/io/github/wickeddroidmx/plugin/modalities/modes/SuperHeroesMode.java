@@ -9,18 +9,19 @@ import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.entities.EntityPersistentData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @GameModality(
@@ -31,8 +32,8 @@ import java.util.concurrent.ThreadLocalRandom;
         lore = {
                 "&7- Al iniciar la partida recibirás un buff de los siguientes: ",
                 "&7- Speed II & Night Vision I",
-                "&7- Jump Boost III & Speed I & Haste I",
-                "&7- Double Health & Resistance I",
+                "&7- Jump Boost III & Speed I",
+                "&7- +50% de Vida & Resistance I",
                 "&7- Resistance I & Fire Resistance I",
                 "&7- Dolphin's Grace I & Water Breathing I & Luck II & Haste I"
         }
@@ -45,13 +46,32 @@ public class SuperHeroesMode extends Modality {
     @Inject
     private GameManager gameManager;
 
+    private List<String> tags;
+
     public SuperHeroesMode() throws IllegalClassFormatException {
         super();
+    }
+
+    @Override
+    public void activeMode() {
+        super.activeMode();
+
+        String[] tagArr = new String[]{
+                "movement",
+                "jump",
+                "tank",
+                "fire",
+                "water"
+        };
+
+        tags = Arrays.asList(tagArr);
     }
 
     @EventHandler
     public void onGameStart(GameStartEvent e) {
         Bukkit.getOnlinePlayers().forEach(player -> Bukkit.getScheduler().runTaskLater(plugin, () -> giveSuper(player), 200L));
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()->applyEffect(), 220L, 18L);
     }
 
     @EventHandler
@@ -62,33 +82,54 @@ public class SuperHeroesMode extends Modality {
     }
 
     private void giveSuper(Player player) {
-        var integer = ThreadLocalRandom.current().nextInt(1,5);
+        String s = tags.get(new Random().nextInt(tags.size()));
 
-        switch (integer) {
-            case 1 -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0, true, true, true));
+        EntityPersistentData entityPersistentData = new EntityPersistentData(plugin, "power", player);
+        entityPersistentData.setData(PersistentDataType.STRING, s);
+    }
+
+    private void applyEffect() {
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            EntityPersistentData persistentData = new EntityPersistentData(plugin, "power", player);
+
+            if(persistentData == null) { return; }
+
+            if(!persistentData.hasData(PersistentDataType.STRING)) { return; }
+
+            if(persistentData.getData(PersistentDataType.STRING) == null) { return; }
+
+            String s = (String) persistentData.getData(PersistentDataType.STRING);
+
+            switch (s) {
+                case "movement" -> {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 219, 1, true, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 219, 0, true, false, true));
+                }
+                case "jump" -> {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 219, 2, true, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 219, 0, true, false, true));
+                }
+                case "tank" -> {
+                    var hp = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+
+                    if(hp.getBaseValue() != 30.0D) {
+                        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(30.0D);
+                        player.setHealth(30.0D);
+                    }
+
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 219, 0, true, false, true));
+                }
+                case "fire" -> {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 219, 0, true, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 219, 0, true, false, true));
+                }
+                case "water" -> {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 219, 0, true, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 219, 0, true, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, 219, 1, true, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 219, 1, true, false, true));
+                }
             }
-            case 2 -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, Integer.MAX_VALUE, 0, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, Integer.MAX_VALUE, 0, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, Integer.MAX_VALUE, 1, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 1, true, true, true));
-            }
-            case 3 -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 2, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 0, true, true, true));
-            }
-            case 4 -> {
-                Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(40.0D);
-                player.setHealth(40.0D);
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, true, true, true));
-            }
-            default -> {
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0, true, true, true));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0, true, true, true));
-            }
-        }
+        });
     }
 }

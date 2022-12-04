@@ -62,7 +62,7 @@ public class ModeManager {
 
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
-    private ChosenMode chosenMode;
+    private CaptainsMode captainsMode;
     private UnknownTeamsMode unknownTeamsMode;
     private BrothersMode brothersMode;
 
@@ -140,7 +140,7 @@ public class ModeManager {
                 starterBookSetting,
                 secondLifeMode,
                 molesMode,
-                chosenMode,
+                captainsMode,
                 uhcSkyHighMode,
                 anvilDiscountsMode,
                 noBurnSetting,

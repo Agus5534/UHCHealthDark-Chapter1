@@ -39,28 +39,22 @@ public class LoveAtFirstSightMode extends Modality {
                 && e.getDamager() instanceof Player damager) {
             var playerTeam = teamManager.getPlayerTeam(player.getUniqueId());
 
-            Bukkit.getLogger().info("Hola2");
 
             if (playerTeam != null)
                 return;
-
-            Bukkit.getLogger().info("Hola");
 
             if (teamManager.getPlayerTeam(damager.getUniqueId()) == null) {
                 teamManager.createTeam(player);
 
                 Bukkit.getPluginManager().callEvent(new TeamCreateEvent(teamManager.getPlayerTeam(damager.getUniqueId()), player));
-                Bukkit.getLogger().info("Hola3");
             }
 
             var team = teamManager.getPlayerTeam(damager.getUniqueId());
 
-            Bukkit.getLogger().info("Hol4");
 
             if (team.getSize() == teamManager.getTeamSize())
                 return;
 
-            Bukkit.getLogger().info("Hola5");
 
             Bukkit.getPluginManager().callEvent(new PlayerJoinedTeamEvent(team, player));
 

@@ -25,7 +25,7 @@ import java.util.Collections;
         modalityType = ModalityType.MODE,
         lore = {"&7- Flame y FireAspect se encuentran desactivados"}
 )
-public class ColdWeaponsMode extends Modality {
+public class    ColdWeaponsMode extends Modality {
 
     public ColdWeaponsMode() throws IllegalClassFormatException {
         super();

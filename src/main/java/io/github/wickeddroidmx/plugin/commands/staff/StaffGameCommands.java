@@ -80,17 +80,30 @@ public class StaffGameCommands implements CommandClass  {
         var delayForTeam = 0;
         var random = new Random();
 
-        for (var uhcTeam : teamManager.getUhcTeams().values()) {
-            var x = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
-            var z = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
+        if(modeManager.isActiveMode("unknown_team")) {
+            for(var player : Bukkit.getOnlinePlayers()) {
+                var x = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
+                var z = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
 
-            var location = new Location(Bukkit.getWorld("uhc_world"), x, 200, z);
+                var location = new Location(Bukkit.getWorld("uhc_world"), x, 200, z);
 
-            new ScatterTask(uhcTeam, location).runTaskLater(plugin, delayForTeam);
+                new ScatterTask(player, location).runTaskLater(plugin, delayForTeam);
 
-            Bukkit.getPluginManager().callEvent(new TeamScatteredEvent(uhcTeam, location));
+                delayForTeam += 40;
+            }
+        } else {
+            for (var uhcTeam : teamManager.getUhcTeams().values()) {
+                var x = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
+                var z = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
 
-            delayForTeam += 40;
+                var location = new Location(Bukkit.getWorld("uhc_world"), x, 200, z);
+
+                new ScatterTask(uhcTeam, location).runTaskLater(plugin, delayForTeam);
+
+                Bukkit.getPluginManager().callEvent(new TeamScatteredEvent(uhcTeam, location));
+
+                delayForTeam += 40;
+            }
         }
 
         gameManager.setScatteredPlayers(true);
@@ -118,8 +131,8 @@ public class StaffGameCommands implements CommandClass  {
             hook.setContent(String.format("> **UHCHealthDark | #%d**\\n\\n", gameManager.getUhcId()) +
                             String.format("> **Host:** %s\\n", sender.getName()) +
                             String.format("> **Inicia en:** <t:%s:R>\\n\\n", new Date(timeToStart).getTime()) +
-                            String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.isActiveMode("chosen")
-                                 ? "Chosen"
+                            String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.isActiveMode("captains")
+                                 ? "Captains"
                                  : "Random"
                             ) +
                             String.format("> **UHC:** %s\\n", removeColors(modeManager.getModesActive(ModalityType.UHC).size() == 0
@@ -307,6 +320,7 @@ public class StaffGameCommands implements CommandClass  {
             pollManager.setPoll(poll);
 
             target.sendMessage(ChatUtils.PREFIX + "Se ha creado la encuesta.");
+
         }
     }
 

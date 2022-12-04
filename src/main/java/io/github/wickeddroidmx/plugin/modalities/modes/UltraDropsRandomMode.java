@@ -29,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
         lore = {"&7- Todos los drops serán aleatorios."},
         experimental = true
 )
-public class UltraDropsRandomMode extends Modality {
+public class    UltraDropsRandomMode extends Modality {
     private final Material[] blockedMaterials;
 
     private final List<Material> possibleDrops = new ArrayList<>();

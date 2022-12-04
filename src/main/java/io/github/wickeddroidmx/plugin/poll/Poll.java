@@ -18,6 +18,8 @@ public class Poll {
 
     private int ans1Votes, ans2Votes, pollDuration;
 
+    private final long startMillis;
+
     private boolean closed = false;
 
     private final ConcursantTypes concursantTypes;
@@ -38,6 +40,7 @@ public class Poll {
         ans1Votes = 0;
         ans2Votes = 0;
         concursants = new ArrayList<>();
+        startMillis = System.currentTimeMillis();
 
         bukkitTask = Bukkit.getScheduler().runTaskLater(plugin, ()-> closed = true, 20*pollDuration);
     }
@@ -93,6 +96,10 @@ public class Poll {
 
     public int getPollDuration() {
         return pollDuration;
+    }
+
+    public long getStartMillis() {
+        return startMillis;
     }
 
     public ConcursantTypes getConcursantTypes() {

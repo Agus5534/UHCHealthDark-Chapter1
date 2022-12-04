@@ -46,6 +46,7 @@ public class DoubleOresScenario extends Modality {
                 case IRON_ORE, DEEPSLATE_IRON_ORE ->  event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.RAW_IRON));
                 case GOLD_ORE, DEEPSLATE_GOLD_ORE ->  event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.RAW_GOLD));
                 case COPPER_ORE,DEEPSLATE_COPPER_ORE ->  event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.RAW_COPPER));
+                case DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE -> event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(Material.DIAMOND));
                 default ->  event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), new ItemStack(type));
             }
 

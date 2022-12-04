@@ -26,7 +26,7 @@ import java.lang.instrument.IllegalClassFormatException;
         lore = {
                 "&7- Los teams se revelan a X min.",
                 "&7- Activa el Friendly Fire entre los equipos.",
-                "&7- Agrega /staffgame settings revealTime [minuto]"
+                "&7- Agrega /staffgame settings revealtime [minuto]"
         }
 )
 public class UnknownTeamsMode extends Modality {
