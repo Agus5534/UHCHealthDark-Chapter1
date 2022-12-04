@@ -75,7 +75,7 @@ public class StaffWorldCommands implements CommandClass {
 
             uhcWorld.removeBannedBiomes(biome);
 
-            sender.sendMessage(ChatUtils.PREFIX + String.format("Has elinado %s como bioma baneado", biome.toString()));
+            sender.sendMessage(ChatUtils.PREFIX + String.format("Has eliminado %s como bioma baneado", biome.toString()));
         }
     }
 

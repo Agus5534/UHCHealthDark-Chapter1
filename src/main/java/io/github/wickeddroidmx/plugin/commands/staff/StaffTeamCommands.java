@@ -197,6 +197,7 @@ public class StaffTeamCommands implements CommandClass {
 
             target.teleport(loc);
 
+            target.getActivePotionEffects().forEach(potionEffect -> target.removePotionEffect(potionEffect.getType()));
             target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 400, 10, false,false,false));
 
             Bukkit.broadcastMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha revivido al jugador &6"+target.getName()));

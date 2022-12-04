@@ -50,7 +50,7 @@ public class WorldBorderMoveListener implements Listener {
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 wb.setDamageAmount(1.0);
 
-                Bukkit.getOnlinePlayers().forEach(p -> {
+               /* Bukkit.getOnlinePlayers().forEach(p -> {
                     if(p.getWorld().equals(nether) && p.getGameMode() == GameMode.SURVIVAL) {
                         var event = new EntityDamageEvent(p, EntityDamageEvent.DamageCause.CRAMMING, 100000);
 
@@ -60,7 +60,7 @@ public class WorldBorderMoveListener implements Listener {
 
                         p.setHealth(0);
                     }
-                });
+                });*/
             }, 8401);
         }
 

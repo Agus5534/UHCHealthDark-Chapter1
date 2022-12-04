@@ -78,7 +78,7 @@ public class BestPVEMode extends Modality {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> {
             if(modeManager.isActiveMode("best_pve")) {
-                health = health+2.0D;
+                this.health = this.health + 2.0D;
 
                 Bukkit.broadcast(ChatUtils.formatComponentPrefix("Se ha aumentado 1 corazon."));
             }
@@ -119,7 +119,7 @@ public class BestPVEMode extends Modality {
                 .forEach(p -> {
                     var h = p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
 
-                    if(health != h) {
+                    if(this.health != h) {
                         p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
                         p.setHealth(p.getHealth()+2.0);
                     }

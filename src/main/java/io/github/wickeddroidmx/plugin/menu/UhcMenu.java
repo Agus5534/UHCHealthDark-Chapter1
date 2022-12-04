@@ -6,10 +6,7 @@ import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
@@ -36,7 +33,7 @@ public class UhcMenu {
     private TeamManager teamManager;
 
     public Inventory getIronManMenu() {
-        return GUIBuilder.builderPaginated(Player.class, "IronMans - %page%")
+        return GUIBuilder.builderPaginated(OfflinePlayer.class, "IronMans - %page%")
                 .fillBorders(ItemClickable
                         .builderCancellingEvent()
                         .setItemStack(ItemBuilder
@@ -52,10 +49,10 @@ public class UhcMenu {
                                 .setName("")
                                 .build())
                         .build())
-                .setItemParser(player -> ItemClickable.builderCancellingEvent().setItemStack(
+                .setItemParser(offlinePlayer -> ItemClickable.builderCancellingEvent().setItemStack(
                         ItemBuilder.newSkullBuilder(1)
-                                .setOwner(player.getName())
-                                .setName(ChatColor.GOLD + player.getName())
+                                .setOwner(offlinePlayer.getName())
+                                .setName(ChatColor.GOLD + offlinePlayer.getName())
                                 .build()
                 ).build())
                 .setNextPageItem(page -> ItemClickable.builderCancellingEvent(53)
@@ -73,8 +70,7 @@ public class UhcMenu {
                 )
                 .setEntities(ironManCache.values()
                         .stream()
-                        .map(Bukkit::getPlayer)
-                        .sorted(Comparator.comparing(Player::getName))
+                        .map(Bukkit::getOfflinePlayer)
                         .collect(Collectors.toList()))
                 .setBounds(10, 35)
                 .setItemsPerRow(7)

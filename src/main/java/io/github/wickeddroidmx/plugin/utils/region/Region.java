@@ -1,7 +1,12 @@
 package io.github.wickeddroidmx.plugin.utils.region;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Region {
@@ -44,5 +49,23 @@ public class Region {
                 && location.getX() >= minX && location.getX() <= maxX
                 && location.getY() >= minY && location.getY() <= maxY
                 && location.getZ() >= minZ && location.getZ() <= maxZ;
+    }
+
+    public List<Block> getBlocksTypeOf(Material m) {
+        List<Block> list = new ArrayList<>();
+
+        for(int x = (int) minX; x < maxX; x++) {
+            for(int z = (int) minZ; z < maxZ; z++) {
+                for(int y = (int) minY; y < maxY; y++) {
+                    Block block = firstPoint.getWorld().getBlockAt(x, y, z);
+
+                    if(block.getType() == m) {
+                        list.add(block);
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 }
