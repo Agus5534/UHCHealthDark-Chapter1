@@ -137,6 +137,7 @@ public class StaffTeamCommands implements CommandClass {
                 return;
             }
 
+            target.chat("/tl");
             target.setHealth(0.0D);
 
             Bukkit.getScheduler().runTaskLater(plugin, ()-> {
