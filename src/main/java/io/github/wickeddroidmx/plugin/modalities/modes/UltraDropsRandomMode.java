@@ -1,5 +1,7 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
+import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
@@ -8,12 +10,14 @@ import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +35,8 @@ import java.util.concurrent.ThreadLocalRandom;
 )
 public class    UltraDropsRandomMode extends Modality {
     private final Material[] blockedMaterials;
+    @Inject
+    private Main plugin;
 
     private final List<Material> possibleDrops = new ArrayList<>();
 
@@ -83,6 +89,22 @@ public class    UltraDropsRandomMode extends Modality {
          }
     }
 
+    @EventHandler
+    public void onGameStart(GameStartEvent event) {
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> {
+            if(this.isEnabled()) {
+                Bukkit.broadcast(ChatUtils.formatComponentPrefix("En un minuto se borraran entidades."));
+            }
+        }, 9600L, 9600L);
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin , ()-> {
+            if(this.isEnabled()) {
+                Bukkit.broadcast(ChatUtils.formatComponentPrefix("Entidades eliminadas."));
+                lagClear();
+            }
+        }, 10800L, 10800L);
+    }
 
     @EventHandler
     public void onDestroy(BlockBreakEvent event) {
@@ -155,6 +177,16 @@ public class    UltraDropsRandomMode extends Modality {
                 event.getDrops().clear();
 
                 event.getDrops().add(item);
+            }
+        }
+    }
+
+    private void lagClear() {
+        for(var w : Bukkit.getWorlds()) {
+            for(var e : w.getLivingEntities()) {
+                if(e.getType() == EntityType.DROPPED_ITEM) {
+                    e.remove();
+                }
             }
         }
     }
