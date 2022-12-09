@@ -1,5 +1,7 @@
 package io.github.wickeddroidmx.plugin.commands.staff;
 
+import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.team.*;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
@@ -47,6 +49,8 @@ public class StaffTeamCommands implements CommandClass {
 
     @Inject
     private GameManager gameManager;
+    @Inject
+    private Main plugin;
 
     @Command(
             names = "size"
@@ -115,6 +119,38 @@ public class StaffTeamCommands implements CommandClass {
             }
 
             Bukkit.getPluginManager().callEvent(new PlayerLeaveTeamEvent(uhcTeam, target));
+        }
+
+        @Command(
+                names = "kill"
+        )
+        public void killCommand(@Sender Player sender, @Named("killPlayer") Player target, @Named("ban") boolean ban) {
+            var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
+
+            if(uhcPlayer == null) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("El usuario no es un UHC Player"));
+                return;
+            }
+
+            if(!uhcPlayer.isAlive() || uhcPlayer.isSpect()) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("El usuario no está vivo"));
+                return;
+            }
+
+            target.setHealth(0.0D);
+
+            Bukkit.getScheduler().runTaskLater(plugin, ()-> {
+                if(ban) {
+                    target.banPlayer(ChatColor.RED + "¡Has sido descalificado!");
+                } else {
+                    target.kick(ChatUtils.formatC("&4¡Has sido descalificado!"));
+                }
+
+                Bukkit.broadcast(ChatUtils.formatComponentPrefix(String.format("El usuario %s ha sido descalificado de la partida.", target.getName())));
+
+                Bukkit.getPluginManager().callEvent(new ThreadMessageLogEvent("Descalificación", String.format("%s ha sido descalificado", target.getName()), ThreadMessageLogEvent.EMBED_TYPE.CRITICAL, gameManager.getUhcId()));
+            },20L);
+
         }
 
         @Command(names = "revive")

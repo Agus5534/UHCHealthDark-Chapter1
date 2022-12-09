@@ -153,7 +153,9 @@ public class CutCleanScenario extends Modality {
                 || blockType == Material.GOLD_ORE
                 || blockType == Material.ANCIENT_DEBRIS
                 || blockType == Material.DEEPSLATE_IRON_ORE
-                || blockType == Material.DEEPSLATE_GOLD_ORE) {
+                || blockType == Material.DEEPSLATE_GOLD_ORE
+                || blockType == Material.DIAMOND_ORE
+                || blockType == Material.DEEPSLATE_DIAMOND_ORE) {
             e.setDropItems(false);
 
             switch (blockType) {
@@ -174,6 +176,11 @@ public class CutCleanScenario extends Modality {
                 }
                 case ANCIENT_DEBRIS -> {
                     block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.NETHERITE_SCRAP));
+
+                    spawnXP(block.getLocation(), 4);
+                }
+                case DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE -> {
+                    block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.DIAMOND));
 
                     spawnXP(block.getLocation(), 4);
                 }
