@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @GameModality(
         modalityType = ModalityType.SCENARIO,
         key = "timber",
-        experimental = true,
+        experimental = false,
         name = "&aTimber",
         material = Material.OAK_LOG,
         lore = {"&7- Los árboles se talan de una."}

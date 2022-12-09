@@ -33,6 +33,8 @@ public class GameManager {
     private int cape;
     private int appleRate;
     private boolean pvpEnabled;
+    private boolean spectators;
+    private boolean arenaEnabled;
     private boolean gameStart;
     private boolean runMode;
 
@@ -51,6 +53,8 @@ public class GameManager {
         this.runMode = false;
         this.skyHighMode = false;
         this.scenarioLimit = true;
+        this.spectators = true;
+        this.arenaEnabled = true;
 
         this.teamWin = null;
         this.worldBorder = 2000;
@@ -108,6 +112,22 @@ public class GameManager {
 
     public void setAppleRate(int appleRate) {
         this.appleRate = appleRate;
+    }
+
+    public boolean isSpectators() {
+        return spectators;
+    }
+
+    public void setSpectators(boolean spectators) {
+        this.spectators = spectators;
+    }
+
+    public boolean isArenaEnabled() {
+        return arenaEnabled;
+    }
+
+    public void setArenaEnabled(boolean arenaEnabled) {
+        this.arenaEnabled = arenaEnabled;
     }
 
     public void setSpectatorTeam(Team spectatorTeam) {

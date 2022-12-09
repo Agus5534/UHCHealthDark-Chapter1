@@ -59,6 +59,9 @@ public class Main extends JavaPlugin {
     private Region ARENA;
     @InjectIgnore
     private Region ARENA_WATER;
+
+    @InjectIgnore
+    private Region ARENA_SPAWN;
     private Rank rank;
 
     @Override
@@ -78,6 +81,11 @@ public class Main extends JavaPlugin {
                 new Location(Bukkit.getWorlds().get(0), 222, 56, 273)
         );
 
+        ARENA_SPAWN = new Region(
+                new Location(Bukkit.getWorlds().get(0), 220, 12, 237),
+                new Location(Bukkit.getWorlds().get(0), 234, 56, 252)
+        );
+
         Bukkit.getScoreboardManager().getMainScoreboard().getTeams()
                 .forEach(Team::unregister);
 
@@ -93,9 +101,7 @@ public class Main extends JavaPlugin {
 
         Bukkit.getWorlds().get(0).setPVP(true);
 
-        Bukkit.getScheduler().runTaskLater(this, ()-> {
-            clearArena();
-        }, 300L);
+        Bukkit.getScheduler().runTaskLater(this, ()-> clearArena(), 300L);
     }
 
     @Override
@@ -150,5 +156,9 @@ public class Main extends JavaPlugin {
 
     public Region getARENA_WATER() {
         return ARENA_WATER;
+    }
+
+    public Region getARENA_SPAWN() {
+        return ARENA_SPAWN;
     }
 }

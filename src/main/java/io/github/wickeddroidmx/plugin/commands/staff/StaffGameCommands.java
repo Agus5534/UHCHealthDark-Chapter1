@@ -204,6 +204,34 @@ public class StaffGameCommands implements CommandClass  {
     @Command(names = "settings")
     public class SettingsSubCommand implements CommandClass {
         @Command(
+                names = "arenaenabled"
+        )
+        public void arenaEnabledCommand(@Sender Player sender, @Named("enabled") boolean enabled) {
+            if(gameManager.isArenaEnabled() == enabled) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("La arena ya está " + (enabled ? "habilitada" : "deshabilitada")));
+                return;
+            }
+
+            gameManager.setArenaEnabled(enabled);
+
+            sender.sendMessage(ChatUtils.formatComponentPrefix("La arena ahora está " + (enabled ? "&ahabilitada" : "&cdeshabilitada")));
+        }
+
+        @Command(
+                names = "spectators"
+        )
+        public void spectatorsCommand(@Sender Player sender, @Named("enabled") boolean enabled) {
+            if(gameManager.isSpectators() == enabled) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("Los espectadores ya están " + (enabled ? "habilitados" : "deshabilitados")));
+                return;
+            }
+
+            gameManager.setSpectators(enabled);
+
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Los espectadores ahora están " + (enabled ? "&ahabilitados" : "&cdeshabilitados")));
+        }
+
+        @Command(
                 names = "cobweblimit"
         )
         public void cobwebLimitCommand(@Sender Player sender, @Named("limit") int cobwebLimit) {
@@ -216,6 +244,7 @@ public class StaffGameCommands implements CommandClass  {
                     ChatUtils.PREFIX + ChatUtils.format("El cobweb limit de ahora es de %d"),
                     cobwebLimit
             ));
+
             gameManager.setCobwebLimit(cobwebLimit);
         }
 

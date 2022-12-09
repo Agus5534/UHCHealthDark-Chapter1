@@ -71,9 +71,14 @@ public class PlayerDeathListener implements Listener {
 
             player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
 
-            player.setGameMode(GameMode.ADVENTURE);
+            if(gameManager.isSpectators()) {
+                player.setGameMode(GameMode.SPECTATOR);
+            } else {
+                player.setGameMode(GameMode.ADVENTURE);
 
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 15, false, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 15, false, false, false));
+            }
+
         }, 5L);
 
         if (player.getKiller() != null) {

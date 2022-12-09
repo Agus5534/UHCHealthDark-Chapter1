@@ -280,10 +280,10 @@ public class PlayerCommands implements CommandClass {
     public void arenaCommand(@Sender Player sender) {
         HashMap<Integer, ItemStack> kit = new HashMap<>();
 
-    /* if(!experimentManager.hasExperiment(sender, "GAME_ARENA_COMMAND_EXPERIMENT")) {
-            sender.sendMessage(ChatUtils.formatComponentPrefix("No estás autorizado a utilizar esto."));
+        if(!gameManager.isArenaEnabled()) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("La arena se encuentra deshabilitada"));
             return;
-        }*/
+        }
 
         if(plugin.getARENA().isInsideRegion(sender.getLocation())) {
             sender.sendMessage(ChatUtils.formatComponentPrefix("Ya estás en la arena!"));

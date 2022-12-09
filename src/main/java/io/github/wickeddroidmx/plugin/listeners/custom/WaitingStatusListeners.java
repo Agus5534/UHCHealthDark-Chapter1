@@ -238,6 +238,11 @@ public class WaitingStatusListeners implements Listener {
             var blockLoc = event.getBlock().getLocation();
             var blockType = event.getBlock().getType();
 
+            if(plugin.getARENA_SPAWN().isInsideRegion(blockLoc)){
+                event.setCancelled(true);
+                return;
+            }
+
             if(!plugin.getARENA().isInsideRegion(blockLoc)) {
                 event.setCancelled(true);
                 return;
@@ -324,7 +329,7 @@ public class WaitingStatusListeners implements Listener {
 
         var player = (Player)event.getEntity();
 
-        if(player.getHealth() - event.getDamage() > 0.0) { return; }
+        if(player.getHealth() - event.getFinalDamage() > 0.0) { return; }
 
         event.setDamage(0.0);
 

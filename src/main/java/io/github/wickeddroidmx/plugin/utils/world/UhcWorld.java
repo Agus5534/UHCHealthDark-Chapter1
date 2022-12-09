@@ -111,6 +111,9 @@ public class UhcWorld {
             world.setPVP(false);
 
             world.setDifficulty(Difficulty.HARD);
+            if(world.getName().equals("world")) {
+                world.setGameRule(GameRule.DO_FIRE_TICK, false);
+            }
             world.setGameRule(GameRule.NATURAL_REGENERATION, false);
         }
     }
