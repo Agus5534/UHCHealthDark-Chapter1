@@ -99,22 +99,18 @@ public class GameTickListener implements Listener {
                         )
                 );
             }, 5L);
-
-            if(gameManager.getTimeForMeetup() == 300) {
-                Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(20, gameManager.getBorderDelay(), false)));
-
-                return;
-            }
-            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(150, gameManager.getBorderDelay(), false)));
         }
 
-        if(seconds == gameManager.getTimeForMeetup() + 300 || seconds == gameManager.getTimeForMeetup() + 900 || seconds == gameManager.getTimeForMeetup() + 1200 || seconds == gameManager.getTimeForMeetup() + 1800) {
-            var world = Bukkit.getWorld("uhc_world");
+        if(seconds == gameManager.getTimeWorldBorderOne()) {
+            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(gameManager.getSizeWorldBorderOne(), gameManager.getBorderDelay(), false)));
+        }
 
-            int wb = (int) (world.getWorldBorder().getSize() / 2);
+        if(seconds == gameManager.getTimeWorldBorderTwo()) {
+            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(gameManager.getSizeWorldBorderTwo(), gameManager.getBorderDelay(), false)));
+        }
 
-            Bukkit.getScheduler().runTask(plugin, ()->Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(wb-35, gameManager.getBorderDelay(), false)));
-
+        if(seconds == gameManager.getTimeWorldBorderThree()) {
+            Bukkit.getScheduler().runTask(plugin, () -> Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(gameManager.getSizeWorldBorderThree(), gameManager.getBorderDelay(), false)));
         }
 
         if (gameManager.getGameState() == GameState.FINISHING) {

@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.events.game.ChangeGameTimeEvent;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.team.TeamScatteredEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
+import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderSetEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.hooks.discord.DiscordManager;
 import io.github.wickeddroidmx.plugin.hooks.discord.HookType;
@@ -295,6 +296,15 @@ public class StaffGameCommands implements CommandClass  {
         )
         public void worldBorderMoveCommand(@Sender Player target, @Named("size") int size, @Named("time") int seconds) {
             Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(size, seconds, false));
+        }
+
+        @Command(
+                names = "startworldborder"
+        )
+        public void startWorldBorderCommand(@Sender Player sender, @Named("size") int size) {
+            Bukkit.getPluginManager().callEvent(new WorldBorderSetEvent(size));
+
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Has establecido el borde en " + size +"x" + size));
         }
 
         @Command(

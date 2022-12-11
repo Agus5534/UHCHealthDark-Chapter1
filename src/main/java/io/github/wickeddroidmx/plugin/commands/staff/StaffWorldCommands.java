@@ -7,10 +7,8 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Named;
-import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
-import me.fixeddev.commandflow.part.defaults.LongPart;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
@@ -21,7 +19,7 @@ import javax.inject.Inject;
         names="staffworld",
         permission = "healthdark.staffteam"
 )
-@SubCommandClasses(value = {StaffWorldCommands.BannedBiomesSubCommand.class})
+@SubCommandClasses(value = {StaffWorldCommands.BannedBiomesSubCommand.class, StaffWorldCommands.BorderSubCommand.class})
 public class StaffWorldCommands implements CommandClass {
     @Inject
     private Main plugin;
@@ -79,6 +77,44 @@ public class StaffWorldCommands implements CommandClass {
         }
     }
 
+    @Command(names = "border")
+    public class BorderSubCommand implements CommandClass {
+        @Command(names = "delay")
+        public void setDelay(@Sender Player sender, @Named("delaySeconds") int delay) {
+            gameManager.setBorderDelay(delay);
+
+            sender.sendMessage(ChatUtils.formatComponentPrefix("El delay del borde ha sido modificado"));
+        }
+
+        @Command(names = "size")
+        public void setSize(@Sender Player sender, @Named("sizeWB1") int sizeWB1, @Named("sizeWB2") int sizeWB2, @Named("sizeWB3") int sizeWB3) {
+            gameManager.setSizeWorldBorderOne(sizeWB1);
+            gameManager.setSizeWorldBorderTwo(sizeWB2);
+            gameManager.setSizeWorldBorderThree(sizeWB3);
+
+            sender.sendMessage(ChatUtils.formatComponentPrefix(String.format(
+                    "Has cambiado los tamaños de los bordes a %1$sx%1$s | %2$sx%2$s | %3$sx%3$s respectivamente",
+                    sizeWB1,
+                    sizeWB2,
+                    sizeWB3
+            )));
+        }
+
+        @Command(names = "time")
+        public void setTime(@Sender Player sender, @Named("timeWB1") int timeWB1, @Named("timeWB2") int timeWB2, @Named("timeWB3") int timeWB3) {
+            gameManager.setTimeWorldBorderOne(timeWB1);
+            gameManager.setTimeWorldBorderTwo(timeWB2);
+            gameManager.setTimeWorldBorderThree(timeWB3);
+
+            sender.sendMessage(ChatUtils.formatComponentPrefix(String.format(
+                    "Has cambiado los tamaños de los bordes a %s segundos | %s segundos | %s segundos, respectivamente",
+                    timeWB1,
+                    timeWB2,
+                    timeWB3
+            )));
+        }
+    }
+
     @Command(names = "recreate")
     public void recreateCommand(@Sender Player sender, @Named("seed") String seed) {
 
@@ -96,22 +132,6 @@ public class StaffWorldCommands implements CommandClass {
         uhcWorld.recreateWorld(plugin);
 
         sender.sendMessage(ChatUtils.PREFIX + "Recreando mundo... Puede demorar un tiempo.");
-    }
-
-    @Command(names = "tp")
-    public void teleportCommand(@Sender Player sender, @Named("world") World world) {
-        if(world == null) {
-            sender.sendMessage(ChatUtils.PREFIX + "No existe ese mundo");
-            return;
-        }
-
-        if(plugin.getWorldGenerator().getUhcWorld().isRecreatingWorld()) {
-            sender.sendMessage(ChatUtils.PREFIX + "El mundo se está recreando, el comando se encuentra desactivado.");
-            return;
-        }
-
-        sender.teleport(world.getSpawnLocation());
-        sender.sendMessage(ChatUtils.PREFIX + String.format("Te has teletransportado al mundo %s", world.getName()));
     }
 
     private boolean parseLong(String s) {

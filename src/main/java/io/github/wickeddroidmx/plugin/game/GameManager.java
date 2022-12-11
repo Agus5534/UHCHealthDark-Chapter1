@@ -25,7 +25,13 @@ public class GameManager {
     worldBorder,
     cobwebLimit,
     borderDelay,
-    revealTime;
+    revealTime,
+    timeWorldBorderOne,
+    timeWorldBorderTwo,
+    timeWorldBorderThree,
+    sizeWorldBorderOne,
+    sizeWorldBorderTwo,
+    sizeWorldBorderThree;
 
     private long seconds;
     private GameState gameState;
@@ -68,6 +74,13 @@ public class GameManager {
         this.timeForMeetup = 7200;
         this.revealTime = 5400;
         this.borderDelay = 300;
+
+        this.timeWorldBorderOne = 7200;
+        this.timeWorldBorderTwo = timeWorldBorderOne+300;
+        this.timeWorldBorderThree = timeWorldBorderTwo+300;
+        this.sizeWorldBorderOne = 150;
+        this.sizeWorldBorderTwo = 70;
+        this.sizeWorldBorderOne = 30;
     }
 
     public void setHost(Player host) {
@@ -140,6 +153,9 @@ public class GameManager {
 
     public void setTimeForMeetup(int timeForMeetup) {
         this.timeForMeetup = timeForMeetup;
+        this.timeWorldBorderOne = timeForMeetup;
+        this.timeWorldBorderTwo = timeWorldBorderOne+300;
+        this.timeWorldBorderThree = timeWorldBorderTwo+300;
     }
 
     public void setScatteredPlayers(boolean scatteredPlayers) {
@@ -252,7 +268,51 @@ public class GameManager {
         return gameStart;
     }
 
-    private void registerTeams() {
+    public int getTimeWorldBorderOne() {
+        return timeWorldBorderOne;
+    }
 
+    public int getTimeWorldBorderThree() {
+        return timeWorldBorderThree;
+    }
+
+    public int getTimeWorldBorderTwo() {
+        return timeWorldBorderTwo;
+    }
+
+    public void setTimeWorldBorderOne(int timeWorldBorderOne) {
+        this.timeWorldBorderOne = timeWorldBorderOne;
+    }
+
+    public void setTimeWorldBorderThree(int timeWorldBorderThree) {
+        this.timeWorldBorderThree = timeWorldBorderThree;
+    }
+
+    public void setTimeWorldBorderTwo(int timeWorldBorderTwo) {
+        this.timeWorldBorderTwo = timeWorldBorderTwo;
+    }
+
+    public int getSizeWorldBorderOne() {
+        return sizeWorldBorderOne;
+    }
+
+    public int getSizeWorldBorderThree() {
+        return sizeWorldBorderThree;
+    }
+
+    public int getSizeWorldBorderTwo() {
+        return sizeWorldBorderTwo;
+    }
+
+    public void setSizeWorldBorderOne(int sizeWorldBorderOne) {
+        this.sizeWorldBorderOne = sizeWorldBorderOne;
+    }
+
+    public void setSizeWorldBorderThree(int sizeWorldBorderThree) {
+        this.sizeWorldBorderThree = sizeWorldBorderThree;
+    }
+
+    public void setSizeWorldBorderTwo(int sizeWorldBorderTwo) {
+        this.sizeWorldBorderTwo = sizeWorldBorderTwo;
     }
 }
