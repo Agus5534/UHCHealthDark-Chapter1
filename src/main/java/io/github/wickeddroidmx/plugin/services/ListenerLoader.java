@@ -9,6 +9,7 @@ import io.github.wickeddroidmx.plugin.listeners.chat.AsyncChatListener;
 import io.github.wickeddroidmx.plugin.listeners.chunk.ChunkLoadListener;
 import io.github.wickeddroidmx.plugin.listeners.custom.*;
 import io.github.wickeddroidmx.plugin.listeners.entities.EntityPickupItemListener;
+import io.github.wickeddroidmx.plugin.listeners.loot.LootGenerateListener;
 import io.github.wickeddroidmx.plugin.listeners.players.*;
 import io.github.wickeddroidmx.plugin.listeners.portal.PlayerPortalListener;
 import io.github.wickeddroidmx.plugin.listeners.team.*;
@@ -79,6 +80,9 @@ public class ListenerLoader implements Loader {
 
     private WaitingStatusListeners statusListeners;
 
+    // LOOT event
+    private LootGenerateListener lootGenerateListener;
+
 
 
     @Override
@@ -113,7 +117,8 @@ public class ListenerLoader implements Loader {
                 playerInteractAtEntityListener,
                 entityPickupItemListener,
                 teamFlagChangedListener,
-                statusListeners
+                statusListeners,
+                lootGenerateListener
         );
     }
 
