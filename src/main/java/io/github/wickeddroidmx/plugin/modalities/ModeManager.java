@@ -65,6 +65,7 @@ public class ModeManager {
     private CaptainsMode captainsMode;
     private UnknownTeamsMode unknownTeamsMode;
     private BrothersMode brothersMode;
+    private ChosenMode chosenMode;
 
     //Scenarios
     private GunsNRosesScenario gunsNRosesScenario;
@@ -157,7 +158,8 @@ public class ModeManager {
                 spawnerLastBreathSetting,
                 unknownTeamsMode,
                 bestPVEMode,
-                brothersMode
+                brothersMode,
+                chosenMode
         );
     }
 

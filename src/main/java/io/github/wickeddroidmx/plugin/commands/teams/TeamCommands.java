@@ -157,6 +157,32 @@ public class TeamCommands implements CommandClass {
     }
 
     @Command(
+            names = "found"
+    )
+    public void foundCommand(@Sender Player sender) {
+        var uhcTeam = teamManager.getPlayerTeam(sender.getUniqueId());
+
+        if(uhcTeam != null) {
+            sender.sendMessage(ChatUtils.formatComponentTeam("Ya tienes un equipo."));
+            return;
+        }
+
+        if(gameManager.getGameState() != GameState.WAITING) {
+            sender.sendMessage(ChatUtils.formatComponentTeam("La partida ya ha iniciado."));
+            return;
+        }
+
+        if(!modeManager.isActiveMode("chosen")) {
+            sender.sendMessage(ChatUtils.formatComponentTeam("No puedes utilizar este comando."));
+            return;
+        }
+
+        teamManager.createTeam(sender);
+
+        Bukkit.getPluginManager().callEvent(new TeamCreateEvent(teamManager.getTeam(sender.getUniqueId()), sender));
+    }
+
+    @Command(
             names = "name"
     )
     public void nameCommand(@Sender Player sender, @Text String text) {
