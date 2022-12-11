@@ -189,7 +189,7 @@ public class StaffGameCommands implements CommandClass  {
                             String.format("> **WorldBorder Delay:** %ss\\n", formatTime(gameManager.getBorderDelay())) +
                             String.format("> **WorldBorder Final 1:** %1$sx%1$s | %2$ss\\n", gameManager.getSizeWorldBorderOne(), formatTime(gameManager.getTimeWorldBorderOne())) +
                             String.format("> **WorldBorder Final 2:** %1$sx%1$s | %2$ss\\n", gameManager.getSizeWorldBorderTwo(), formatTime(gameManager.getTimeWorldBorderTwo())) +
-                            String.format("> **WorldBorder Final 2:** %1$sx%1$s | %2$ss\\n", gameManager.getSizeWorldBorderThree(), formatTime(gameManager.getTimeWorldBorderThree())) +
+                            String.format("> **WorldBorder Final 3:** %1$sx%1$s | %2$ss\\n", gameManager.getSizeWorldBorderThree(), formatTime(gameManager.getTimeWorldBorderThree())) +
                             String.format("> **Cobweb limit:** %s\\n\\n", gameManager.getCobwebLimit()) +
                             String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup()))+
                             String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
