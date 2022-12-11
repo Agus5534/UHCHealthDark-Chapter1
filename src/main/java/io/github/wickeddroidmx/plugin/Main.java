@@ -16,6 +16,7 @@ import io.github.wickeddroidmx.plugin.services.UhcIdLoader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.chat.Rank;
+import io.github.wickeddroidmx.plugin.utils.files.Configuration;
 import io.github.wickeddroidmx.plugin.utils.region.Region;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
@@ -56,6 +57,8 @@ public class Main extends JavaPlugin {
     private WorldGenerator worldGenerator;
     private ExperimentManager experimentManager;
     @InjectIgnore
+    private Configuration configuration;
+    @InjectIgnore
     private Region ARENA;
     @InjectIgnore
     private Region ARENA_WATER;
@@ -86,6 +89,8 @@ public class Main extends JavaPlugin {
                 new Location(Bukkit.getWorlds().get(0), 234, 56, 252)
         );
 
+        configuration = new Configuration(this, "config");
+
         Bukkit.getScoreboardManager().getMainScoreboard().getTeams()
                 .forEach(Team::unregister);
 
@@ -102,6 +107,8 @@ public class Main extends JavaPlugin {
         Bukkit.getWorlds().get(0).setPVP(true);
 
         Bukkit.getScheduler().runTaskLater(this, ()-> clearArena(), 300L);
+
+        Bukkit.getScheduler().runTask(this, ()->Bukkit.getWorlds().forEach(w -> Bukkit.getLogger().info(w.getName())));
     }
 
     @Override
@@ -160,5 +167,9 @@ public class Main extends JavaPlugin {
 
     public Region getARENA_SPAWN() {
         return ARENA_SPAWN;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 }

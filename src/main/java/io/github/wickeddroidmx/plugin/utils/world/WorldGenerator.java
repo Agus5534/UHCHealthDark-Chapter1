@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.utils.world;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.utils.files.Configuration;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
@@ -17,18 +18,20 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WorldGenerator {
-
-    @Inject
-    @Named("file-config")
-    private Configuration configuration;
-
     private final String[] worlds = {
             "uhc_world",
             "world_nether",
             "world_the_end"
     };
-    UhcWorld uhcWorld = new UhcWorld(0);
 
+    UhcWorld uhcWorld;
+
+    Main plugin;
+
+    public WorldGenerator(Main plugin) {
+        this.plugin = plugin;
+        uhcWorld = new UhcWorld(0, plugin);
+    }
     public void deleteWorlds() throws IOException {
         for (String worldName : worlds) {
             Bukkit.unloadWorld(worldName, false);

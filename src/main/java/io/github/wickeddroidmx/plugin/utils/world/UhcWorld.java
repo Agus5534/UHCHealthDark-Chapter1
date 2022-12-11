@@ -1,10 +1,14 @@
 package io.github.wickeddroidmx.plugin.utils.world;
 
+import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.utils.files.Configuration;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,10 +22,12 @@ public class UhcWorld {
     private World world;
     private long seed;
     private boolean recreatingWorld;
+    private Main plugin;
 
     List<Biome> bannedBiomes;
 
-    public UhcWorld(long seed) {
+    public UhcWorld(long seed, Main plugin) {
+        this.plugin = plugin;
         this.name = "uhc_world";
         this.seed = seed;
         this.world = null;
@@ -58,6 +64,11 @@ public class UhcWorld {
     }
 
     public World createWorld() {
+        if(plugin.getConfiguration().getBoolean("customworld")) {
+            this.world = Bukkit.getWorld("world_minecraft_uhc_world");
+            configWorld();
+            return Bukkit.getWorld("world_minecraft_uhc_world");
+        }
         var w = createUhcWorld().createWorld();
 
         if(this.seed == 0) {

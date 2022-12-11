@@ -9,6 +9,7 @@ import io.github.wickeddroidmx.plugin.connection.SQLClient;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.files.Configuration;
+import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.key.TypeReference;
 import org.bukkit.entity.Player;
@@ -41,6 +42,7 @@ public class MainModule extends AbstractModule {
                 .named("user-cache")
                         .toInstance(new SimpleMapCache<>());
 
+        bind(WorldGenerator.class).toInstance(new WorldGenerator(plugin));
         bind(Main.class).toInstance(plugin);
         bind(Plugin.class).to(Main.class);
 
@@ -55,9 +57,5 @@ public class MainModule extends AbstractModule {
                                 .setMaximumPoolSize(6)
                                 .setTable("user")
                                 .build());
-
-        bind(Configuration.class)
-                .named("file-config")
-                .toInstance(new Configuration(plugin, "config"));
     }
 }

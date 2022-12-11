@@ -59,4 +59,8 @@ public class Configuration extends YamlConfiguration {
     public void save() throws IOException {
         save(file);
     }
+
+    public File getFile() {
+        return file;
+    }
 }
