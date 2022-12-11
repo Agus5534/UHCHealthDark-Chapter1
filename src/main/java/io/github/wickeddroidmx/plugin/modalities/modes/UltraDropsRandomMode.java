@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -39,6 +40,8 @@ public class    UltraDropsRandomMode extends Modality {
     private Main plugin;
 
     private final List<Material> possibleDrops = new ArrayList<>();
+
+    private double corruption = 0.0;
 
     List<String> errors = new ArrayList<>();
     public UltraDropsRandomMode() throws IllegalClassFormatException {
@@ -95,15 +98,21 @@ public class    UltraDropsRandomMode extends Modality {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> {
             if(this.isEnabled()) {
                 Bukkit.broadcast(ChatUtils.formatComponentPrefix("En un minuto se borraran entidades."));
-            }
-        }, 9600L, 9600L);
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin , ()-> {
-            if(this.isEnabled()) {
-                Bukkit.broadcast(ChatUtils.formatComponentPrefix("Entidades eliminadas."));
-                lagClear();
+                Bukkit.getScheduler().runTaskLater(plugin, ()-> {
+                    if(this.isEnabled()) {
+                        Bukkit.broadcast(ChatUtils.formatComponentPrefix("Entidades eliminadas."));
+                        lagClear();
+                    }
+                }, 1200L);
             }
-        }, 10800L, 10800L);
+        }, 6000L, 6000L);
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> {
+            if(this.isEnabled()) {
+
+            }
+        }, 1200L, 1200L);
     }
 
     @EventHandler
@@ -184,7 +193,7 @@ public class    UltraDropsRandomMode extends Modality {
     private void lagClear() {
         for(var w : Bukkit.getWorlds()) {
             for(var e : w.getLivingEntities()) {
-                if(e.getType() == EntityType.DROPPED_ITEM) {
+                if(e instanceof Item) {
                     e.remove();
                 }
             }

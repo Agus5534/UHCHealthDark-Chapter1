@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import javax.inject.Inject;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,6 +24,11 @@ public class PlayerPortalListener implements Listener {
 
     @Inject
     private GameManager gameManager;
+    private HashMap<Location, Double> portalLocationMultiplier;
+
+    public PlayerPortalListener() {
+        portalLocationMultiplier = new HashMap<>();
+    }
 
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent e) {
@@ -32,14 +38,39 @@ public class PlayerPortalListener implements Listener {
         if(e.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             if(e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER) {
                 var toLocation = e.getTo();
+                var fromLocation = e.getFrom();
                 toLocation.setWorld(Bukkit.getWorld("uhc_world"));
 
-                while (isOutsideBorder(toLocation)) {
-                    toLocation = fixLocation(toLocation);
+                double multiplier = 8.0D;
+                int fixes = 0;
+
+                while ((isOutsideBorder(toLocation) || isOcean(toLocation)) && fixes < 400) {
+                    fixes++;
+                    multiplier = multiplier-multiplierRest(toLocation);
+                    toLocation = fixLocation(fromLocation, multiplier);
                 }
 
                 e.setTo(toLocation);
+
+                portalLocationMultiplier.put(toLocation, multiplier);
                 return;
+            }
+
+            if(e.getFrom().getWorld().getEnvironment() == World.Environment.NORMAL) {
+                var loc = e.getFrom();
+                Location secondLoc = null;
+
+                for(var locs : portalLocationMultiplier.keySet()) {
+                    if(loc.distance(secondLoc) < 10) {
+                        secondLoc = locs;
+                    }
+                }
+
+                if(secondLoc != null) {
+                    var multiplier = portalLocationMultiplier.get(secondLoc);
+                    e.setTo(new Location(Bukkit.getWorld("world_nether"), e.getFrom().getBlockX() / multiplier, e.getFrom().getBlockY(), e.getFrom().getBlockZ() / multiplier));
+                    return;
+                }
             }
 
             e.setTo(new Location(Bukkit.getWorld("world_nether"), e.getFrom().getBlockX() / 8.0, e.getFrom().getBlockY(), e.getFrom().getBlockZ() / 8.0));
@@ -74,24 +105,41 @@ public class PlayerPortalListener implements Listener {
 
 
     public boolean isOutsideBorder(Location location) {
-        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
+        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize()/2;
         double x = location.getX();
         double z = location.getZ();
 
         return ((x > size || (-x) > size) || (z > size || (-z) > size));
     }
 
-    private Location fixLocation(Location location) {
-        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize();
-        double x = size / 2;
-        double z = size / 2;
+    public boolean isOcean(Location location) {
+        return location.getBlock().getBiome().toString().endsWith("OCEAN");
+    }
 
-        double newX = (location.getX() < 0 ? (location.getX() < -x ? x+27 : location.getX()) : (location.getX() > x ? x-27 : location.getX()));
-        double newZ = (location.getZ() < 0 ? (location.getZ() < -z ? z+27 : location.getZ()) : (location.getZ() > z ? z-27 : location.getZ()));
+    private Location fixLocation(Location location, double multiplier) {
+        var newX = location.getX() * multiplier;
+        var newZ = location.getZ() * multiplier;
+        var y = ThreadLocalRandom.current().nextInt(6, 90);
 
-        var newLoc = new Location(location.getWorld(), newX, 16, newZ);
-        newLoc.setY(newLoc.getWorld().getHighestBlockYAt(newLoc));
+        var newLoc = new Location(Bukkit.getWorld("uhc_world"), newX, y, newZ);
 
         return newLoc;
+    }
+
+    private double multiplierRest(Location location) {
+        var x = location.getX();
+        var z = location.getZ();
+
+        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize() / 2;
+
+        if(isOutsideBorder(location)) {
+            return 0.30D;
+        }
+
+        if(isOcean(location)) {
+            return 0.14D;
+        }
+
+        return 0.21D;
     }
 }

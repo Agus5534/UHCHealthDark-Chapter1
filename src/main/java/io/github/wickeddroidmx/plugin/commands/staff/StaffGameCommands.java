@@ -156,7 +156,10 @@ public class StaffGameCommands implements CommandClass  {
                             String.format("> **Inicia en:** <t:%s:R>\\n\\n", new Date(timeToStart).getTime()) +
                             String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.getModesActive(ModalityType.TEAM).size() == 0
                                  ? "Random"
-                                 : modeManager.getModesActive(ModalityType.TEAM).stream().map(modality -> removeColors(modality.getName())).collect(Collectors.joining(", "))
+                                    : modeManager.getModesActive(ModalityType.TEAM)
+                                    .stream()
+                                    .map(modality -> removeColors(modality.getName()))
+                                    .collect(Collectors.joining(", "))
                             ) +
                             String.format("> **UHC:** %s\\n", removeColors(modeManager.getModesActive(ModalityType.UHC).size() == 0
                                 ? uhcVanillaMode.getName()
@@ -178,7 +181,7 @@ public class StaffGameCommands implements CommandClass  {
                                     .map(modality -> removeColors(modality.getName()))
                                     .collect(Collectors.joining(", "))
                             ) +
-                            String.format("> **Settings:** %s\\n\n", modeManager.getModesActive(ModalityType.SETTING).size() == 0
+                            String.format("> **Settings:** %s\\n\\n", modeManager.getModesActive(ModalityType.SETTING).size() == 0
                                     ? "No hay settings activas."
                                     : modeManager.getModesActive(ModalityType.SETTING)
                                     .stream()
@@ -186,10 +189,10 @@ public class StaffGameCommands implements CommandClass  {
                                     .collect(Collectors.joining(", "))
                             ) +
                             String.format("> **WorldBorder Inicial:** %s\\n", gameManager.getWorldBorder()) +
-                            String.format("> **WorldBorder Delay:** %ss\\n", formatTime(gameManager.getBorderDelay())) +
-                            String.format("> **WorldBorder Final 1:** %1$sx%1$s | %2$ss\\n", gameManager.getSizeWorldBorderOne(), formatTime(gameManager.getTimeWorldBorderOne())) +
-                            String.format("> **WorldBorder Final 2:** %1$sx%1$s | %2$ss\\n", gameManager.getSizeWorldBorderTwo(), formatTime(gameManager.getTimeWorldBorderTwo())) +
-                            String.format("> **WorldBorder Final 3:** %1$sx%1$s | %2$ss\\n", gameManager.getSizeWorldBorderThree(), formatTime(gameManager.getTimeWorldBorderThree())) +
+                            String.format("> **WorldBorder Delay:** %s\\n", formatAsTimerBig(gameManager.getBorderDelay())) +
+                            String.format("> **WorldBorder Final 1:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderOne(), formatAsTimerBig(gameManager.getTimeWorldBorderOne())) +
+                            String.format("> **WorldBorder Final 2:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderTwo(), formatAsTimerBig(gameManager.getTimeWorldBorderTwo())) +
+                            String.format("> **WorldBorder Final 3:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderThree(), formatAsTimerBig(gameManager.getTimeWorldBorderThree())) +
                             String.format("> **Cobweb limit:** %s\\n\\n", gameManager.getCobwebLimit()) +
                             String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup()))+
                             String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
@@ -400,6 +403,29 @@ public class StaffGameCommands implements CommandClass  {
             return hours + " horas";
 
         return totalSecs + " segundos";
+    }
+
+    private String formatAsTimerBig(int seconds) {
+
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        seconds = seconds % 60;
+
+        String s = "";
+
+        if(hours >= 1) {
+            s+= hours == 1 ? String.format("%d hora", hours) : String.format("%d horas", hours);
+        }
+
+        if(minutes >= 1) {
+            s+= minutes == 1 ? String.format(" %d minuto", minutes) : String.format(" %d minutos", minutes);
+        }
+
+        if(seconds >= 1) {
+            s+= minutes == 1 ? String.format(" %d segundo", seconds) : String.format(" %d segundos", seconds);
+        }
+
+        return s;
     }
 
     private String removeColors(String s) {

@@ -76,11 +76,11 @@ public class GameManager {
         this.borderDelay = 300;
 
         this.timeWorldBorderOne = 7200;
-        this.timeWorldBorderTwo = timeWorldBorderOne+300;
-        this.timeWorldBorderThree = timeWorldBorderTwo+300;
+        this.timeWorldBorderTwo = 7500;
+        this.timeWorldBorderThree = 7800;
         this.sizeWorldBorderOne = 150;
         this.sizeWorldBorderTwo = 70;
-        this.sizeWorldBorderOne = 30;
+        this.sizeWorldBorderThree = 30;
     }
 
     public void setHost(Player host) {
@@ -153,9 +153,9 @@ public class GameManager {
 
     public void setTimeForMeetup(int timeForMeetup) {
         this.timeForMeetup = timeForMeetup;
-        this.timeWorldBorderOne = timeForMeetup;
-        this.timeWorldBorderTwo = timeWorldBorderOne+300;
-        this.timeWorldBorderThree = timeWorldBorderTwo+300;
+        setTimeWorldBorderOne(timeForMeetup);
+        setTimeWorldBorderTwo(getTimeWorldBorderOne()+300);
+        setTimeWorldBorderThree(getTimeWorldBorderTwo()+300);
     }
 
     public void setScatteredPlayers(boolean scatteredPlayers) {
