@@ -101,12 +101,6 @@ public class UhcWorld {
     }
 
     private void configWorld() {
-        if (world != null) {
-                world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-                world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-                world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-        }
-
         for (var world : Bukkit.getWorlds()) {
             world.setPVP(false);
 
@@ -115,6 +109,9 @@ public class UhcWorld {
                 world.setGameRule(GameRule.DO_FIRE_TICK, false);
             }
             world.setGameRule(GameRule.NATURAL_REGENERATION, false);
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+            world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         }
     }
 
