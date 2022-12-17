@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.scoreboard;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
@@ -11,12 +12,12 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class KillTopScoreboard extends UHCScoreboard {
-    public KillTopScoreboard(Player player, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
-        super(player, modeManager, gameManager, playerManager, teamManager);
+    public KillTopScoreboard(Main plugin, Player player, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
+        super(plugin, player, modeManager, gameManager, playerManager, teamManager);
     }
 
     @Override
-    public void update(ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
+    public void update(Main plugin, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
         var result = new LinkedHashMap<UUID, Integer>();
 
         var kt = new ArrayList<String>();

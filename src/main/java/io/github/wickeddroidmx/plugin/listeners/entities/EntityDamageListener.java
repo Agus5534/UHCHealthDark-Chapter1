@@ -10,7 +10,7 @@ import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
+import io.github.wickeddroidmx.plugin.Main;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.level.block.BlockMobSpawner;
 import org.bukkit.Bukkit;

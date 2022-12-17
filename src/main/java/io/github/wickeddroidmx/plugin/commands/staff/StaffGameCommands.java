@@ -24,6 +24,8 @@ import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.services.UhcIdLoader;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.*;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
@@ -58,6 +60,7 @@ public class StaffGameCommands implements CommandClass  {
     private DiscordManager discordManager;
     private ModeManager modeManager;
     private PollManager pollManager;
+    private WorldGenerator worldGenerator;
 
 
     @javax.inject.Named("scoreboard-cache")
@@ -100,7 +103,7 @@ public class StaffGameCommands implements CommandClass  {
                 var x = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
                 var z = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
 
-                var location = new Location(Bukkit.getWorld("uhc_world"), x, 200, z);
+                var location = new Location(plugin.getWorldGenerator().getUhcWorld().getWorld(), x, 200, z);
 
                 new ScatterTask(player, location).runTaskLater(plugin, delayForTeam);
 
@@ -111,7 +114,7 @@ public class StaffGameCommands implements CommandClass  {
                 var x = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
                 var z = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
 
-                var location = new Location(Bukkit.getWorld("uhc_world"), x, 200, z);
+                var location = new Location(plugin.getWorldGenerator().getUhcWorld().getWorld(), x, 200, z);
 
                 new ScatterTask(uhcTeam, location).runTaskLater(plugin, delayForTeam);
 
@@ -212,6 +215,23 @@ public class StaffGameCommands implements CommandClass  {
     // SETTINGS SUBCOMMAND
     @Command(names = "settings")
     public class SettingsSubCommand implements CommandClass {
+        @Command(
+                names = "tisize"
+        )
+        public void teamInventorySizeCommand(@Sender Player sender, @Named("tiSize") int tiSize) {
+            if(tiSize < 9 || tiSize > 54) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("El inventario puede tener de 9 a 54 slots."));
+                return;
+            }
+
+            if(tiSize % 9 != 0) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("El número tiene que ser múltiplo de 9"));
+                return;
+            }
+
+            gameManager.setTiSize(tiSize);
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Has cambiado el tamaño del Team Inventory a " + tiSize + " slots"));
+        }
         @Command(
                 names = "arenaenabled"
         )

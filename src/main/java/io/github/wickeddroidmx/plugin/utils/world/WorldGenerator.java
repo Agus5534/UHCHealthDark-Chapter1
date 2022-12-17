@@ -21,7 +21,8 @@ public class WorldGenerator {
     private final String[] worlds = {
             "uhc_world",
             "world_nether",
-            "world_the_end"
+            "world_the_end",
+            "world_minecraft_uhc_world"
     };
 
     UhcWorld uhcWorld;
@@ -34,8 +35,10 @@ public class WorldGenerator {
     }
     public void deleteWorlds() throws IOException {
         for (String worldName : worlds) {
-            Bukkit.unloadWorld(worldName, false);
-            uhcWorld.deleteWorldDirectory(worldName);
+            if(Bukkit.getWorld(worldName) != null) {
+                Bukkit.unloadWorld(worldName, false);
+                uhcWorld.deleteWorldDirectory(worldName);
+            }
         }
 
         deleteDirectory("advancements");
@@ -59,7 +62,7 @@ public class WorldGenerator {
 
 
     private void setupWorldBorder() {
-        var world = Bukkit.getWorld("uhc_world");
+        var world = getUhcWorld().getWorld();
 
         if (world != null) {
             var worldBorder= world.getWorldBorder();

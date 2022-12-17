@@ -285,6 +285,11 @@ public class PlayerCommands implements CommandClass {
             return;
         }
 
+        if(gameManager.getGameState() != GameState.WAITING) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("La arena se encuentra deshabilitada"));
+            return;
+        }
+
         if(plugin.getARENA().isInsideRegion(sender.getLocation())) {
             sender.sendMessage(ChatUtils.formatComponentPrefix("Ya estás en la arena!"));
             return;

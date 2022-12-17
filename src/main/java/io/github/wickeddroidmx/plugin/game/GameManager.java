@@ -31,7 +31,8 @@ public class GameManager {
     timeWorldBorderThree,
     sizeWorldBorderOne,
     sizeWorldBorderTwo,
-    sizeWorldBorderThree;
+    sizeWorldBorderThree,
+    tiSize;
 
     private long seconds;
     private GameState gameState;
@@ -81,6 +82,8 @@ public class GameManager {
         this.sizeWorldBorderOne = 150;
         this.sizeWorldBorderTwo = 70;
         this.sizeWorldBorderThree = 30;
+
+        this.tiSize = 27;
     }
 
     public void setHost(Player host) {
@@ -117,6 +120,14 @@ public class GameManager {
 
     public void setCurrentTime(int currentTime) {
         this.currentTime = currentTime;
+    }
+
+    public int getTiSize() {
+        return tiSize;
+    }
+
+    public void setTiSize(int tiSize) {
+        this.tiSize = tiSize;
     }
 
     public void setGameState(GameState gameState) {

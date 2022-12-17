@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.listeners.worldborder;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderSetEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,10 +14,12 @@ public class WorldBorderSetListener implements Listener {
 
     @Inject
     private GameManager gameManager;
+    @Inject
+    private Main plugin;
 
     @EventHandler
     public void onWorldBorderSet(WorldBorderSetEvent e) {
-        var world = Bukkit.getWorld("uhc_world");
+        var world = plugin.getWorldGenerator().getUhcWorld().getWorld();
 
         var worldBorder = e.getWorldBorder();
         var player = e.getPlayer();

@@ -18,6 +18,7 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.chat.Rank;
 import io.github.wickeddroidmx.plugin.utils.files.Configuration;
 import io.github.wickeddroidmx.plugin.utils.region.Region;
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
 import me.yushust.inject.InjectIgnore;
@@ -96,7 +97,7 @@ public class Main extends JavaPlugin {
 
         worldGenerator.getUhcWorld().createWorld();
 
-        getServer().getScheduler().runTaskTimer(this, () -> cache.values().forEach(uhcScoreboard -> uhcScoreboard.update(modeManager, gameManager, playerManager, teamManager)), 0L, 20L);
+        getServer().getScheduler().runTaskTimer(this, () -> cache.values().forEach(uhcScoreboard -> uhcScoreboard.update(this, modeManager, gameManager, playerManager, teamManager)), 0L, 20L);
 
         createScoreboard();
 
@@ -125,6 +126,7 @@ public class Main extends JavaPlugin {
         getARENA().getBlocksTypeOf(Material.COBWEB).forEach(block -> block.setType(Material.AIR));
         getARENA().getBlocksTypeOf(Material.LAVA).forEach(block -> block.setType(Material.AIR));
         getARENA().getBlocksTypeOf(Material.OBSIDIAN).forEach(block -> block.setType(Material.AIR));
+        getARENA().getBlocksTypeOf(Material.COBBLESTONE).forEach(block -> block.setType(Material.AIR));
         getARENA().getBlocksTypeOf(Material.WATER).forEach(block -> {
             if(!getARENA_WATER().isInsideRegion(block.getLocation())) {
                 block.setType(Material.AIR);

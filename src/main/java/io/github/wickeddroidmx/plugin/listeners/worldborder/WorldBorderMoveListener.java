@@ -5,6 +5,7 @@ import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -31,7 +32,7 @@ public class WorldBorderMoveListener implements Listener {
             player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0F, 1.0F);
         });
 
-        var world = Bukkit.getWorld("uhc_world");
+        var world = plugin.getWorldGenerator().getUhcWorld().getWorld();
 
         if (world != null) {
             var worldBorder = world.getWorldBorder();

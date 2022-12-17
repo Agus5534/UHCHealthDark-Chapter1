@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.listeners.players;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
@@ -39,6 +40,7 @@ public class PlayerJoinListener implements Listener {
     private TeamManager teamManager;
     private ModeManager modeManager;
     private SQLConsults sqlConsults;
+    private Main plugin;
 
     @Named("scoreboard-cache")
     private MapCache<UUID, UHCScoreboard> cache;
@@ -106,17 +108,17 @@ public class PlayerJoinListener implements Listener {
             if (cache.exists(player.getUniqueId()))
                 return;
 
-            cache.add(player.getUniqueId(), new LobbyScoreboard(player, modeManager, gameManager, playerManager, teamManager));
+            cache.add(player.getUniqueId(), new LobbyScoreboard(plugin, player, modeManager, gameManager, playerManager, teamManager));
         } else if (gameManager.getGameState() != GameState.WAITING || gameManager.getGameState() != GameState.FINISHING) {
             if (cache.exists(player.getUniqueId()))
                 return;
 
-            cache.add(player.getUniqueId(), new GameScoreboard(player, modeManager, gameManager, playerManager, teamManager));
+            cache.add(player.getUniqueId(), new GameScoreboard(plugin, player, modeManager, gameManager, playerManager, teamManager));
         } else {
             if (cache.exists(player.getUniqueId()))
                 return;
 
-            cache.add(player.getUniqueId(), new KillTopScoreboard(player, modeManager, gameManager, playerManager, teamManager));
+            cache.add(player.getUniqueId(), new KillTopScoreboard(plugin, player, modeManager, gameManager, playerManager, teamManager));
         }
     }
 }

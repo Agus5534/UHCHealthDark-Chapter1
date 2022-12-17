@@ -15,6 +15,8 @@ import io.github.wickeddroidmx.plugin.scoreboard.GameScoreboard;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -37,6 +39,7 @@ public class GameStartListener implements Listener {
     private ModeManager modeManager;
     private PlayerManager playerManager;
     private TeamManager teamManager;
+    private WorldGenerator worldGenerator;
 
     @Named("scoreboard-cache")
     private MapCache<UUID, UHCScoreboard> cache;
@@ -44,7 +47,7 @@ public class GameStartListener implements Listener {
     @EventHandler
     public void onGameStart(GameStartEvent e) {
         var gameManager = e.getGameManager();
-        var uhcWorld = Bukkit.getWorld("uhc_world");
+        var uhcWorld = plugin.getWorldGenerator().getUhcWorld().getWorld();
 
         cache.clear();
 
@@ -55,7 +58,7 @@ public class GameStartListener implements Listener {
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 9, false, false, false));
             player.sendTitle(ChatUtils.format("&6¡UHC Iniciado!"), ChatUtils.format("&7El UHC ha iniciado"), 20, 60, 20);
-            cache.add(player.getUniqueId(), new GameScoreboard(player, modeManager ,gameManager, playerManager, teamManager));
+            cache.add(player.getUniqueId(), new GameScoreboard(plugin, player, modeManager ,gameManager, playerManager, teamManager));
         });
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {

@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.listeners.portal;
 
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.Main;
 import net.minecraft.world.level.levelgen.structure.WorldGenNetherPieces;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,7 +25,10 @@ public class PlayerPortalListener implements Listener {
 
     @Inject
     private GameManager gameManager;
+    @Inject
+    private Main plugin;
     private HashMap<Location, Double> portalLocationMultiplier;
+
 
     public PlayerPortalListener() {
         portalLocationMultiplier = new HashMap<>();
@@ -39,7 +43,7 @@ public class PlayerPortalListener implements Listener {
             if(e.getFrom().getWorld().getEnvironment() == World.Environment.NETHER) {
                 var toLocation = e.getTo();
                 var fromLocation = e.getFrom();
-                toLocation.setWorld(Bukkit.getWorld("uhc_world"));
+                toLocation.setWorld(plugin.getWorldGenerator().getUhcWorld().getWorld());
 
                 double multiplier = 8.0D;
                 int fixes = 0;
@@ -79,10 +83,10 @@ public class PlayerPortalListener implements Listener {
 
         if(e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
             if(e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END) {
-                var world = Bukkit.getWorld("uhc_world");
+                var world = plugin.getWorldGenerator().getUhcWorld().getWorld();
 
                 if(player.getBedSpawnLocation() != null) {
-                    if(player.getBedSpawnLocation().getWorld().getName().equals("uhc_world")) {
+                    if(player.getBedSpawnLocation().getWorld().getName().equals(world.getName())) {
                         e.setTo(player.getBedSpawnLocation());
                         return;
                     }
@@ -105,7 +109,7 @@ public class PlayerPortalListener implements Listener {
 
 
     public boolean isOutsideBorder(Location location) {
-        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize()/2;
+        var size = plugin.getWorldGenerator().getUhcWorld().getWorld().getWorldBorder().getSize()/2;
         double x = location.getX();
         double z = location.getZ();
 
@@ -121,7 +125,7 @@ public class PlayerPortalListener implements Listener {
         var newZ = location.getZ() * multiplier;
         var y = ThreadLocalRandom.current().nextInt(6, 90);
 
-        var newLoc = new Location(Bukkit.getWorld("uhc_world"), newX, y, newZ);
+        var newLoc = new Location(plugin.getWorldGenerator().getUhcWorld().getWorld(), newX, y, newZ);
 
         return newLoc;
     }
@@ -130,7 +134,7 @@ public class PlayerPortalListener implements Listener {
         var x = location.getX();
         var z = location.getZ();
 
-        var size = Bukkit.getWorld("uhc_world").getWorldBorder().getSize() / 2;
+        var size = plugin.getWorldGenerator().getUhcWorld().getWorld().getWorldBorder().getSize() / 2;
 
         if(isOutsideBorder(location)) {
             return 0.30D;

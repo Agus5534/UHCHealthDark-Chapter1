@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.scoreboard;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
@@ -12,13 +13,13 @@ import javax.inject.Inject;
 
 public abstract class UHCScoreboard extends FastBoard {
 
-    public UHCScoreboard(Player player, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
+    public UHCScoreboard(Main plugin, Player player, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
         super(player);
 
         this.updateTitle(ChatUtils.format("&6UHC &bHealthDark &7- &6#" + gameManager.getUhcId()));
 
-        this.update(modeManager, gameManager, playerManager, teamManager);
+        this.update(plugin, modeManager, gameManager, playerManager, teamManager);
     }
 
-    public abstract void update(ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager);
+    public abstract void update(Main plugin, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager);
 }

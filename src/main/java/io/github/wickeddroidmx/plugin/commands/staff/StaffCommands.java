@@ -10,6 +10,7 @@ import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.Main;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Named;
@@ -20,6 +21,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -88,14 +90,14 @@ public class StaffCommands implements CommandClass {
                 Bukkit.getPluginManager().callEvent(new PlayerJoinedTeamEvent(uhcTeam, target));
 
                 if(uhcTeam.getSpawnLocation() == null) {
-                    target.teleport(new Location(Bukkit.getWorld("uhc_world"), random.nextInt(gameManager.getWorldBorder()), 100, random.nextInt(gameManager.getWorldBorder())));
+                    target.teleport(new Location(plugin.getWorldGenerator().getUhcWorld().getWorld(), random.nextInt(gameManager.getWorldBorder()), 100, random.nextInt(gameManager.getWorldBorder())));
                 } else {
                     target.teleport(uhcTeam.getSpawnLocation());
                 }
             }
 
             if(uhcTeam == null) {
-                target.teleport(new Location(Bukkit.getWorld("uhc_world"), random.nextInt(gameManager.getWorldBorder()), 100, random.nextInt(gameManager.getWorldBorder())));
+                target.teleport(new Location(plugin.getWorldGenerator().getUhcWorld().getWorld(), random.nextInt(gameManager.getWorldBorder()), 100, random.nextInt(gameManager.getWorldBorder())));
             }
 
             target.setGameMode(GameMode.SURVIVAL);
@@ -142,6 +144,34 @@ public class StaffCommands implements CommandClass {
         var playerInv = new PlayerInventoryMenu(target);
 
         playerInv.openInv(sender);
+    }
+
+    @Command(
+            names = {"invti", "invseeti", "tisee"}
+    )
+    public void teamInventorySeeCommand(@Sender Player sender, @Named("team") UhcTeam uhcTeam) {
+        var senderUhcPlayer = playerManager.getPlayer(sender.getUniqueId());
+
+        if(senderUhcPlayer != null) {
+            if(senderUhcPlayer.isAlive() || senderUhcPlayer.isSpect()) {
+                sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "Eres un jugador de la partida."));
+                return;
+            }
+        }
+
+        var inv = uhcTeam.getInventory();
+
+        if(inv == null) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Ese team no tiene Team Inventory"));
+            return;
+        }
+
+        if(sender.getGameMode() != GameMode.SPECTATOR) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No estas en espectador"));
+            return;
+        }
+
+        sender.openInventory(inv);
     }
 
     @Command(

@@ -1,6 +1,7 @@
 package io.github.wickeddroidmx.plugin.teams;
 
 import io.github.wickeddroidmx.plugin.events.team.TeamFlagChangedEvent;
+import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,10 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
 
+import javax.inject.Inject;
 import java.util.*;
 
 public class UhcTeam {
-
     private final int id;
     private final Set<UUID> teamPlayers;
     private final Team team;

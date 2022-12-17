@@ -9,6 +9,7 @@ import io.github.wickeddroidmx.plugin.connection.SQLClient;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.files.Configuration;
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.key.TypeReference;

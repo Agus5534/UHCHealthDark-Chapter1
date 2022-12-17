@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.scoreboard;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
@@ -12,12 +13,12 @@ import org.bukkit.entity.Player;
 
 public class LobbyScoreboard extends UHCScoreboard {
 
-    public LobbyScoreboard(Player player, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
-        super(player, modeManager, gameManager, playerManager, teamManager);
+    public LobbyScoreboard(Main plugin, Player player, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
+        super(plugin, player, modeManager, gameManager, playerManager, teamManager);
     }
 
     @Override
-    public void update(ModeManager modeManager,GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
+    public void update(Main plugin, ModeManager modeManager,GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
         var host = gameManager.getHost();
         var uhcType = modeManager.getModesActive(ModalityType.UHC).stream().findFirst();
 

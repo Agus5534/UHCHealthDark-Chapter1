@@ -8,6 +8,7 @@ import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +34,8 @@ public class JumperMode extends Modality {
 
     @Inject
     private TeamManager teamManager;
+    @Inject
+    private Main plugin;
 
     public JumperMode() throws IllegalClassFormatException {
         super();
@@ -44,7 +47,7 @@ public class JumperMode extends Modality {
 
         if (e.getTime() % (60 * 15) == 0) {
             for (UhcTeam uhcTeam : teamManager.getUhcTeams().values()) {
-                var world = Bukkit.getWorld("uhc_world");
+                var world = plugin.getWorldGenerator().getUhcWorld().getWorld();
                 var x = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
                 var z = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
 

@@ -16,6 +16,7 @@ import io.github.wickeddroidmx.plugin.scoreboard.KillTopScoreboard;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.Main;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -46,6 +47,7 @@ public class GameTickListener implements Listener {
     @Inject
     private GameManager gameManager;
 
+
     @Inject
     @Named("scoreboard-cache")
     private MapCache<UUID, UHCScoreboard> cache;
@@ -53,7 +55,7 @@ public class GameTickListener implements Listener {
     @EventHandler
     public void onGameTick(GameTickEvent e) {
         var seconds = e.getTime();
-        var uhcWorld = Bukkit.getWorld("uhc_world");
+        var uhcWorld = plugin.getWorldGenerator().getUhcWorld().getWorld();
 
         if (gameManager.getGameState() == GameState.MEETUP) {
             if (teamManager.getCurrentTeams() == 1) {
@@ -116,7 +118,7 @@ public class GameTickListener implements Listener {
         if (gameManager.getGameState() == GameState.FINISHING) {
             cache.clear();
 
-            Bukkit.getOnlinePlayers().forEach(player -> cache.add(player.getUniqueId(), new KillTopScoreboard(player, modeManager, gameManager, playerManager, teamManager)));
+            Bukkit.getOnlinePlayers().forEach(player -> cache.add(player.getUniqueId(), new KillTopScoreboard(plugin, player, modeManager, gameManager, playerManager, teamManager)));
             Bukkit.getScheduler().cancelTask(e.getId());
         }
 
