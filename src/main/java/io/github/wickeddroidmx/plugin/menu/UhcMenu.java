@@ -6,9 +6,11 @@ import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Team;
 import team.unnamed.gui.abstraction.item.ItemClickable;
 import team.unnamed.gui.core.gui.type.GUIBuilder;
@@ -72,6 +74,7 @@ public class UhcMenu {
                         .stream()
                         .map(Bukkit::getOfflinePlayer)
                         .collect(Collectors.toList()))
+                .setItemIfNotEntities(ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.LIGHT_GRAY_STAINED_GLASS_PANE).name(ChatUtils.formatC("&6Vacío"))).build())
                 .setBounds(10, 35)
                 .setItemsPerRow(7)
                 .build();

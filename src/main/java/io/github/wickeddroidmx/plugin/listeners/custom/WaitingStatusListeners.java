@@ -130,13 +130,13 @@ public class WaitingStatusListeners implements Listener {
         if(isItem("speed", item)) {
             if(!donatorsList.contains(p)) { return; }
 
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 65, 1, false, false, false));
-            addCooldown(p, 9);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 90, 1, false, false, false));
+            addCooldown(p, 10);
         }
 
         if(isGlobalItem("lobby", item)) {
             event.getPlayer().teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
-            addCooldown(p, 5);
+            addCooldown(p, 6);
         }
 
         if(isGlobalItem("arena", item)) {

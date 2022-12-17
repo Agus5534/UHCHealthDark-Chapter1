@@ -9,7 +9,7 @@ public class IRONMAN_COMMAND extends Experiment {
                 "IRONMAN_COMMAND_EXPERIMENT",
                 "Activa el comando /ironman",
                 false,
-                true
+                false
         );
     }
 }

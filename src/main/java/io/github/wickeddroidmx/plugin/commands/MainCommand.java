@@ -36,11 +36,6 @@ public class MainCommand implements CommandClass {
             names = "ironman"
     )
     public void ironMan(@Sender Player sender) {
-        if(!experimentManager.hasExperiment(sender, "IRONMAN_COMMAND_EXPERIMENT")) {
-            sender.sendMessage(ChatUtils.formatComponentPrefix("No estás autorizado a utilizar esto."));
-            return;
-        }
-
         sender.openInventory(uhcMenu.getIronManMenu());
     }
 
