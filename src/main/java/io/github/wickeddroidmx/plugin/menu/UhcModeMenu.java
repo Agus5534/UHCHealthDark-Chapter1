@@ -26,7 +26,7 @@ public class UhcModeMenu {
                 .builderStringLayout("Modalidades", 3)
                 .setLayoutLines(
                         "xxxxxxxxx",
-                        "xmxxsxxtx",
+                        "xmxsxtxcx",
                         "xxxxxxxxx"
                 )
                 .setLayoutItem('x', ItemClickable
@@ -39,7 +39,7 @@ public class UhcModeMenu {
                         .builderCancellingEvent()
                         .setItemStack(ItemBuilder.newBuilder(Material.DIAMOND_SWORD)
                                 .setName(ChatUtils.format("&bModalidades"))
-                                .setLore((modeManager.getModesActive(ModalityType.MODE).size() > 1) ? modeManager
+                                .setLore((modeManager.getModesActive(ModalityType.MODE).size() >= 1) ? modeManager
                                         .getModesActive(ModalityType.MODE)
                                         .stream()
                                         .map(Modality::getName)
@@ -66,13 +66,13 @@ public class UhcModeMenu {
                         .builderCancellingEvent()
                         .setItemStack(ItemBuilder.newBuilder(Material.DIAMOND)
                                 .setName(ChatUtils.format("&eScenarios"))
-                                .setLore((modeManager.getModesActive(ModalityType.SCENARIO).size() > 1) ? modeManager
+                                .setLore((modeManager.getModesActive(ModalityType.SCENARIO).size() >= 1) ? modeManager
                                         .getModesActive(ModalityType.SCENARIO)
                                         .stream()
                                         .map(Modality::getName)
                                         .map(modality -> ChatUtils.format(String.format("&7- %s", modality)))
                                         .collect(Collectors.joining())
-                                        : ChatUtils.format("&7No hay modalidades activas."))
+                                        : ChatUtils.format("&7No hay scenarios activas."))
                                 .build())
                         .setAction(action -> {
                             var player = action.getWhoClicked();
@@ -94,13 +94,13 @@ public class UhcModeMenu {
                         .builderCancellingEvent()
                         .setItemStack(ItemBuilder.newBuilder(Material.POPPY)
                                 .setName(ChatUtils.format("&bModalidades de equipo"))
-                                .setLore((modeManager.getModesActive(ModalityType.TEAM).size() > 1) ? modeManager
+                                .setLore((modeManager.getModesActive(ModalityType.TEAM).size() >= 1) ? modeManager
                                         .getModesActive(ModalityType.TEAM)
                                         .stream()
                                         .map(Modality::getName)
                                         .map(modality -> ChatUtils.format(String.format("&7- %s", modality)))
                                         .collect(Collectors.joining())
-                                        : ChatUtils.format("&7No hay modalidades activas."))
+                                        : ChatUtils.format("&7No hay modalidades de equipo activas."))
                                 .build())
                         .setAction(action -> {
                             var player = action.getWhoClicked();
@@ -118,12 +118,37 @@ public class UhcModeMenu {
                             return true;
                         })
                         .build())
+                .setLayoutItem('c', ItemClickable
+                        .builderCancellingEvent().setItemStack(ItemBuilder.newBuilder(Material.STRUCTURE_VOID)
+                                .setName((modeManager.getModesActive(ModalityType.SETTING).size() >= 1) ? modeManager
+                                .getModesActive(ModalityType.SETTING)
+                                .stream()
+                                .map(Modality::getName)
+                                .map(modality -> ChatUtils.format(String.format("&7 - %s", modality)))
+                                .collect(Collectors.joining())
+                                : ChatUtils.format("&7No hay settings activas."))
+                                .build())
+                        .setAction(action -> {
+                            var player = action.getWhoClicked();
+
+                            if (modeManager.getModesActive(ModalityType.SETTING).size() == 0) {
+                                player.sendMessage(ChatUtils.PREFIX + "No hay ninguna setting activa");
+
+                                return true;
+                            }
+
+                            player.getInventory().close();
+
+                            player.openInventory(getModeInventory(ModalityType.SETTING));
+
+                            return true;
+                        }).build())
                 .build();
     }
 
     public Inventory getModeInventory(ModalityType modalityType) {
         return GUIBuilder
-                .builderPaginated(Modality.class, "Modos de Juego activados - %page%", 6)
+                .builderPaginated(Modality.class,  modalityType.name()+"s enabled - %page%", 6)
                 .fillBorders(ItemClickable
                         .builderCancellingEvent()
                         .setItemStack(ItemBuilder
