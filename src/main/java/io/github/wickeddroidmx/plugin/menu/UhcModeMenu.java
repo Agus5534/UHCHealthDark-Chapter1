@@ -1,10 +1,13 @@
 package io.github.wickeddroidmx.plugin.menu;
 
+import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
+import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -17,17 +20,22 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class UhcModeMenu {
-
-    @Inject
+    private GameManager gameManager;
+    private ExperimentManager experimentManager;
     private ModeManager modeManager;
 
+    public UhcModeMenu(ModeManager modeManager, GameManager gameManager, ExperimentManager experimentManager) {
+        this.modeManager = modeManager;
+        this.gameManager = gameManager;
+        this.experimentManager = experimentManager;
+    }
     public Inventory getSelectInventory() {
         return GUIBuilder
                 .builderStringLayout("Modalidades", 3)
                 .setLayoutLines(
                         "xxxxxxxxx",
                         "xmxsxtxcx",
-                        "xxxxxxxxx"
+                        "xxxxxxxxv"
                 )
                 .setLayoutItem('x', ItemClickable
                         .builderCancellingEvent()
@@ -120,7 +128,8 @@ public class UhcModeMenu {
                         .build())
                 .setLayoutItem('c', ItemClickable
                         .builderCancellingEvent().setItemStack(ItemBuilder.newBuilder(Material.STRUCTURE_VOID)
-                                .setName((modeManager.getModesActive(ModalityType.SETTING).size() >= 1) ? modeManager
+                                .setName(ChatUtils.format("&dSettings"))
+                                .setLore((modeManager.getModesActive(ModalityType.SETTING).size() >= 1) ? modeManager
                                 .getModesActive(ModalityType.SETTING)
                                 .stream()
                                 .map(Modality::getName)
@@ -140,6 +149,16 @@ public class UhcModeMenu {
                             player.getInventory().close();
 
                             player.openInventory(getModeInventory(ModalityType.SETTING));
+
+                            return true;
+                        }).build())
+                .setLayoutItem('v', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.BARRIER).name(ChatUtils.formatC("&6Volver")))
+                        .setAction(action -> {
+                            var player = action.getWhoClicked();
+
+                            player.getInventory().close();
+
+                            player.openInventory(new UhcMenu(gameManager, experimentManager, this, modeManager).getConfigMenu());
 
                             return true;
                         }).build())

@@ -30,7 +30,7 @@ public class ExperimentManager {
     }
 
     @InjectIgnore
-    private final Set<Experiment> experimentSet = new HashSet<>();
+    private static final Set<Experiment> experimentSet = new HashSet<>();
     @InjectIgnore
     private final HashMap<String, Experiment> stringExperimentHashMap = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class ExperimentManager {
         return getExperimentByKey(key).isOnExperiment(player);
     }
 
-    public Set<Experiment> getExperiments() {
+    public static Set<Experiment> getExperiments() {
         return experimentSet;
     }
 

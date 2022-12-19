@@ -153,7 +153,7 @@ public class StaffCommands implements CommandClass {
         var senderUhcPlayer = playerManager.getPlayer(sender.getUniqueId());
 
         if(senderUhcPlayer != null) {
-            if(senderUhcPlayer.isAlive() || senderUhcPlayer.isSpect()) {
+            if(senderUhcPlayer.isAlive() || !senderUhcPlayer.isSpect()) {
                 sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + "Eres un jugador de la partida."));
                 return;
             }
