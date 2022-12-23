@@ -66,6 +66,7 @@ public class ModeManager {
     private UnknownTeamsMode unknownTeamsMode;
     private BrothersMode brothersMode;
     private ChosenMode chosenMode;
+    private WeakestLinkMode weakestLinkMode;
 
     //Scenarios
     private GunsNRosesScenario gunsNRosesScenario;
@@ -84,6 +85,8 @@ public class ModeManager {
     private DoubleOresScenario doubleOresScenario;
     private CobwebLess cobwebLess;
     private ShieldLessScenario shieldLessScenario;
+    private GoldLessScenario goldLessScenario;
+    private LuckyLeavesScenario luckyLeavesScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
@@ -159,7 +162,10 @@ public class ModeManager {
                 unknownTeamsMode,
                 bestPVEMode,
                 brothersMode,
-                chosenMode
+                chosenMode,
+                goldLessScenario,
+                luckyLeavesScenario,
+                weakestLinkMode
         );
     }
 
