@@ -9,11 +9,11 @@ import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
@@ -37,31 +37,46 @@ public class JumperMode extends Modality {
     @Inject
     private Main plugin;
 
+    int delay = 0;
+
     public JumperMode() throws IllegalClassFormatException {
         super();
     }
 
     @EventHandler
     public void onGameTick(GameTickEvent e) {
-        var random = new Random();
+         if (e.getTime() % 900 == 0 && e.getTime() > 1) {
+            delay = 1;
 
-        if (e.getTime() % (60 * 15) == 0) {
             for (UhcTeam uhcTeam : teamManager.getUhcTeams().values()) {
-                var world = plugin.getWorldGenerator().getUhcWorld().getWorld();
-                var x = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
-                var z = -(gameManager.getWorldBorder() / 2) + random.nextInt(gameManager.getWorldBorder());
+                uhcTeam.getTeamPlayers().forEach(u -> {
+                    var player = Bukkit.getOfflinePlayer(u);
 
-                if (world != null) {
-                    var location = new Location(world, x, world.getHighestBlockYAt(x, z), z);
+                    if(!player.isOnline()) { return; }
 
-                    uhcTeam.getTeamPlayers()
-                            .stream()
-                            .map(Bukkit::getPlayer)
-                            .filter(Objects::nonNull)
-                            .filter(Player::isOnline)
-                            .forEach(player -> player.teleport(location));
-                }
+                    if(player.getPlayer().getGameMode() == GameMode.SPECTATOR) { return; }
+
+                    Bukkit.getScheduler().runTaskLater(plugin, ()-> teleportPlayer(player.getPlayer()), delay);
+
+                    delay = delay + 10;
+                });
+
             }
         }
+    }
+
+    private void teleportPlayer(Player player) {
+        var random = new Random();
+        var wb = player.getLocation().getWorld().getWorldBorder().getSize() / 2;
+
+        if(wb > 2000) { wb = 1000; }
+
+        var x = -(gameManager.getWorldBorder() / 2) + random.nextInt((int) wb);
+        var z = -(gameManager.getWorldBorder() / 2) + random.nextInt((int) wb);
+
+        var location = new Location(player.getWorld(), x, 170, z);
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, player.getWorld().getEnvironment() == World.Environment.NETHER ? 800 : 400, 20, false, false, false));
+        player.teleport(location);
     }
 }
