@@ -87,6 +87,8 @@ public class ModeManager {
     private ShieldLessScenario shieldLessScenario;
     private GoldLessScenario goldLessScenario;
     private LuckyLeavesScenario luckyLeavesScenario;
+    private HeavyPocketsScenario heavyPocketsScenario;
+    private StarterItemScenario starterItemScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
@@ -165,7 +167,9 @@ public class ModeManager {
                 chosenMode,
                 goldLessScenario,
                 luckyLeavesScenario,
-                weakestLinkMode
+                weakestLinkMode,
+                heavyPocketsScenario,
+                starterItemScenario
         );
     }
 
