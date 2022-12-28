@@ -59,6 +59,7 @@ public class ModeManager {
     private HalfHeartMode halfHeartMode;
     private TradeParanoiaMode tradeParanoiaMode;
     private BestPVEMode bestPVEMode;
+    private InventoryShuffleMode inventoryShuffleMode;
 
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
@@ -169,7 +170,8 @@ public class ModeManager {
                 luckyLeavesScenario,
                 weakestLinkMode,
                 heavyPocketsScenario,
-                starterItemScenario
+                starterItemScenario,
+                inventoryShuffleMode
         );
     }
 
