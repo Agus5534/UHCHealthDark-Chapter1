@@ -68,6 +68,7 @@ public class ModeManager {
     private BrothersMode brothersMode;
     private ChosenMode chosenMode;
     private WeakestLinkMode weakestLinkMode;
+    private CrazyDayLightCycleMode crazyDayLightCycleMode;
 
     //Scenarios
     private GunsNRosesScenario gunsNRosesScenario;
@@ -171,7 +172,8 @@ public class ModeManager {
                 weakestLinkMode,
                 heavyPocketsScenario,
                 starterItemScenario,
-                inventoryShuffleMode
+                inventoryShuffleMode,
+                crazyDayLightCycleMode
         );
     }
 
