@@ -55,6 +55,10 @@ public class GraveRobbersMode extends Modality {
             newDrops.add(new ItemCreator(Material.PLAYER_HEAD).setSkullSkin(e.getEntity()));
         }
 
+        if(modeManager.isActiveMode("heavy_pockets")) {
+            newDrops.add(new ItemCreator(Material.NETHERITE_SCRAP).amount(2));
+        }
+
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             var chest = createDoubleChestAt(location);
 
