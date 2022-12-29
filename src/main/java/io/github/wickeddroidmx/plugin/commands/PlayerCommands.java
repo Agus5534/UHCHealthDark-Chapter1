@@ -26,7 +26,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.checkerframework.checker.units.qual.C;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -240,14 +239,14 @@ public class PlayerCommands implements CommandClass {
             names = "experiment"
     )
     public void experimentCommand(@Sender Player sender, @Named("experiment") Experiment experiment) {
-        var ranks = WaitingStatusListeners.playerRanksHashMap.get(sender);
+        var ranks = WaitingStatusListeners.playerDonatorRankMap.get(sender);
 
         if(ranks == null) {
             sender.kick(ChatUtils.formatC("&4No se ha podido validarte!"));
             return;
         }
 
-        if(!ranks.contains(Ranks.StaffRank.TESTER)) {
+        if(!ranks.contains(Ranks.DonatorRank.TESTER)) {
             sender.sendMessage(ChatUtils.formatComponentPrefix("No estás autorizado a utilizar este comando."));
             return;
         }

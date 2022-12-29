@@ -1,10 +1,9 @@
 package io.github.wickeddroidmx.plugin.module.commands;
 
+import io.github.agus5534.hdbot.Ranks;
 import io.github.wickeddroidmx.plugin.experiments.Experiment;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
-import io.github.wickeddroidmx.plugin.module.commands.parts.ChatColorPart;
-import io.github.wickeddroidmx.plugin.module.commands.parts.ConcursantTypesPart;
 import io.github.wickeddroidmx.plugin.module.commands.parts.factory.*;
 import io.github.wickeddroidmx.plugin.poll.ConcursantTypes;
 import io.github.wickeddroidmx.plugin.teams.TeamFlags;
@@ -14,7 +13,6 @@ import me.fixeddev.commandflow.annotated.part.AbstractModule;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
 
-import javax.inject.Inject;
 
 public class ExtraBukkitModule extends AbstractModule {
 
@@ -35,6 +33,8 @@ public class ExtraBukkitModule extends AbstractModule {
         this.bindFactory(ModalityType.class, new ModalityTypeFactory());
         this.bindFactory(UhcTeam.class, new UhcTeamFactory(teamManager));
         this.bindFactory(Experiment.class, new ExperimentsFactory(experimentManager));
+        this.bindFactory(Ranks.StaffRank.class, new StaffRankFactory());
+        this.bindFactory(Ranks.DonatorRank.class, new DonatorRankFactory());
     }
 
 }

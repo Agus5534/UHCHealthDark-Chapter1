@@ -1,16 +1,21 @@
 package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
+import io.github.wickeddroidmx.plugin.utils.items.ItemPersistentData;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
+import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,6 +29,8 @@ import java.util.concurrent.ThreadLocalRandom;
 )
 public class LuckyLeavesScenario extends Modality {
 
+    @Inject
+    private Main plugin;
     public LuckyLeavesScenario() throws IllegalClassFormatException {
         super();
     }
@@ -43,6 +50,14 @@ public class LuckyLeavesScenario extends Modality {
 
         if(item.getType() != Material.APPLE) { return; }
 
+        var iData = new ItemPersistentData(plugin, "dropped", item.getItemMeta());
+
+        if(iData == null) { return; }
+
+        if(iData.hasData(PersistentDataType.STRING)) { return; }
+
+        if(iData.getData(PersistentDataType.STRING).equals("true")) { return; }
+
         int n = ThreadLocalRandom.current().nextInt(1, 100);
 
         if(n >= 17 && n <= 21) {
@@ -50,5 +65,18 @@ public class LuckyLeavesScenario extends Modality {
 
             event.getLocation().getWorld().dropItem(event.getLocation(), new ItemCreator(Material.GOLDEN_APPLE));
         }
+    }
+
+    @EventHandler
+    public void onDropItem(PlayerDropItemEvent event) {
+        if(event.getItemDrop() == null) { return; }
+        if(event.getItemDrop().getType() == null) { return; }
+
+        if(event.getItemDrop().getItemStack().getType() == Material.APPLE) { return; }
+
+        var iData = new ItemPersistentData(plugin, "dropped", event.getItemDrop().getItemStack().getItemMeta());
+
+        iData.setData(PersistentDataType.STRING, "true");
+
     }
 }

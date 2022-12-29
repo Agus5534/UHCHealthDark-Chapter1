@@ -58,6 +58,7 @@ public class ListenerLoader implements Loader {
     private ActiveModeListener activeModeListener;
     private DesactiveModeListener desactiveModeListener;
     private ChangeGameTimeListener changeGameTimeListener;
+    private PrefixChangeReturnListener prefixChangeReturnListener;
 
     //Team Events
     private TeamCreateListener teamCreateListener;
@@ -118,7 +119,8 @@ public class ListenerLoader implements Loader {
                 entityPickupItemListener,
                 teamFlagChangedListener,
                 statusListeners,
-                lootGenerateListener
+                lootGenerateListener,
+                prefixChangeReturnListener
         );
     }
 

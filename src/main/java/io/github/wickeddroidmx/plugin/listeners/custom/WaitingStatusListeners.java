@@ -1,6 +1,5 @@
 package io.github.wickeddroidmx.plugin.listeners.custom;
 
-import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import io.github.agus5534.hdbot.Ranks;
 import io.github.agus5534.hdbot.minecraft.events.PlayerAssignRankEvent;
 import io.github.wickeddroidmx.plugin.Main;
@@ -14,21 +13,18 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -44,7 +40,8 @@ public class WaitingStatusListeners implements Listener {
 
 
     public static List<Player> donatorsList = new ArrayList<>();
-    public static HashMap<Player, Collection<Ranks.StaffRank>> playerRanksHashMap = new HashMap<>();
+    public static HashMap<Player, Collection<Ranks.StaffRank>> playerStaffRanksMap = new HashMap<>();
+    public static HashMap<Player, Collection<Ranks.DonatorRank>> playerDonatorRankMap = new HashMap<>();
 
     List<Player> onCooldown = new ArrayList<>();
 
@@ -154,7 +151,8 @@ public class WaitingStatusListeners implements Listener {
             donatorsList.add(event.getPlayer());
         }
 
-        playerRanksHashMap.put(event.getPlayer(), event.getStaffRanks().values());
+        playerStaffRanksMap.put(event.getPlayer(), event.getStaffRanks().values());
+        playerDonatorRankMap.put(event.getPlayer(), event.getDonatorRanks().values());
     }
 
     @EventHandler

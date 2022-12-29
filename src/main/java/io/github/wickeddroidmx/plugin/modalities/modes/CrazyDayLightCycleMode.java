@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
@@ -8,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 
+import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -25,6 +27,8 @@ public class CrazyDayLightCycleMode extends Modality {
         super();
     }
 
+    @Inject
+    private Main plugin;
     private ACTION action;
     private long tickToModify;
     private int chancePerTick;
@@ -43,15 +47,17 @@ public class CrazyDayLightCycleMode extends Modality {
             changeAction();
         }
 
-        if(getAction() == ACTION.SPEED) {
-            Bukkit.getWorlds().forEach(w -> w.setFullTime(w.getFullTime() + tickToModify));
-        }
-
-        if(getAction() == ACTION.SLOW) {
-            if(chancePerTick > ThreadLocalRandom.current().nextInt(1, 250)) {
-                Bukkit.getWorlds().forEach(w -> w.setFullTime(w.getFullTime() - tickToModify));
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if(getAction() == ACTION.SPEED) {
+                Bukkit.getWorlds().forEach(w -> w.setFullTime(w.getFullTime() + tickToModify));
             }
-        }
+
+            if(getAction() == ACTION.SLOW) {
+                if(chancePerTick > ThreadLocalRandom.current().nextInt(1, 250)) {
+                    Bukkit.getWorlds().forEach(w -> w.setFullTime(w.getFullTime() - tickToModify));
+                }
+            }
+        });
 
     }
 

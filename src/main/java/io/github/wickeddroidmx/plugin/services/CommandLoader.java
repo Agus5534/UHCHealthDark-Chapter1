@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.services;
 
 import io.github.wickeddroidmx.plugin.commands.MainCommand;
 import io.github.wickeddroidmx.plugin.commands.PlayerCommands;
+import io.github.wickeddroidmx.plugin.commands.PrefixesCommands;
 import io.github.wickeddroidmx.plugin.commands.staff.*;
 import io.github.wickeddroidmx.plugin.commands.teams.TeamCommands;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
@@ -32,6 +33,7 @@ public class CommandLoader implements Loader {
     private StaffWorldCommands staffWorldCommands;
     private TeamManager teamManager;
     private ExperimentManager experimentManager;
+    private PrefixesCommands prefixesCommands;
 
     @Override
     public void load() {
@@ -44,7 +46,8 @@ public class CommandLoader implements Loader {
                 staffTeamCommands,
                 staffModeCommands,
                 staffMeetupCommands,
-                staffWorldCommands
+                staffWorldCommands,
+                prefixesCommands
         );
     }
 

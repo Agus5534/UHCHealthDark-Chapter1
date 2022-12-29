@@ -58,7 +58,7 @@ public class GameTickListener implements Listener {
         var uhcWorld = plugin.getWorldGenerator().getUhcWorld().getWorld();
 
         if (gameManager.getGameState() == GameState.MEETUP) {
-            if (teamManager.getCurrentTeams() == 1) {
+            if (teamManager.getCurrentTeams() == 1 && !modeManager.isActiveMode("moles")) {
                 var lastTeam = teamManager.getUhcTeams().values().stream().findAny().orElse(null);
 
                 if (lastTeam != null) {
