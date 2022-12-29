@@ -19,11 +19,14 @@ import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Named;
+import me.fixeddev.commandflow.annotated.annotation.Text;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -323,6 +326,95 @@ public class PlayerCommands implements CommandClass {
         sender.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 40, 200));
 
         sender.teleport(new Location(Bukkit.getWorlds().get(0), 225, 22, 244));
+    }
+
+    @Command(
+            names = "rename"
+    )
+    public void renameCommand(@Sender Player sender, @Named("name") @Text String name) {
+        var ranks = WaitingStatusListeners.playerDonatorRankMap.get(sender);
+
+        if(!ranks.contains(Ranks.DonatorRank.DONATOR) && !ranks.contains(Ranks.DonatorRank.DONATOR_PLUS) && !ranks.contains(Ranks.DonatorRank.DONATOR_PLUS_PLUS) && !ranks.contains(Ranks.DonatorRank.BOOSTER)) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Este comando es solo para donadores."));
+            return;
+        }
+
+        if(name.length() > 50) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("El texto no puede contener más de 50 caracteres."));
+            return;
+        }
+
+        var item = sender.getInventory().getItemInMainHand();
+
+        if(item == null) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No tienes ningún item en mano para renombrar."));
+            return;
+        }
+
+        if(item.getType().isAir()) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No tienes ningún item en mano para renombrar."));
+            return;
+        }
+
+        if(item.getItemMeta() == null) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No tienes ningún item en mano para renombrar."));
+            return;
+        }
+
+        var iM = item.getItemMeta();
+
+        iM.displayName(ChatUtils.formatC(name.replaceAll("&k", "")));
+
+        sender.sendMessage(ChatUtils.formatComponentPrefix("Se ha renombrado el item exitosamente."));
+
+        item.setItemMeta(iM);
+    }
+
+    @Command(
+            names = "relore"
+    )
+    public void reloreCommand(@Sender Player sender, @Named("lore") @Text String text) {
+        var ranks = WaitingStatusListeners.playerDonatorRankMap.get(sender);
+
+        if(!ranks.contains(Ranks.DonatorRank.DONATOR) && !ranks.contains(Ranks.DonatorRank.DONATOR_PLUS) && !ranks.contains(Ranks.DonatorRank.DONATOR_PLUS_PLUS) && !ranks.contains(Ranks.DonatorRank.BOOSTER)) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("Este comando es solo para donadores."));
+            return;
+        }
+
+        var item = sender.getInventory().getItemInMainHand();
+
+        if(item == null) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No tienes ningún item en mano para cambiarle el lore."));
+            return;
+        }
+
+        if(item.getType().isAir()) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No tienes ningún item en mano para cambiarle el lore."));
+            return;
+        }
+
+        if(item.getItemMeta() == null) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No tienes ningún item en mano para cambiarle el lore."));
+            return;
+        }
+
+        String[] lores = text.split("\"");
+
+        var itemC = new ItemCreator(item);
+
+        List<Component> components = new ArrayList<>();
+
+        for(var s : lores) {
+            if(s.isEmpty() || s.equals(" ")) { continue; }
+
+            components.add(ChatUtils.formatC(s));
+        }
+
+        itemC.lore(components);
+
+        item.setItemMeta(itemC.getItemMeta());
+
+        sender.sendMessage(ChatUtils.formatComponentPrefix("Se ha cambiado el lore"));
     }
 
     public int getAmount(Player player, Material material) {

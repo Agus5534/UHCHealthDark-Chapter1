@@ -29,6 +29,35 @@ public class AsyncChatListener implements Listener {
         var uhcTeam = teamManager.getPlayerTeam(player.getUniqueId());
 
         if (uhcTeam != null && uhcPlayer != null) {
+            if(e.getMessage().startsWith("!")) {
+                String format = "%s &8» &7%s";
+
+                if(uhcTeam.containsFlag(TeamFlags.COLORED_OWNER_TEAMCHAT) && uhcTeam.getOwner().equals(player)) {
+                    format = "&6%s &8» &7%s";
+                }
+
+                Component msg = !(uhcPlayer.isChat())
+                        ? ChatUtils.formatC("").append(e.getPrefixes()).append(ChatUtils.formatC(String.format(format, player.getName(), e.getMessage().replaceFirst("!", ""))))
+                        : ChatUtils.formatC("").append(e.getPrefixes()).append(ChatUtils.formatC(String.format(e.getFormat(), player.getName(), e.getMessage().replaceFirst("!", ""))));
+
+                if(uhcPlayer.isChat()) {
+                    Bukkit.broadcast(msg);
+                } else {
+                    if (player.getGameMode() == GameMode.SPECTATOR || uhcPlayer.isDeath() || uhcTeam.containsFlag(TeamFlags.BLOCK_TEAM_CHAT)) {
+                        player.sendMessage(ChatUtils.PREFIX + "No puedes utilizar el chat de equipo en este momento.");
+
+                        uhcPlayer.setChat(false);
+
+                        return;
+                    }
+
+                    e.setCancelled(true);
+                    teamManager.sendMessage(player.getUniqueId(), msg);
+                }
+
+                return;
+            }
+
             if(uhcPlayer.isChat()) {
                 if (player.getGameMode() == GameMode.SPECTATOR || uhcPlayer.isDeath() || uhcTeam.containsFlag(TeamFlags.BLOCK_TEAM_CHAT)) {
                     player.sendMessage(ChatUtils.PREFIX + "No puedes utilizar el chat de equipo en este momento.");
@@ -46,7 +75,9 @@ public class AsyncChatListener implements Listener {
                     format = "&6%s &8» &7%s";
                 }
 
-                teamManager.sendMessage(player.getUniqueId(), ChatUtils.format(String.format(format, player.getName(), e.getMessage())));
+                Component hover = ChatUtils.formatC("&e⚠ Aviso\n&bSe puede enviar mensajes al otro chat sin cambiarlo iniciando el mensaje con \"!\"");
+                Component msg = Component.text("").append(e.getPrefixes()).append(ChatUtils.formatC(String.format(format, player.getName(), e.getMessage()))).hoverEvent(hover);
+                teamManager.sendMessage(player.getUniqueId(), msg);
                 Bukkit.getLogger().info(String.format("[TEAMCHAT] [%s] %s » %s", uhcTeam.getName(), player.getName(), e.getMessage()));
 
                 return;

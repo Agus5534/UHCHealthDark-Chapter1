@@ -39,9 +39,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @InjectAll
@@ -382,7 +380,7 @@ public class StaffGameCommands implements CommandClass  {
     @Command(names = "poll")
     public class PollSubCommand implements CommandClass {
         @Command(names = "create")
-        public void createCommand(@Sender Player target, @Named("concursantType") ConcursantTypes concursantTypes, @Named("duration") int duration, @Named("question") String question, @Named("answer1") String answerOne, @Named("answer2") String answerTwo) {
+        public void createCommand(@Sender Player target, @Named("concursantType") ConcursantTypes concursantTypes, @Named("duration") int duration, @Named("pollData") @Text String pollData) {
             if(duration < 45 || duration > 900) {
                 target.sendMessage(ChatUtils.PREFIX + "Esa duración no está permitida.");
                 return;
@@ -393,16 +391,28 @@ public class StaffGameCommands implements CommandClass  {
                 return;
             }
 
-            if(question.equals("") || answerOne.equals("") || answerTwo.equals("")) {
+            String[] pData = pollData.split("\"");
+
+            List<String> data = new ArrayList<>();
+
+            for(var s : pData) {
+                if(s.isEmpty() || s.equals(" ") || s.isBlank()) { continue; }
+
+                data.add(ChatUtils.format(s));
+            }
+
+
+
+            if(data.size() < 3) {
                 target.sendMessage(ChatUtils.PREFIX + "La pregunta o las respuestas no pueden estar en blanco.");
                 return;
             }
 
             var poll = new Poll(
                     plugin,
-                    question.replaceAll("-"," "),
-                    answerOne.replaceAll("-", " "),
-                    answerTwo.replaceAll("-", " "),
+                    data.get(0),
+                    data.get(1),
+                    data.get(2),
                     duration,
                     concursantTypes
             );

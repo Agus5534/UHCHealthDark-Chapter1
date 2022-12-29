@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -57,6 +58,7 @@ public class TeamManager  {
         return uhcTeam;
     }
 
+    @Deprecated
     public void sendMessage(UUID uuid, String text) {
         var team = getPlayerTeam(uuid);
 
@@ -68,6 +70,22 @@ public class TeamManager  {
                 .forEach(player -> {
                     if(getPlayerTeam(player.getUniqueId()).equals(team)) {
                         player.sendMessage(ChatUtils.TEAM + text);
+                    }
+                });
+    }
+
+    public void sendMessage(UUID uuid, Component text) {
+        var team = getPlayerTeam(uuid);
+
+        team.getTeamPlayers()
+                .stream()
+                .map(Bukkit::getPlayer)
+                .filter(Objects::nonNull)
+                .filter(Player::isOnline)
+                .forEach(player -> {
+                    if(getPlayerTeam(player.getUniqueId()).equals(team)) {
+                        Component msg = ChatUtils.formatC(ChatUtils.TEAM).append(text);
+                        player.sendMessage(msg);
                     }
                 });
     }
