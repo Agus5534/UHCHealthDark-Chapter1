@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -131,7 +132,9 @@ public class TeamManager  {
                     .filter(player -> !gameManager.getSpectatorTeam().hasEntry(player.getName()))
                     .collect(Collectors.toCollection(ArrayList::new));
 
-            Collections.shuffle(playersWithoutTeam);
+            for(int i = 0; i < ThreadLocalRandom.current().nextInt(4, 35); i++) {
+                Collections.shuffle(playersWithoutTeam, new Random(ThreadLocalRandom.current().nextLong(Integer.MIN_VALUE, Integer.MAX_VALUE)));
+            }
 
             var playersWithoutTeamSize = playersWithoutTeam.size();
             var teamsNeeded = (int) Math.ceil(playersWithoutTeamSize / teamSize) + 1;
@@ -140,8 +143,6 @@ public class TeamManager  {
                 for (int i = 0;i<teamsNeeded;i++) {
 
                     var leader = playersWithoutTeam.remove(0);
-
-                    var uhcPlayer = playerManager.getPlayer(leader.getUniqueId());
 
                     createTeam(leader);
 
