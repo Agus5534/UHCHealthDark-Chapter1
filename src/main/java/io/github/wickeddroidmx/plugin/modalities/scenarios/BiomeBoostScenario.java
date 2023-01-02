@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.scenarios;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 
 @GameModality(
@@ -25,6 +27,8 @@ import java.lang.instrument.IllegalClassFormatException;
 )
 public class BiomeBoostScenario extends Modality {
 
+    @Inject
+    private Main plugin;
     public BiomeBoostScenario() throws IllegalClassFormatException {
         super();
     }
@@ -32,7 +36,7 @@ public class BiomeBoostScenario extends Modality {
     @EventHandler
     public void onGameTick(GameTickEvent event) {
         if(event.getTime() % 2 == 0) {
-            Bukkit.getOnlinePlayers().forEach(this::checkBiome);
+            Bukkit.getScheduler().runTask(plugin, ()-> Bukkit.getOnlinePlayers().forEach(this::checkBiome));
         }
     }
 
