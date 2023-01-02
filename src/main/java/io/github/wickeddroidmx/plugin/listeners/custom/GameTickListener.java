@@ -8,26 +8,19 @@ import io.github.wickeddroidmx.plugin.events.team.TeamWinEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
-import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
-import io.github.wickeddroidmx.plugin.hooks.discord.HookType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.scoreboard.KillTopScoreboard;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.Main;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.awt.*;
-import java.io.IOException;
 import java.util.UUID;
 
 public class GameTickListener implements Listener {

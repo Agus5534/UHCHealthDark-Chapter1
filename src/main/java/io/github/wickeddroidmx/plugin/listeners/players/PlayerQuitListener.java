@@ -2,11 +2,7 @@ package io.github.wickeddroidmx.plugin.listeners.players;
 
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.game.GameManager;
-import io.github.wickeddroidmx.plugin.game.GameState;
-import io.github.wickeddroidmx.plugin.scoreboard.GameScoreboard;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
-import io.github.wickeddroidmx.plugin.sql.SQLConsults;
-import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -24,20 +20,12 @@ public class PlayerQuitListener implements Listener {
     private GameManager gameManager;
 
     @Inject
-    private SQLConsults sqlConsults;
-
-    @Inject
     @Named("scoreboard-cache")
     private MapCache<UUID, UHCScoreboard> cache;
-
-    @Inject
-    @Named("user-cache")
-    private MapCache<UUID, User> userCache;
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e) {
         var player = e.getPlayer();
-        var user = userCache.get(player.getUniqueId());
 
         e.quitMessage(
                 Component
@@ -50,9 +38,6 @@ public class PlayerQuitListener implements Listener {
             if (scoreboard != null)
                 scoreboard.delete();
         }
-
-        if (userCache.exists(player.getUniqueId()))
-            sqlConsults.updateUser(player.getUniqueId().toString(), user.getWins(), user.getKills(), user.getIronMans());
 
         var location = player.getLocation();
         Bukkit.getLogger().info(String.format("%s has left at %s (X: %d Y: %d Z: %d)",

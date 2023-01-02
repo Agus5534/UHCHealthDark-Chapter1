@@ -1,7 +1,6 @@
 package io.github.wickeddroidmx.plugin.module.commands.parts.factory;
 
 import io.github.wickeddroidmx.plugin.module.commands.parts.ConcursantTypesPart;
-import io.github.wickeddroidmx.plugin.module.commands.parts.TeamFlagsPart;
 import me.fixeddev.commandflow.annotated.part.PartFactory;
 import me.fixeddev.commandflow.part.CommandPart;
 

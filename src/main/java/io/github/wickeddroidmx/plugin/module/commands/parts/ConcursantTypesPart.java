@@ -6,7 +6,6 @@ import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;
 import me.fixeddev.commandflow.part.CommandPart;
 import me.fixeddev.commandflow.stack.ArgumentStack;
-import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -10,15 +10,10 @@ import io.github.wickeddroidmx.plugin.scoreboard.GameScoreboard;
 import io.github.wickeddroidmx.plugin.scoreboard.KillTopScoreboard;
 import io.github.wickeddroidmx.plugin.scoreboard.LobbyScoreboard;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
-import io.github.wickeddroidmx.plugin.sql.SQLConsults;
-import io.github.wickeddroidmx.plugin.sql.StatsUser;
-import io.github.wickeddroidmx.plugin.sql.model.DefaultUser;
-import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.yushust.inject.InjectAll;
 import net.kyori.adventure.text.Component;
-import net.kyori.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Statistic;
@@ -28,7 +23,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.UUID;
 
@@ -39,14 +33,10 @@ public class PlayerJoinListener implements Listener {
     private GameManager gameManager;
     private TeamManager teamManager;
     private ModeManager modeManager;
-    private SQLConsults sqlConsults;
     private Main plugin;
 
     @Named("scoreboard-cache")
     private MapCache<UUID, UHCScoreboard> cache;
-
-    @Named("user-cache")
-    private MapCache<UUID, User> userCache;
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
@@ -55,11 +45,6 @@ public class PlayerJoinListener implements Listener {
         var player = e.getPlayer();
         var uhcPlayer = playerManager.getPlayer(player.getUniqueId());
         var uuid = player.getUniqueId().toString();
-        var sqlPlayer = sqlConsults.getUser(uuid);
-
-        if (!userCache.exists(player.getUniqueId()) && sqlPlayer == null) {
-            userCache.add(player.getUniqueId(), new DefaultUser(uuid, player.getName()));
-        }
 
         if(gameManager.getGameState() == GameState.WAITING && player.getWorld().equals(Bukkit.getWorlds().get(0))) {
             var world = player.getWorld();
@@ -86,10 +71,6 @@ public class PlayerJoinListener implements Listener {
                     }
                 }
             }
-        }
-
-        if (!userCache.exists(player.getUniqueId()) && sqlPlayer != null) {
-            userCache.add(player.getUniqueId(), new DefaultUser(uuid, player.getName(), sqlConsults.getUserStat(uuid, StatsUser.WINS), sqlConsults.getUserStat(uuid, StatsUser.KILLS), sqlConsults.getUserStat(uuid, StatsUser.IRON_MAN)));
         }
 
         if (gameManager.getGameState() != GameState.WAITING && uhcPlayer == null) {

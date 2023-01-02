@@ -1,6 +1,5 @@
 package io.github.wickeddroidmx.plugin.modalities.uhc;
 
-import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderSetEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;

@@ -13,7 +13,6 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.entities.EntityPersistentData;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import io.github.wickeddroidmx.plugin.utils.items.ItemPersistentData;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;

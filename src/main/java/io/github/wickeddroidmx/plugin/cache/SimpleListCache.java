@@ -1,7 +1,6 @@
 package io.github.wickeddroidmx.plugin.cache;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class SimpleListCache<K> implements ListCache<K> {

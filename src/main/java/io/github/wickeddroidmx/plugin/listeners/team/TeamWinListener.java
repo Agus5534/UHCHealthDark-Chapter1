@@ -4,7 +4,6 @@ import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.team.TeamWinEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
-import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -21,24 +20,9 @@ public class TeamWinListener implements Listener {
     @Inject
     private GameManager gameManager;
 
-    @Inject
-    @Named("user-cache")
-    private MapCache<UUID, User> userCache;
-
     @EventHandler
     public void onTeamWin(TeamWinEvent e) {
         var team = e.getUhcTeam();
-
-        team.getTeamPlayers()
-                .stream()
-                .map(Bukkit::getPlayer)
-                        .filter(Objects::nonNull)
-                                .forEach(player -> {
-                                    var user = userCache.get(player.getUniqueId());
-
-                                    if (userCache.exists(player.getUniqueId()))
-                                        user.incrementWins();
-                                });
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             player.playSound(player.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1.0F, 1.0F);

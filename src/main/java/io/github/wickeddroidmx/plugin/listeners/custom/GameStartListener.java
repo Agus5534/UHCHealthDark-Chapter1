@@ -6,8 +6,6 @@ import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderSetEvent;
 import io.github.wickeddroidmx.plugin.game.GameState;
-import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
-import io.github.wickeddroidmx.plugin.hooks.discord.HookType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.schedulers.GameTask;
@@ -15,7 +13,6 @@ import io.github.wickeddroidmx.plugin.scoreboard.GameScoreboard;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
@@ -25,10 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import javax.inject.Inject;
 import javax.inject.Named;
-import java.awt.*;
-import java.io.IOException;
 import java.util.UUID;
 
 @InjectAll

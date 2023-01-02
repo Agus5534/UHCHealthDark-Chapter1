@@ -10,8 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.awt.*;
-
 public class ScatterTask extends BukkitRunnable {
 
     private UhcTeam uhcTeam;

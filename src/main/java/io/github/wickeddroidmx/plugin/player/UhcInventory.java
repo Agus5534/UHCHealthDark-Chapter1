@@ -1,6 +1,5 @@
 package io.github.wickeddroidmx.plugin.player;
 
-import io.github.wickeddroidmx.plugin.cache.MapCache;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

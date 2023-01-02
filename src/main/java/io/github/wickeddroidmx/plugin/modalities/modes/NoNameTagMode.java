@@ -8,10 +8,8 @@ import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
-import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
-import org.bukkit.scoreboard.Team;
 
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;

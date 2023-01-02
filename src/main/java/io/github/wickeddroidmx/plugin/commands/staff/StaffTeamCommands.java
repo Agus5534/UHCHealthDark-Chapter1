@@ -2,7 +2,10 @@ package io.github.wickeddroidmx.plugin.commands.staff;
 
 import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
 import io.github.wickeddroidmx.plugin.Main;
-import io.github.wickeddroidmx.plugin.events.team.*;
+import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
+import io.github.wickeddroidmx.plugin.events.team.PlayerLeaveTeamEvent;
+import io.github.wickeddroidmx.plugin.events.team.TeamCreateEvent;
+import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.menu.UhcTeamMenu;

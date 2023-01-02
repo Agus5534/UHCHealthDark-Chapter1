@@ -1,17 +1,13 @@
 package io.github.wickeddroidmx.plugin.scoreboard;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.player.UhcPlayer;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import javax.inject.Inject;
-import java.util.stream.Collectors;
 
 public class GameScoreboard extends UHCScoreboard {
 

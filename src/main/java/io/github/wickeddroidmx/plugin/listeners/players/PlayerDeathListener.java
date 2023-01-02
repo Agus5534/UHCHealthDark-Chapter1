@@ -6,9 +6,7 @@ import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
-import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
-import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.yushust.inject.InjectAll;
@@ -23,8 +21,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Named;
-import java.awt.Color;
-import java.io.IOException;
 import java.util.UUID;
 
 @InjectAll
@@ -34,9 +30,6 @@ public class PlayerDeathListener implements Listener {
     private TeamManager teamManager;
     private GameManager gameManager;
     private Main plugin;
-
-    @Named("user-cache")
-    private MapCache<UUID, User> userCache;
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
@@ -85,10 +78,8 @@ public class PlayerDeathListener implements Listener {
             var killer = player.getKiller();
             var uhcKiller = playerManager.getPlayer(killer.getUniqueId());
             var teamKiller = teamManager.getPlayerTeam(killer.getUniqueId());
-            var user = userCache.get(killer.getUniqueId());
 
             uhcKiller.incrementKills();
-            user.incrementKills();
 
             if (teamKiller != null)
                 teamKiller.incrementKills();

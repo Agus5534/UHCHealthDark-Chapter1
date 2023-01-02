@@ -17,7 +17,9 @@ import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @GameModality(
         modalityType = ModalityType.MODE,

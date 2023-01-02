@@ -1,7 +1,6 @@
 package io.github.wickeddroidmx.plugin.module.commands.parts;
 
 import io.github.agus5534.hdbot.Ranks;
-import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import me.fixeddev.commandflow.CommandContext;
 import me.fixeddev.commandflow.exception.ArgumentParseException;
 import me.fixeddev.commandflow.part.ArgumentPart;

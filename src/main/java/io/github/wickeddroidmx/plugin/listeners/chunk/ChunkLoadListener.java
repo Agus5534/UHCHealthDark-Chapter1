@@ -1,16 +1,12 @@
 package io.github.wickeddroidmx.plugin.listeners.chunk;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class ChunkLoadListener implements Listener {
 

@@ -1,8 +1,6 @@
 package io.github.wickeddroidmx.plugin.menu;
 
 import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
-import io.github.wickeddroidmx.plugin.modalities.Modality;
-import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -18,7 +16,6 @@ import team.unnamed.gui.core.item.type.ItemBuilder;
 
 import javax.inject.Inject;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class UhcTeamMenu {

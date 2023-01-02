@@ -2,7 +2,6 @@ package io.github.wickeddroidmx.plugin.listeners.team;
 
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
-import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 

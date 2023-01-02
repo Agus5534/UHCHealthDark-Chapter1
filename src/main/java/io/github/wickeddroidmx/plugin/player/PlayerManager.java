@@ -1,10 +1,12 @@
 package io.github.wickeddroidmx.plugin.player;
 
-import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import org.bukkit.entity.Player;
 
 import javax.inject.Singleton;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Singleton

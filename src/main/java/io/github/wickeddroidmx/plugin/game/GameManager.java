@@ -1,11 +1,6 @@
 package io.github.wickeddroidmx.plugin.game;
 
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
-import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.utils.fastboard.FastBoard;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 

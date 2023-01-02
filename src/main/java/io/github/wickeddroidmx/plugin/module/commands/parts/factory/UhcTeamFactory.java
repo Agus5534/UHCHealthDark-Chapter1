@@ -1,6 +1,5 @@
 package io.github.wickeddroidmx.plugin.module.commands.parts.factory;
 
-import io.github.wickeddroidmx.plugin.module.commands.parts.BiomePart;
 import io.github.wickeddroidmx.plugin.module.commands.parts.UhcTeamPart;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import me.fixeddev.commandflow.annotated.part.PartFactory;

@@ -9,8 +9,6 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.fastboard.FastBoard;
 import org.bukkit.entity.Player;
 
-import javax.inject.Inject;
-
 public abstract class UHCScoreboard extends FastBoard {
 
     public UHCScoreboard(Main plugin, Player player, ModeManager modeManager, GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {

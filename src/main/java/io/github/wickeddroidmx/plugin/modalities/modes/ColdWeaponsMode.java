@@ -3,7 +3,6 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
-import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -16,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 @GameModality(
         name = "&bCold Weapons",

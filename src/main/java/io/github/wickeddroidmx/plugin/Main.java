@@ -1,8 +1,5 @@
 package io.github.wickeddroidmx.plugin;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -18,7 +15,6 @@ import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.chat.Rank;
 import io.github.wickeddroidmx.plugin.utils.files.Configuration;
 import io.github.wickeddroidmx.plugin.utils.region.Region;
-import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
 import me.yushust.inject.InjectIgnore;
@@ -35,10 +31,6 @@ import org.bukkit.scoreboard.Team;
 
 import javax.inject.Named;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.UUID;
 
 @InjectAll

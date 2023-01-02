@@ -3,7 +3,6 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
-import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

@@ -1,26 +1,22 @@
 package io.github.wickeddroidmx.plugin.services;
 
 import io.github.wickeddroidmx.plugin.Main;
-import io.github.wickeddroidmx.plugin.events.team.TeamFlagChangedEvent;
-import io.github.wickeddroidmx.plugin.events.team.TeamWinEvent;
 import io.github.wickeddroidmx.plugin.listeners.block.BlockBreakListener;
 import io.github.wickeddroidmx.plugin.listeners.block.BlockPlaceListener;
 import io.github.wickeddroidmx.plugin.listeners.chat.AsyncChatListener;
-import io.github.wickeddroidmx.plugin.listeners.chunk.ChunkLoadListener;
 import io.github.wickeddroidmx.plugin.listeners.custom.*;
+import io.github.wickeddroidmx.plugin.listeners.entities.EntityDamageByEntityListener;
+import io.github.wickeddroidmx.plugin.listeners.entities.EntityDamageListener;
 import io.github.wickeddroidmx.plugin.listeners.entities.EntityPickupItemListener;
 import io.github.wickeddroidmx.plugin.listeners.loot.LootGenerateListener;
 import io.github.wickeddroidmx.plugin.listeners.players.*;
 import io.github.wickeddroidmx.plugin.listeners.portal.PlayerPortalListener;
 import io.github.wickeddroidmx.plugin.listeners.team.*;
-import io.github.wickeddroidmx.plugin.listeners.entities.EntityDamageByEntityListener;
-import io.github.wickeddroidmx.plugin.listeners.entities.EntityDamageListener;
 import io.github.wickeddroidmx.plugin.listeners.worldborder.WorldBorderMoveListener;
 import io.github.wickeddroidmx.plugin.listeners.worldborder.WorldBorderSetListener;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import team.unnamed.gui.core.GUIListeners;
 
 @InjectAll

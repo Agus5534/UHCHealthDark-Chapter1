@@ -1,8 +1,5 @@
 package io.github.wickeddroidmx.plugin.listeners.entities;
 
-import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;

@@ -1,7 +1,5 @@
 package io.github.wickeddroidmx.plugin.module.commands.parts;
 
-import io.github.wickeddroidmx.plugin.commands.PlayerCommands;
-import io.github.wickeddroidmx.plugin.poll.ConcursantTypes;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import me.fixeddev.commandflow.CommandContext;
@@ -12,7 +10,6 @@ import me.fixeddev.commandflow.stack.ArgumentStack;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

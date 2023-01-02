@@ -5,7 +5,6 @@ import io.github.wickeddroidmx.plugin.experiments.list.GAME_ARENA;
 import io.github.wickeddroidmx.plugin.experiments.list.IRONMAN_COMMAND;
 import me.yushust.inject.InjectAll;
 import me.yushust.inject.InjectIgnore;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import javax.inject.Singleton;

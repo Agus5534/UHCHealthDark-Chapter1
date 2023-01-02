@@ -1,13 +1,10 @@
 package io.github.wickeddroidmx.plugin.commands;
 
-import io.github.wickeddroidmx.plugin.Main;
-import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.menu.UhcMenu;
 import io.github.wickeddroidmx.plugin.menu.UhcModeMenu;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
-import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
@@ -15,8 +12,6 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-import java.util.UUID;
 
 public class MainCommand implements CommandClass {
 

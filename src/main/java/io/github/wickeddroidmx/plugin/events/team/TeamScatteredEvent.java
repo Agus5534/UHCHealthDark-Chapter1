@@ -2,7 +2,6 @@ package io.github.wickeddroidmx.plugin.events.team;
 
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;

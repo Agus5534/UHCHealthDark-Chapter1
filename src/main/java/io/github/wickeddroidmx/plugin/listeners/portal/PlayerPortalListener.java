@@ -1,24 +1,18 @@
 package io.github.wickeddroidmx.plugin.listeners.portal;
 
-import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.Main;
-import net.minecraft.world.level.levelgen.structure.WorldGenNetherPieces;
+import io.github.wickeddroidmx.plugin.game.GameManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.data.type.Observer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import javax.inject.Inject;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerPortalListener implements Listener {

@@ -1,6 +1,5 @@
 package io.github.wickeddroidmx.plugin.listeners.team;
 
-import io.github.wickeddroidmx.plugin.events.team.PlayerJoinedTeamEvent;
 import io.github.wickeddroidmx.plugin.events.team.PlayerLeaveTeamEvent;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;

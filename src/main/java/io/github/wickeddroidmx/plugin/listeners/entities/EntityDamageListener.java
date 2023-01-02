@@ -6,18 +6,12 @@ import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
-import io.github.wickeddroidmx.plugin.hooks.DiscordWebhook;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
-import io.github.wickeddroidmx.plugin.sql.model.User;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
-import io.github.wickeddroidmx.plugin.Main;
 import net.kyori.adventure.text.Component;
-import net.minecraft.world.level.block.BlockMobSpawner;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,8 +20,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.awt.*;
-import java.io.IOException;
 import java.util.UUID;
 
 public class EntityDamageListener implements Listener {
@@ -43,10 +35,6 @@ public class EntityDamageListener implements Listener {
     @Inject
     @Named("ironman-cache")
     private ListCache<UUID> ironManCache;
-
-    @Inject
-    @Named("user-cache")
-    private MapCache<UUID, User> userCache;
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
@@ -108,10 +96,6 @@ public class EntityDamageListener implements Listener {
                 var ironPlayer = Bukkit.getOfflinePlayer(ironMan);
 
                 Bukkit.broadcast(Component.text(ChatUtils.PREFIX + ChatUtils.format(String.format("El usuario &6%s &7ha sido el ironman de la partida.", ironPlayer.getName()))));
-
-                if (userCache.exists(ironPlayer.getUniqueId()))
-                    userCache.get(ironPlayer.getUniqueId()).incrementIronMans();
-
 
                 ironManCache.remove(uuid);
 
