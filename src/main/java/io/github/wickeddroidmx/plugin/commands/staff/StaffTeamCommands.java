@@ -376,7 +376,7 @@ public class StaffTeamCommands implements CommandClass {
             int toSelect = Bukkit.getOnlinePlayers().size() / teamSize;
 
             if(!modeManager.isActiveMode("captains")) {
-                sender.sendMessage(ChatUtils.PREFIX + "No está activo el modo Chosen");
+                sender.sendMessage(ChatUtils.PREFIX + "No está activo el modo Captains");
                 return;
             }
 
