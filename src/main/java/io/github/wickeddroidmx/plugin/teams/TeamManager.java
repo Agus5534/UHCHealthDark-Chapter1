@@ -160,6 +160,8 @@ public class TeamManager  {
                         }
                     }
                 }
+            } catch (IndexOutOfBoundsException e) {
+                return;
             } catch (Exception e) {
                 e.printStackTrace();
             }
