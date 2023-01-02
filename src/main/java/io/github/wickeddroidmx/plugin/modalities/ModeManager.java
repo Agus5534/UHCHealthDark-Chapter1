@@ -92,6 +92,7 @@ public class ModeManager {
     private HeavyPocketsScenario heavyPocketsScenario;
     private StarterItemScenario starterItemScenario;
     private BattleParanoiaScenario battleParanoiaScenario;
+    private BiomeBoostScenario biomeBoostScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
@@ -175,7 +176,8 @@ public class ModeManager {
                 starterItemScenario,
                 inventoryShuffleMode,
                 crazyDayLightCycleMode,
-                battleParanoiaScenario
+                battleParanoiaScenario,
+                biomeBoostScenario
         );
     }
 
