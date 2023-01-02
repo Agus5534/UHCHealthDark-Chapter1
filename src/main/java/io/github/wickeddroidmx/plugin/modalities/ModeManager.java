@@ -91,6 +91,7 @@ public class ModeManager {
     private LuckyLeavesScenario luckyLeavesScenario;
     private HeavyPocketsScenario heavyPocketsScenario;
     private StarterItemScenario starterItemScenario;
+    private BattleParanoiaScenario battleParanoiaScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
@@ -173,7 +174,8 @@ public class ModeManager {
                 heavyPocketsScenario,
                 starterItemScenario,
                 inventoryShuffleMode,
-                crazyDayLightCycleMode
+                crazyDayLightCycleMode,
+                battleParanoiaScenario
         );
     }
 

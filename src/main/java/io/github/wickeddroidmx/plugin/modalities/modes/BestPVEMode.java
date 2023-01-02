@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
+import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
 import io.github.wickeddroidmx.plugin.events.player.PlayerScatteredEvent;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
@@ -70,19 +71,24 @@ public class BestPVEMode extends Modality {
 
     @EventHandler
     public void onGameStart(GameStartEvent event) {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> {
+        Bukkit.getScheduler().runTask(plugin, ()-> {
             if(modeManager.isActiveMode("best_pve")) {
                 check();
             }
-        }, 1L, 20L);
+        });
+    }
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> {
-            if(modeManager.isActiveMode("best_pve")) {
-                this.health = this.health + 2.0D;
+    @EventHandler
+    public void onGameTick(GameTickEvent e) {
+        if(e.getTime() % 600 == 0) {
+            this.health = this.health + 2.0D;
 
-                Bukkit.broadcast(ChatUtils.formatComponentPrefix("Se ha aumentado 1 corazon."));
-            }
-        }, 12000L, 12000L);
+            Bukkit.broadcast(ChatUtils.formatComponentPrefix("Se ha aumentado 1 corazon."));
+        }
+
+        if(e.getTime() % 2 == 0) {
+            check();
+        }
     }
 
     @EventHandler
@@ -105,7 +111,7 @@ public class BestPVEMode extends Modality {
         var victim = (Player)event.getEntity();
         var damager = (Player)event.getDamager();
 
-        if(victim.getHealth() - event.getDamage() > 0) { return; }
+        if(victim.getHealth() - event.getFinalDamage() > 0.0D) { return; }
 
         if(!playerList.contains(damager)) {
             playerList.add(damager);
@@ -121,7 +127,7 @@ public class BestPVEMode extends Modality {
 
                     if(this.health != h) {
                         p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
-                        p.setHealth(p.getHealth()+2.0);
+                        p.setHealth(p.getHealth()+2.0D);
                     }
                 });
     }

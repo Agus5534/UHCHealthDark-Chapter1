@@ -68,7 +68,7 @@ public class GameStartListener implements Listener {
                             gameManager.getUhcId()
                     )
             );
-        }, 5L);
+        }, 3L);
 
         gameManager.setGameState(GameState.PLAYING);
         gameManager.setSeconds(System.currentTimeMillis());
