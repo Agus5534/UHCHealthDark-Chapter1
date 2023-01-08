@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.game;
 
+import io.github.wickeddroidmx.plugin.player.DeathType;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
@@ -13,7 +14,7 @@ public class GameManager {
 
     private Player host;
     private UhcTeam teamWin;
-
+    private DeathType deathType;
     private int currentTime,
     timeForPvP,
     timeForMeetup,
@@ -79,6 +80,7 @@ public class GameManager {
         this.sizeWorldBorderThree = 30;
 
         this.tiSize = 27;
+        this.deathType = DeathType.NORMAL;
     }
 
     public void setHost(Player host) {
@@ -320,5 +322,13 @@ public class GameManager {
 
     public void setSizeWorldBorderTwo(int sizeWorldBorderTwo) {
         this.sizeWorldBorderTwo = sizeWorldBorderTwo;
+    }
+
+    public DeathType getDeathType() {
+        return deathType;
+    }
+
+    public void setDeathType(DeathType deathType) {
+        this.deathType = deathType;
     }
 }

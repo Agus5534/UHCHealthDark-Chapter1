@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
+import io.github.wickeddroidmx.plugin.player.DeathType;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -94,6 +95,7 @@ public class UhcRunMode extends Modality {
 
         gameManager.setScenarioLimit(false);
         gameManager.setRunMode(true);
+        gameManager.setDeathType(DeathType.INSTANT_SPECTATE);
     }
 
     @Override
@@ -105,5 +107,6 @@ public class UhcRunMode extends Modality {
         gameManager.setCobwebLimit(gameManager.isSkyHighMode() ? 1 : 12);
         gameManager.setRunMode(false);
         gameManager.setScenarioLimit(true);
+        gameManager.setDeathType(DeathType.NORMAL);
     }
 }

@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.events.team.TeamDeleteEvent;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
+import io.github.wickeddroidmx.plugin.player.DeathType;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
@@ -36,6 +37,8 @@ public class PlayerDeathListener implements Listener {
         var player = e.getEntity();
         var uhcPlayer = playerManager.getPlayer(player.getUniqueId());
         var uhcTeam = teamManager.getPlayerTeam(player.getUniqueId());
+        var deathType = gameManager.getDeathType();
+
 
         if (gameManager.getGameState() == GameState.WAITING)
             return;
@@ -62,14 +65,24 @@ public class PlayerDeathListener implements Listener {
         Bukkit.getScheduler().runTaskLater(plugin, ()-> {
             player.spigot().respawn();
 
-            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            if(deathType == DeathType.INSTANT_SPECTATE) {
+                e.getDrops().clear();
+                //player.teleport(location);
+            }
+
+            if(deathType == DeathType.NORMAL) {
+                player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            }
 
             if(gameManager.isSpectators()) {
                 player.setGameMode(GameMode.SPECTATOR);
             } else {
-                player.setGameMode(GameMode.ADVENTURE);
+                if(deathType == DeathType.NORMAL) {
+                    player.setGameMode(GameMode.ADVENTURE);
 
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 15, false, false, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 15, false, false, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, Integer.MAX_VALUE, 20, false, false, false));
+                }
             }
 
         }, 5L);
