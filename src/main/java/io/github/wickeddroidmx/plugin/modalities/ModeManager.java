@@ -93,6 +93,7 @@ public class ModeManager {
     private StarterItemScenario starterItemScenario;
     private BattleParanoiaScenario battleParanoiaScenario;
     private BiomeBoostScenario biomeBoostScenario;
+    private QuadrantParanoiaScenario quadrantParanoiaScenario;
 
     //UHC
     private UhcRunMode uhcRunMode;
