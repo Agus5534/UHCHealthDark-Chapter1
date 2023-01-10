@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.commands;
 
+import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.menu.UhcMenu;
@@ -12,6 +13,8 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.UUID;
 
 public class MainCommand implements CommandClass {
 
@@ -23,6 +26,9 @@ public class MainCommand implements CommandClass {
     private ExperimentManager experimentManager;
     @Inject
     private ModeManager modeManager;
+    @Inject
+    @Named("ironman-cache")
+    private ListCache<UUID> ironManCache;
 
     /*@Command(
             names = "uhc"
@@ -35,8 +41,8 @@ public class MainCommand implements CommandClass {
             names = "ironman"
     )
     public void ironMan(@Sender Player sender) {
-        uhcModeMenu = new UhcModeMenu(modeManager, gameManager, experimentManager);
-        UhcMenu uhcMenu = new UhcMenu(gameManager, experimentManager, uhcModeMenu, modeManager);
+        uhcModeMenu = new UhcModeMenu(modeManager, gameManager, experimentManager, ironManCache);
+        UhcMenu uhcMenu = new UhcMenu(gameManager, experimentManager, uhcModeMenu, modeManager, ironManCache);
 
         sender.openInventory(uhcMenu.getIronManMenu());
 
@@ -56,8 +62,8 @@ public class MainCommand implements CommandClass {
             names = "uhc"
     )
     public void uhcCommand(@Sender Player sender) {
-        uhcModeMenu = new UhcModeMenu(modeManager, gameManager, experimentManager);
-        UhcMenu uhcMenu = new UhcMenu(gameManager, experimentManager, uhcModeMenu, modeManager);
+        uhcModeMenu = new UhcModeMenu(modeManager, gameManager, experimentManager, ironManCache);
+        UhcMenu uhcMenu = new UhcMenu(gameManager, experimentManager, uhcModeMenu, modeManager, ironManCache);
 
         sender.openInventory(uhcMenu.getConfigMenu());
     }

@@ -95,7 +95,7 @@ public class UhcRunMode extends Modality {
 
         gameManager.setScenarioLimit(false);
         gameManager.setRunMode(true);
-        gameManager.setDeathType(DeathType.INSTANT_SPECTATE);
+        gameManager.setDeathType(DeathType.NORMAL);
     }
 
     @Override

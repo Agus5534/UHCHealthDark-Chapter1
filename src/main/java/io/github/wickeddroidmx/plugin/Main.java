@@ -119,11 +119,7 @@ public class Main extends JavaPlugin {
         getARENA().getBlocksTypeOf(Material.LAVA).forEach(block -> block.setType(Material.AIR));
         getARENA().getBlocksTypeOf(Material.OBSIDIAN).forEach(block -> block.setType(Material.AIR));
         getARENA().getBlocksTypeOf(Material.COBBLESTONE).forEach(block -> block.setType(Material.AIR));
-        getARENA().getBlocksTypeOf(Material.WATER).forEach(block -> {
-            if(!getARENA_WATER().isInsideRegion(block.getLocation())) {
-                block.setType(Material.AIR);
-            }
-        });
+        getARENA().getBlocksTypeOf(Material.WATER).forEach(block -> block.setType(Material.AIR));
     }
 
 

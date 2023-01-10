@@ -20,6 +20,7 @@ public class UhcWorld {
     private Main plugin;
 
     List<Biome> bannedBiomes;
+    List<kaptainwutax.biomeutils.biome.Biome.Category> bannedCategories;
 
     public UhcWorld(long seed, Main plugin) {
         this.plugin = plugin;
@@ -27,6 +28,7 @@ public class UhcWorld {
         this.seed = seed;
         this.world = null;
         this.bannedBiomes = new ArrayList<>();
+        this.bannedCategories = new ArrayList<>();
         recreatingWorld = false;
 
         addBannedBiomes(
@@ -133,6 +135,7 @@ public class UhcWorld {
     public List<Biome> getBannedBiomes() {
         return bannedBiomes;
     }
+    public List<kaptainwutax.biomeutils.biome.Biome.Category> getBannedCategories() { return bannedCategories; }
 
     public boolean isBannedBiome(Biome b) {
         return this.bannedBiomes.contains(b);
@@ -146,6 +149,18 @@ public class UhcWorld {
         for(var biome : b) {
             this.bannedBiomes.add(biome);
         }
+    }
+
+    public void addBannedCategory(kaptainwutax.biomeutils.biome.Biome.Category category) {
+        this.bannedCategories.add(category);
+    }
+
+    public void removeBannedCategory(kaptainwutax.biomeutils.biome.Biome.Category category) {
+        this.bannedCategories.remove(category);
+    }
+
+    public boolean isBannedCategory(kaptainwutax.biomeutils.biome.Biome.Category category) {
+        return this.bannedCategories.contains(category);
     }
 
     public void removeBannedBiomes(Biome... b) {

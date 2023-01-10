@@ -26,6 +26,7 @@ repositories {
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
     maven { url = 'https://repo.unnamed.team/repository/unnamed-public/' }
     maven { url = 'https://repo.unnamed.team/repository/unnamed-snapshots/' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -38,6 +39,36 @@ dependencies {
     implementation "org.jdbi:jdbi3-core:3.30.0"
     implementation 'mysql:mysql-connector-java:8.0.30'
     implementation "com.zaxxer:HikariCP:5.0.1"
+    implementation('com.github.KaptainWutax:BiomeUtils:-SNAPSHOT')
+            {
+                transitive = false;
+            }
+    implementation('com.github.KaptainWutax:FeatureUtils:-SNAPSHOT')
+            {
+                transitive = false;
+            }
+    implementation('com.github.KaptainWutax:SeedUtils:-SNAPSHOT')
+            {
+                transitive = false;
+            }
+    implementation('com.github.KaptainWutax:MathUtils:-SNAPSHOT')
+            {
+                transitive = false;
+            }
+
+    implementation('com.github.KaptainWutax:MCUtils:-SNAPSHOT')
+            {
+                transitive = false;
+            }
+    implementation('com.github.KaptainWutax:TerrainUtils:main-SNAPSHOT')
+            {
+                transitive = false;
+            }
+    implementation('com.github.KaptainWutax:NoiseUtils:main-SNAPSHOT')
+            {
+                transitive = false
+            }
+
 }
 
 shadowJar {

@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.modalities.modes;
 
+import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
 import io.github.wickeddroidmx.plugin.modalities.GameModality;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
@@ -11,9 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
+import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @GameModality(
@@ -26,25 +27,33 @@ import java.util.concurrent.ThreadLocalRandom;
 )
 public class InventoryShuffleMode extends Modality {
 
+    @Inject
+    private Main plugin;
     public InventoryShuffleMode() throws IllegalClassFormatException {
         super();
     }
 
     private void shuffleInventory(Player player) {
         List<ItemStack> invContents = new ArrayList<>();
-        List<Integer> slotsNumbers = new ArrayList<>();
 
-        for(int i = 0 ; i < 41 ; i++) {
-            slotsNumbers.add(i);
+        Arrays.stream(player.getInventory().getContents()).forEach(i -> invContents.add(i));
 
-            invContents.add(player.getInventory().getItem(i));
+        for(int i = 0 ; i < ThreadLocalRandom.current().nextInt(4, 25) ; i++) {
+            Collections.shuffle(invContents, new Random(ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE)));
         }
 
-        invContents.forEach(itemStack -> {
-            int slot = slotsNumbers.get(ThreadLocalRandom.current().nextInt(slotsNumbers.size()));
-            player.getInventory().setItem(slot, itemStack);
+        player.getInventory().clear();
 
-            slotsNumbers.remove(slot);
+        invContents.forEach(i -> {
+            if(i == null) {
+                return;
+            }
+
+            if(i.getType() == Material.AIR) {
+                return;
+            }
+
+            player.getInventory().addItem(i);
         });
     }
 
@@ -53,7 +62,7 @@ public class InventoryShuffleMode extends Modality {
         if(event.getTime() % 900 == 0) {
             Bukkit.broadcast(ChatUtils.formatComponentPrefix("Randomizando inventarios."));
 
-            Bukkit.getOnlinePlayers().forEach(p -> shuffleInventory(p));
+            Bukkit.getScheduler().runTaskLater(plugin, ()-> Bukkit.getOnlinePlayers().forEach(p -> shuffleInventory(p)), 5L);
         }
     }
 }

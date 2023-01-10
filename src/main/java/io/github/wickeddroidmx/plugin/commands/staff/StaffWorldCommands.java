@@ -4,11 +4,19 @@ import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.world.SeedSearcher;
+import kaptainwutax.biomeutils.source.OverworldBiomeSource;
+import kaptainwutax.mcutils.util.pos.BPos;
+import kaptainwutax.mcutils.version.MCVersion;
 import me.fixeddev.commandflow.annotated.CommandClass;
 import me.fixeddev.commandflow.annotated.annotation.Command;
 import me.fixeddev.commandflow.annotated.annotation.Named;
+import me.fixeddev.commandflow.annotated.annotation.OptArg;
 import me.fixeddev.commandflow.annotated.annotation.SubCommandClasses;
 import me.fixeddev.commandflow.bukkit.annotation.Sender;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
@@ -38,6 +46,24 @@ public class StaffWorldCommands implements CommandClass {
             }
 
             sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + s.replaceFirst(", ", "")));
+        }
+
+        @Command(names = "listcategories")
+        public void bannedCategoriesCommand(@Sender Player sender) {
+            String s = String.format("Categorías bloqueadas (%d): &a", plugin.getWorldGenerator().getUhcWorld().getBannedCategories().size());
+
+            for(var c : plugin.getWorldGenerator().getUhcWorld().getBannedCategories()) {
+                s+= ", " + c.toString();
+            }
+
+            sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + s.replaceFirst(", ", "")));
+        }
+
+        @Command(names = "clearcategories")
+        public void clearCategoriesCommand(@Sender Player sender) {
+            plugin.getWorldGenerator().getUhcWorld().getBannedCategories().clear();
+
+            sender.sendMessage(ChatUtils.PREFIX + "Se han borrado las categorías bloqueadas!");
         }
 
         @Command(names = "clear")
@@ -73,6 +99,36 @@ public class StaffWorldCommands implements CommandClass {
             uhcWorld.removeBannedBiomes(biome);
 
             sender.sendMessage(ChatUtils.PREFIX + String.format("Has eliminado %s como bioma baneado", biome.toString()));
+        }
+
+        @Command(names = "addcategory")
+        public void addCategoryCommand(@Sender Player sender, @Named("category") kaptainwutax.biomeutils.biome.Biome.Category category) {
+            var uhcWorld = plugin.getWorldGenerator().getUhcWorld();
+
+            if(uhcWorld.isBannedCategory(category)) {
+                sender.sendMessage(ChatUtils.PREFIX + "Esa categoria ya está en la lista.");
+                return;
+            }
+
+            uhcWorld.addBannedCategory(category);
+
+            sender.sendMessage(ChatUtils.PREFIX + String.format("Has agregado %s como categoría baneada", category.toString()));
+        }
+
+        @Command(
+                names = "removecategory"
+        )
+        public void removeCategoryCommand(@Sender Player sender, @Named("category") kaptainwutax.biomeutils.biome.Biome.Category category) {
+            var uhcWorld = plugin.getWorldGenerator().getUhcWorld();
+
+            if(!uhcWorld.isBannedCategory(category)) {
+                sender.sendMessage(ChatUtils.PREFIX + "Esa categoría no está en la lista.");
+                return;
+            }
+
+            uhcWorld.removeBannedCategory(category);
+
+            sender.sendMessage(ChatUtils.PREFIX + String.format("Has eliminado %s como categoría baneada", category.toString()));
         }
     }
 
@@ -133,6 +189,49 @@ public class StaffWorldCommands implements CommandClass {
         sender.sendMessage(ChatUtils.PREFIX + "Recreando mundo... Puede demorar un tiempo.");
     }
 
+    @Command(
+            names = "search"
+    )
+    public void searchCommand(@Sender Player sender, @Named("trials") int trials, @Named("searchRadius") int searchRadius) {
+        if(trials < 1 || searchRadius < 1 || trials > 75 || searchRadius > 500) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No se puede poner esta cantidad."));
+            return;
+        }
+
+        SeedSearcher seedSearcher = new SeedSearcher(plugin, trials, plugin.getWorldGenerator().getUhcWorld().getBannedBiomes(), searchRadius, plugin.getWorldGenerator().getUhcWorld().getBannedCategories());
+
+        seedSearcher.onNewSearch = ()-> {
+          int percentage = (100 / trials) * seedSearcher.getSearched();
+
+          sender.sendActionBar(ChatUtils.formatC("&6Buscando seeds: &a" + percentage + "%"));
+        };
+
+        seedSearcher.onTaskEnd = ()-> {
+            Bukkit.getScheduler().cancelTask(seedSearcher.taskIDTwo);
+            sender.sendActionBar(ChatUtils.formatC("&6La busqueda de seeds ha terminado"));
+
+            if(seedSearcher.getAvailableSeeds().size() == 0) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix("No se han encontrado seed disponibles!"));
+                return;
+            }
+
+            sender.sendMessage(ChatUtils.formatC("&6Se han encontrado las siguientes seeds:"));
+
+            seedSearcher.getAvailableSeeds().forEach(s -> {
+                sender.sendMessage(
+                        ChatUtils.formatC("&a"+s).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(s))).hoverEvent(ChatUtils.formatC("&7Click para copiar!"))
+                                .append(
+                                        ChatUtils.formatC( " &6(0, 0 " + spawnBiome(s) + ")")
+                                                .hoverEvent(ChatUtils.formatC("&7Click para establecer seed"))
+                                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/staffworld recreate "+s))
+                                )
+                );
+            });
+        };
+
+        seedSearcher.startTask();
+    }
+
     private boolean parseLong(String s) {
         try {
             Long.parseLong(s);
@@ -140,5 +239,9 @@ public class StaffWorldCommands implements CommandClass {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private String spawnBiome(long seed) {
+        return new OverworldBiomeSource(MCVersion.v1_17_1, seed).getBiome(BPos.ORIGIN).getName();
     }
 }

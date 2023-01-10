@@ -108,6 +108,7 @@ public class ModeManager {
     private NoBurnSetting noBurnSetting;
     private GoldenHeadSetting goldenHeadSetting;
     private SpawnerLastBreathSetting spawnerLastBreathSetting;
+    private DayTimeSetting dayTimeSetting;
 
     private final HashMap<String, Modality> modeMap = new HashMap<>();
 
@@ -178,7 +179,9 @@ public class ModeManager {
                 inventoryShuffleMode,
                 crazyDayLightCycleMode,
                 battleParanoiaScenario,
-                biomeBoostScenario
+                biomeBoostScenario,
+                quadrantParanoiaScenario,
+                dayTimeSetting
         );
     }
 

@@ -152,7 +152,11 @@ public class WaitingStatusListeners implements Listener {
     public void onAssignRank(PlayerAssignRankEvent event) {
         if(donatorsList.contains(event.getPlayer())) { return; }
 
-        if(!event.getDonatorRanks().isEmpty()) {
+        if(event.getDonatorRanks().containsValue(Ranks.DonatorRank.BOOSTER)
+                || event.getDonatorRanks().containsValue(Ranks.DonatorRank.DONATOR)
+                || event.getDonatorRanks().containsValue(Ranks.DonatorRank.DONATOR_PLUS)
+                || event.getDonatorRanks().containsValue(Ranks.DonatorRank.DONATOR_PLUS)
+                || event.getDonatorRanks().containsValue(Ranks.DonatorRank.TESTER)) {
             donatorsList.add(event.getPlayer());
         }
 
@@ -200,6 +204,7 @@ public class WaitingStatusListeners implements Listener {
             player.getInventory().setItem(7, TELEPORT_ARENA);
 
             if(!donatorsList.contains(player)) { return; }
+
 
             player.getInventory().addItem(STUN, SPEED_BOOST);
         },35L);

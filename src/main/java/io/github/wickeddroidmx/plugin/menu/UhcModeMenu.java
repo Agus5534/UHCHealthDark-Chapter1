@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.menu;
 
+import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
@@ -14,17 +15,22 @@ import team.unnamed.gui.abstraction.item.ItemClickable;
 import team.unnamed.gui.core.gui.type.GUIBuilder;
 import team.unnamed.gui.core.item.type.ItemBuilder;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class UhcModeMenu {
     private GameManager gameManager;
     private ExperimentManager experimentManager;
     private ModeManager modeManager;
+    private ListCache<UUID> ironManCache;
 
-    public UhcModeMenu(ModeManager modeManager, GameManager gameManager, ExperimentManager experimentManager) {
+    public UhcModeMenu(ModeManager modeManager, GameManager gameManager, ExperimentManager experimentManager, ListCache<UUID> ironManCache) {
         this.modeManager = modeManager;
         this.gameManager = gameManager;
         this.experimentManager = experimentManager;
+        this.ironManCache = ironManCache;
     }
     public Inventory getSelectInventory() {
         return GUIBuilder
@@ -155,7 +161,7 @@ public class UhcModeMenu {
 
                             player.getInventory().close();
 
-                            player.openInventory(new UhcMenu(gameManager, experimentManager, this, modeManager).getConfigMenu());
+                            player.openInventory(new UhcMenu(gameManager, experimentManager, this, modeManager, ironManCache).getConfigMenu());
 
                             return true;
                         }).build())

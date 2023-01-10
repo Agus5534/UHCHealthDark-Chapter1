@@ -28,8 +28,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.checkerframework.checker.units.qual.C;
 
 import javax.inject.Inject;
+import java.net.URL;
 import java.util.*;
 
 public class PlayerCommands implements CommandClass {
@@ -195,6 +197,25 @@ public class PlayerCommands implements CommandClass {
     }
 
     @Command(
+            names = {"extrascoreboardstats", "scoreboardstats", "stastscore", "ess", "ss"}
+    )
+    public void extraScoreboardStats(@Sender Player sender, @Named("enabled") boolean value) {
+        var uhcPlayer = playerManager.getPlayer(sender.getUniqueId());
+
+        if(uhcPlayer == null) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No puedes utilizar este comando."));
+            return;
+        }
+
+        uhcPlayer.setExtraScoreStats(value);
+
+        sender.sendMessage(ChatUtils.formatComponentPrefix(
+                String.format("Has %s las estadísticas extra del scoreboard.",
+                        value ? "&aactivado" : "&cdesactivado")
+        ));
+    }
+
+    @Command(
             names = { "cobbleonly" }
     )
     public void cobbleOnlyCommand(@Sender Player sender) {
@@ -296,22 +317,22 @@ public class PlayerCommands implements CommandClass {
             return;
         }
 
-        kit.put(0, new ItemCreator(Material.IRON_SWORD));
-        kit.put(1, new ItemCreator(Material.STONE_AXE));
+        kit.put(0, new ItemCreator(Material.DIAMOND_SWORD));
+        kit.put(1, new ItemCreator(Material.IRON_AXE));
         kit.put(2, new ItemCreator(Material.BOW).enchants(Enchantment.ARROW_DAMAGE, 1));
-        kit.put(3, new ItemCreator(Material.GOLDEN_APPLE).amount(3));
+        kit.put(3, new ItemCreator(Material.GOLDEN_APPLE).amount(6));
         kit.put(4, new ItemCreator(Material.OAK_LEAVES).amount(64));
         kit.put(5, new ItemCreator(Material.WATER_BUCKET));
         kit.put(6, new ItemCreator(Material.LAVA_BUCKET));
         kit.put(7, new ItemCreator(Material.COBWEB).amount(8));
         kit.put(8, new ItemCreator(Material.SHEARS).enchants(Enchantment.DURABILITY, 3));
-        kit.put(29, new ItemCreator(Material.ARROW).amount(16));
+        kit.put(29, new ItemCreator(Material.ARROW).amount(24));
         kit.put(32, new ItemCreator(Material.WATER_BUCKET));
         kit.put(33, new ItemCreator(Material.LAVA_BUCKET));
-        kit.put(36, new ItemCreator(Material.IRON_BOOTS).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
-        kit.put(37, new ItemCreator(Material.IRON_LEGGINGS).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
-        kit.put(38, new ItemCreator(Material.IRON_CHESTPLATE).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
-        kit.put(39, new ItemCreator(Material.IRON_HELMET).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2).enchants(Enchantment.DURABILITY, 1));
+        kit.put(36, new ItemCreator(Material.DIAMOND_BOOTS).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
+        kit.put(37, new ItemCreator(Material.DIAMOND_LEGGINGS).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
+        kit.put(38, new ItemCreator(Material.DIAMOND_CHESTPLATE).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2));
+        kit.put(39, new ItemCreator(Material.DIAMOND_HELMET).enchants(Enchantment.PROTECTION_ENVIRONMENTAL, 2).enchants(Enchantment.DURABILITY, 1));
         kit.put(40, new ItemCreator(Material.SHIELD));
 
         sender.getInventory().clear();
@@ -338,10 +359,21 @@ public class PlayerCommands implements CommandClass {
             return;
         }
 
-        if(name.length() > 50) {
-            sender.sendMessage(ChatUtils.formatComponentPrefix("El texto no puede contener más de 50 caracteres."));
+        int lengthLimit = getNameLengthLimit(ranks);
+
+        if(name.length() > lengthLimit) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix(String.format("El texto no puede contener más de %s caracteres.", lengthLimit)));
             return;
         }
+
+        try {
+            var url = new URL(name);
+
+            if(!canHaveURL(ranks)) {
+                sender.sendMessage(ChatUtils.formatComponentPrefix(String.format("Necesitas ser Donador+ o superior para poder utilizar URLs en los nombres de item")));
+                return;
+            }
+        } catch (Exception e) {}
 
         var item = sender.getInventory().getItemInMainHand();
 
@@ -403,6 +435,10 @@ public class PlayerCommands implements CommandClass {
 
         List<Component> components = new ArrayList<>();
 
+        if(itemC.hasEnchants()) {
+            components.add(ChatUtils.formatC(" "));
+        }
+
         for(var s : lores) {
             if(s.isEmpty() || s.equals(" ")) { continue; }
 
@@ -441,5 +477,29 @@ public class PlayerCommands implements CommandClass {
         }
 
         return true;
+    }
+
+    private int getNameLengthLimit(Collection<Ranks.DonatorRank> list) {
+        if(list.contains(Ranks.DonatorRank.DONATOR_PLUS_PLUS)) {
+            return 85;
+        }
+
+        if(list.contains(Ranks.DonatorRank.DONATOR_PLUS)) {
+            return 75;
+        }
+
+        return 60;
+    }
+
+    private boolean canHaveURL(Collection<Ranks.DonatorRank> list) {
+        if(list.contains(Ranks.DonatorRank.DONATOR_PLUS_PLUS)) {
+            return true;
+        }
+
+        if(list.contains(Ranks.DonatorRank.DONATOR_PLUS)) {
+            return true;
+        }
+
+        return false;
     }
 }

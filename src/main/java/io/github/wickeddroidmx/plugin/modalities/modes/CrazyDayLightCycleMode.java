@@ -38,7 +38,7 @@ public class CrazyDayLightCycleMode extends Modality {
         super.activeMode();
 
         setAction(ACTION.NORMAL);
-        tickToModify = ThreadLocalRandom.current().nextInt(1, 3);
+        tickToModify = ThreadLocalRandom.current().nextInt(1, 10);
     }
 
     @EventHandler
@@ -82,8 +82,8 @@ public class CrazyDayLightCycleMode extends Modality {
             setAction(ACTION.SLOW);
         }
 
-        tickToModify = ThreadLocalRandom.current().nextInt(1, 3);
-        chancePerTick = ThreadLocalRandom.current().nextInt(1, 40);
+        tickToModify = ThreadLocalRandom.current().nextInt(1, 7);
+        chancePerTick = ThreadLocalRandom.current().nextInt(2, 45);
     }
 
     public void setAction(ACTION action) {

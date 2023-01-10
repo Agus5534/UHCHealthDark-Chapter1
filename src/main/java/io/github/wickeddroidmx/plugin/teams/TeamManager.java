@@ -8,6 +8,7 @@ import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import javax.inject.Inject;
@@ -42,7 +43,7 @@ public class TeamManager  {
     public UhcTeam createTeam(Player owner) {
         ++this.currentTeams;
 
-        return uhcTeams.put(owner.getUniqueId(), new UhcTeam(owner, currentTeams));
+        return uhcTeams.put(owner.getUniqueId(), new UhcTeam(owner, currentTeams, gameManager.getTiSize()));
     }
 
     public UhcTeam getTeam(UUID uuid) {
@@ -181,6 +182,10 @@ public class TeamManager  {
     }
 
     public String getFormatTeamSize() {
+        int online = Bukkit.getOnlinePlayers().stream().filter(p -> p.getGameMode() != GameMode.SPECTATOR).toList().size();
+
+        if(teamSize == online / 2) { return "RvB"; }
+
         if (teamSize > 1)
             return "To" + teamSize;
 

@@ -295,7 +295,15 @@ public class FastBoard {
      * @throws IllegalStateException    if {@link #delete()} was call before
      */
     public void updateLines(String... lines) {
-        updateLines(Arrays.asList(lines));
+        List<String> ls = new ArrayList<>();
+
+        for(String s : lines) {
+            if(s == null) { continue; }
+
+            ls.add(s);
+        }
+
+        updateLines(ls);
     }
 
     /**

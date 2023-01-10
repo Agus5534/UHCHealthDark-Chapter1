@@ -8,6 +8,7 @@ import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class LobbyScoreboard extends UHCScoreboard {
@@ -18,17 +19,24 @@ public class LobbyScoreboard extends UHCScoreboard {
 
     @Override
     public void update(Main plugin, ModeManager modeManager,GameManager gameManager, PlayerManager playerManager, TeamManager teamManager) {
+        var player = this.getPlayer();
+        var team = teamManager.getPlayerTeam(player.getUniqueId());
+
         var host = gameManager.getHost();
         var uhcType = modeManager.getModesActive(ModalityType.UHC).stream().findFirst();
 
         this.updateLines(
                          ChatUtils.format("&7&m--------------------"),
-                         ChatUtils.format("&7Players: &f" + Bukkit.getOnlinePlayers().size()),
+                         ChatUtils.format("&7Players: &f" + Bukkit.getOnlinePlayers().stream().filter(p -> p.getGameMode() != GameMode.SPECTATOR).toList().size()),
                          ChatUtils.format("&7Host: &f" + (host != null ? host.getName() : "No hay host")),
                          ChatUtils.format("&7Uhc Type: &f" + (uhcType.isPresent() ? uhcType.get().getName() : "&cUhc Vanilla")),
                          " ",
                          ChatUtils.format("&7Border: &f" + gameManager.getWorldBorder()),
                          ChatUtils.format("&7Teams: &f" + teamManager.getFormatTeamSize()),
-                         ChatUtils.format("&7&m--------------------"));
+                         team != null ? " " : null,
+                         team != null ? ChatUtils.format("&7Team Owner: " + team.getColor() + team.getOwner().getName()) : null,
+                         modeManager.isActiveMode("team_inventory") && team != null ? ChatUtils.format("&7TI Size: &f" + gameManager.getTiSize() + " Slots") : null,
+                         ChatUtils.format("&7&m--------------------")
+        );
     }
 }

@@ -49,7 +49,7 @@ public class UhcTeam {
             size,
             playersAlive;
 
-    public UhcTeam(Player owner, int id) {
+    public UhcTeam(Player owner, int id, int tiSize) {
         this.teamPlayers = new HashSet<>();
         this.mole = null;
         this.king = null;
@@ -66,7 +66,7 @@ public class UhcTeam {
 
         this.name = String.format("%s team",owner.getName());
 
-        this.inventory = Bukkit.createInventory(null, 27, Component.text(ChatUtils.format("&bInventario de " + name)));
+        this.inventory = Bukkit.createInventory(null, tiSize, Component.text(ChatUtils.format("&bInventario de " + name)));
         this.id = id;
         this.size = 0;
 

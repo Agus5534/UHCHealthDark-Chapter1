@@ -35,6 +35,7 @@ public class ExtraBukkitModule extends AbstractModule {
         this.bindFactory(Experiment.class, new ExperimentsFactory(experimentManager));
         this.bindFactory(Ranks.StaffRank.class, new StaffRankFactory());
         this.bindFactory(Ranks.DonatorRank.class, new DonatorRankFactory());
+        this.bindFactory(kaptainwutax.biomeutils.biome.Biome.Category.class, new BiomeCategoryFactory());
     }
 
 }

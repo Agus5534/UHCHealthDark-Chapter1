@@ -262,5 +262,10 @@ public class ItemCreator extends ItemStack {
         return this;
     }
 
+    public boolean hasEnchants() {
+        final ItemMeta meta = getItemMeta();
+        return meta.hasEnchants();
+    }
+
 
 }

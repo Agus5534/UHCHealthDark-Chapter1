@@ -15,7 +15,8 @@ public class UhcPlayer {
                     scattered,
                     cobbleOnly,
                     chat,
-                    spect;
+                    spect,
+                    extraScoreStats;
 
     private int kills,
                 enemyRecon,
@@ -37,6 +38,7 @@ public class UhcPlayer {
         this.spect = false;
 
         this.scattered = false;
+        this.extraScoreStats = false;
         this.uhcInventory = new UhcInventory(player);
     }
 
@@ -112,6 +114,14 @@ public class UhcPlayer {
 
     public int getCobwebs() {
         return cobwebs;
+    }
+
+    public boolean isExtraScoreStats() {
+        return extraScoreStats;
+    }
+
+    public void setExtraScoreStats(boolean extraScoreStats) {
+        this.extraScoreStats = extraScoreStats;
     }
 
     public void setCobwebs(int cobwebs) {

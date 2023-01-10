@@ -23,15 +23,14 @@ import java.util.stream.Collectors;
 
 public class UhcMenu {
 
-    public UhcMenu(GameManager gameManager, ExperimentManager experimentManager, UhcModeMenu uhcModeMenu, ModeManager modeManager) {
+    public UhcMenu(GameManager gameManager, ExperimentManager experimentManager, UhcModeMenu uhcModeMenu, ModeManager modeManager, ListCache<UUID> ironManCache) {
         this.gameManager = gameManager;
         this.experimentManager = experimentManager;
         this.uhcModeMenu = uhcModeMenu;
         this.modeManager = modeManager;
+        this.ironManCache = ironManCache;
     }
 
-    @Inject
-    @Named("ironman-cache")
     private ListCache<UUID> ironManCache;
 
     private GameManager gameManager;
@@ -105,7 +104,7 @@ public class UhcMenu {
 
                             player.getInventory().close();
 
-                            player.openInventory(new UhcModeMenu(modeManager, gameManager, experimentManager).getSelectInventory());
+                            player.openInventory(new UhcModeMenu(modeManager, gameManager, experimentManager, ironManCache).getSelectInventory());
 
                             return true;
                         }).build())

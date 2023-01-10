@@ -7,12 +7,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 
 import java.lang.instrument.IllegalClassFormatException;
 
 @GameModality(
-        name = "&gGold Less",
+        name = "&eGold Less",
         modalityType = ModalityType.SCENARIO,
         key = "gold_less",
         experimental = true,
@@ -47,7 +49,7 @@ public class GoldLessScenario extends Modality {
     }
 
     @EventHandler
-    public void onInventoryUpdate(InventoryInteractEvent event) {
+    public void onInventoryUpdate(InventoryClickEvent event) {
         if(!(event.getWhoClicked() instanceof Player)) { return; }
 
         var inv = event.getInventory();
