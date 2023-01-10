@@ -155,8 +155,7 @@ public class WaitingStatusListeners implements Listener {
         if(event.getDonatorRanks().containsValue(Ranks.DonatorRank.BOOSTER)
                 || event.getDonatorRanks().containsValue(Ranks.DonatorRank.DONATOR)
                 || event.getDonatorRanks().containsValue(Ranks.DonatorRank.DONATOR_PLUS)
-                || event.getDonatorRanks().containsValue(Ranks.DonatorRank.DONATOR_PLUS)
-                || event.getDonatorRanks().containsValue(Ranks.DonatorRank.TESTER)) {
+                || event.getDonatorRanks().containsValue(Ranks.DonatorRank.DONATOR_PLUS)) {
             donatorsList.add(event.getPlayer());
         }
 

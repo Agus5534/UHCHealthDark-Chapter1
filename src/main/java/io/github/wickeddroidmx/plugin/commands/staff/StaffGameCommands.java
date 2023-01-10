@@ -151,7 +151,7 @@ public class StaffGameCommands implements CommandClass  {
         try {
             var hook = discordManager.getDiscordHook(HookType.POST_UHC);
 
-            hook.setContent(String.format("> **UHCHealthDark | #%d** | \\n\\n", gameManager.getUhcId(), Bukkit.getVersion()) +
+            hook.setContent(String.format("> **UHCHealthDark | #%d**\\n\\n", gameManager.getUhcId(), Bukkit.getVersion()) +
                             String.format("> **Host:** %s\\n", sender.getName()) +
                             String.format("> **Inicia en:** <t:%s:R>\\n\\n", new Date(timeToStart).getTime()) +
                             String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.getModesActive(ModalityType.TEAM).size() == 0
@@ -197,7 +197,7 @@ public class StaffGameCommands implements CommandClass  {
                             String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup()))+
                             String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
                             "> **IP:** ||uhchealthdarks4.minecraft.best||\\n\\n"+
-                            "<@&892533124083384361 <@&896190893558751282");
+                            "<@&892533124083384361> <@&896190893558751282>");
 
             hook.execute();
         } catch (IOException e) {

@@ -53,8 +53,6 @@ public class Main extends JavaPlugin {
     private Configuration configuration;
     @InjectIgnore
     private Region ARENA;
-    @InjectIgnore
-    private Region ARENA_WATER;
 
     @InjectIgnore
     private Region ARENA_SPAWN;
@@ -70,11 +68,6 @@ public class Main extends JavaPlugin {
         ARENA = new Region(
                 new Location(Bukkit.getWorlds().get(0), 188, 55, 179),
                 new Location(Bukkit.getWorlds().get(0), 302, 12, 308)
-        );
-
-        ARENA_WATER = new Region(
-                new Location(Bukkit.getWorlds().get(0), 230, 12, 265),
-                new Location(Bukkit.getWorlds().get(0), 222, 56, 273)
         );
 
         ARENA_SPAWN = new Region(
@@ -149,10 +142,6 @@ public class Main extends JavaPlugin {
 
     public Region getARENA() {
         return ARENA;
-    }
-
-    public Region getARENA_WATER() {
-        return ARENA_WATER;
     }
 
     public Region getARENA_SPAWN() {
