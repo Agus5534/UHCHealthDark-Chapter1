@@ -2,6 +2,7 @@ package io.github.wickeddroidmx.plugin.game;
 
 import io.github.wickeddroidmx.plugin.player.DeathType;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -33,6 +34,7 @@ public class GameManager {
     private long seconds;
     private GameState gameState;
     private int uhcId;
+    private int maxPlayerSize;
     private int cape;
     private int appleRate;
     private boolean pvpEnabled;
@@ -78,6 +80,7 @@ public class GameManager {
         this.sizeWorldBorderOne = 150;
         this.sizeWorldBorderTwo = 70;
         this.sizeWorldBorderThree = 30;
+        this.maxPlayerSize = Bukkit.getServer().getMaxPlayers();
 
         this.tiSize = 27;
         this.deathType = DeathType.NORMAL;
@@ -330,5 +333,13 @@ public class GameManager {
 
     public void setDeathType(DeathType deathType) {
         this.deathType = deathType;
+    }
+
+    public int getMaxPlayerSize() {
+        return maxPlayerSize;
+    }
+
+    public void setMaxPlayerSize(int maxPlayerSize) {
+        this.maxPlayerSize = maxPlayerSize;
     }
 }

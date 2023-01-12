@@ -35,7 +35,7 @@ public class SeedSearcher {
     }
 
     public void startTask() {
-        var task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::search, 2L, 6L);
+        var task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::search, 2L, 4L);
 
         taskIDTwo = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> {
             if(searched >= trials) {
@@ -46,7 +46,7 @@ public class SeedSearcher {
     }
 
     private void search() {
-        long seed = ThreadLocalRandom.current().nextLong(-9999999999L, 9999999999L);
+        long seed = ThreadLocalRandom.current().nextLong(-99999999999999999L, 99999999999999999L);
         List<Boolean> result = new ArrayList<>();
 
         searched++;

@@ -6,6 +6,7 @@ import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.cache.SimpleListCache;
 import io.github.wickeddroidmx.plugin.cache.SimpleMapCache;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
+import io.github.wickeddroidmx.plugin.utils.runnable.TaskCreator;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.AbstractModule;
 import me.yushust.inject.key.TypeReference;
@@ -36,5 +37,6 @@ public class MainModule extends AbstractModule {
         bind(WorldGenerator.class).toInstance(new WorldGenerator(plugin));
         bind(Main.class).toInstance(plugin);
         bind(Plugin.class).to(Main.class);
+        bind(TaskCreator.class).toInstance(new TaskCreator(plugin));
     }
 }

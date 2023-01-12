@@ -47,6 +47,7 @@ public class PlayerScatteredListener implements Listener {
         }
 
         player.setExp(0);
+        player.closeInventory();
         player.setLevel(0);
         player.setGameMode(GameMode.SURVIVAL);
         player.getInventory().clear();
@@ -78,6 +79,13 @@ public class PlayerScatteredListener implements Listener {
     @EventHandler
     public void onLaterScatter(PlayerLaterScatterEvent e) {
         var player = e.getPlayer();
+
+        player.setExp(0);
+        player.closeInventory();
+        player.setLevel(0);
+        player.setGameMode(GameMode.SURVIVAL);
+        player.getInventory().clear();
+        player.getInventory().addItem(new ItemCreator(Material.ACACIA_BOAT).amount(1));
 
         player.getInventory().addItem(new ItemCreator(Material.ACACIA_BOAT).amount(1));
         Bukkit.getLogger().info(String.format("Scattered player %s to X: %d Y: %d Z: %d in world %s",

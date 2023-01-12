@@ -22,6 +22,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 import javax.inject.Named;
 import java.util.UUID;
@@ -38,6 +39,19 @@ public class PlayerJoinListener implements Listener {
     @Named("scoreboard-cache")
     private MapCache<UUID, UHCScoreboard> cache;
 
+    @EventHandler
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        int maxSize = gameManager.getMaxPlayerSize();
+        int online = Bukkit.getOnlinePlayers().size();
+
+        if(online < maxSize || event.getPlayer().isOp()) {
+            event.allow();
+        }
+
+        if(online >= maxSize) {
+            event.disallow(PlayerLoginEvent.Result.KICK_FULL, ChatUtils.formatC("&4El server está lleno!"));
+        }
+    }
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
 

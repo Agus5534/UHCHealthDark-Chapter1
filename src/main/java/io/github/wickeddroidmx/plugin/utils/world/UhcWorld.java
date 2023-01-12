@@ -1,9 +1,11 @@
 package io.github.wickeddroidmx.plugin.utils.world;
 
 import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.utils.runnable.ListenerWatcher;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
+import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -104,8 +106,9 @@ public class UhcWorld {
                 deleteWorldDir();
             } catch (Exception e) {}
 
-            this.world = createWorld();
-        }, 200L);
+            Bukkit.getScheduler().runTask(plugin, ()-> this.world = createWorld());
+        }, 100L);
+
     }
 
     private void configWorld() {
@@ -115,6 +118,7 @@ public class UhcWorld {
             world.setDifficulty(Difficulty.HARD);
             if(world.getName().equals("world")) {
                 world.setGameRule(GameRule.DO_FIRE_TICK, false);
+                world.setPVP(true);
             }
             world.setGameRule(GameRule.NATURAL_REGENERATION, false);
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);

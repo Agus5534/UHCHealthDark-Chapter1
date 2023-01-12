@@ -33,6 +33,7 @@ import org.checkerframework.checker.units.qual.C;
 import javax.inject.Inject;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerCommands implements CommandClass {
 
@@ -132,6 +133,11 @@ public class PlayerCommands implements CommandClass {
     public void teamInventoryCommand(@Sender Player sender) {
         if (!modeManager.isActiveMode("team_inventory")) {
             sender.sendMessage(ChatUtils.PREFIX + "No puedes usar este comando, el scenario se encuentra desactivado.");
+            return;
+        }
+
+        if(gameManager.getGameState() == GameState.WAITING) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("La partida no ha iniciado todavía!"));
             return;
         }
 
@@ -345,7 +351,14 @@ public class PlayerCommands implements CommandClass {
         sender.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20, 200));
         sender.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 40, 200));
 
-        sender.teleport(new Location(Bukkit.getWorlds().get(0), 225, 22, 244));
+        List<Location> spawnLocs = new ArrayList<>();
+
+        spawnLocs.add(new Location(Bukkit.getWorlds().get(0), 219, 57, 226));
+        spawnLocs.add(new Location(Bukkit.getWorlds().get(0), 226, 57, 233));
+        spawnLocs.add(new Location(Bukkit.getWorlds().get(0), 232, 57, 227 ));
+        spawnLocs.add(new Location(Bukkit.getWorlds().get(0), 226, 57, 220));
+
+        sender.teleport(spawnLocs.get(ThreadLocalRandom.current().nextInt(spawnLocs.size())));
     }
 
     @Command(
@@ -354,7 +367,7 @@ public class PlayerCommands implements CommandClass {
     public void renameCommand(@Sender Player sender, @Named("name") @Text String name) {
         var ranks = WaitingStatusListeners.playerDonatorRankMap.get(sender);
 
-        if(!ranks.contains(Ranks.DonatorRank.DONATOR) && !ranks.contains(Ranks.DonatorRank.DONATOR_PLUS) && !ranks.contains(Ranks.DonatorRank.DONATOR_PLUS_PLUS) && !ranks.contains(Ranks.DonatorRank.BOOSTER)) {
+        if(!ranks.contains(Ranks.DonatorRank.DONATOR) && !ranks.contains(Ranks.DonatorRank.DONATOR_PLUS) && !ranks.contains(Ranks.DonatorRank.DONATOR_PLUS_PLUS) && !ranks.contains(Ranks.DonatorRank.BOOSTER) && !ranks.contains(Ranks.DonatorRank.TESTER)) {
             sender.sendMessage(ChatUtils.formatComponentPrefix("Este comando es solo para donadores."));
             return;
         }
@@ -431,6 +444,11 @@ public class PlayerCommands implements CommandClass {
 
         String[] lores = text.split("\"");
 
+        if(Arrays.asList(lores).size() > 16) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No se pueden poner más líneas de lore"));
+            return;
+        }
+
         var itemC = new ItemCreator(item);
 
         List<Component> components = new ArrayList<>();
@@ -486,6 +504,14 @@ public class PlayerCommands implements CommandClass {
 
         if(list.contains(Ranks.DonatorRank.DONATOR_PLUS)) {
             return 75;
+        }
+
+        if(list.contains(Ranks.DonatorRank.DONATOR) || list.contains(Ranks.DonatorRank.BOOSTER)) {
+            return 60;
+        }
+
+        if(list.contains(Ranks.DonatorRank.TESTER)) {
+            return 20;
         }
 
         return 60;

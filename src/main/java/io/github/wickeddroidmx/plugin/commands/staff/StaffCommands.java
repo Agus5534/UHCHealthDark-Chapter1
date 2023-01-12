@@ -59,6 +59,20 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
+            names = "setmaxslots", permission = "healthdark.staff"
+    )
+    public void setMaxSlotsCommand(@Sender Player sender, @Named("slots") int slots) {
+        if(slots < 1 || slots > 120) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("No se pueden poner esa cantidad de slots."));
+            return;
+        }
+
+        gameManager.setMaxPlayerSize(slots);
+
+        sender.sendMessage(ChatUtils.formatComponentPrefix("Has cambiado los slots disponibles a " + slots));
+    }
+
+    @Command(
             names = { "ls", "laterscatter", "revive" }, permission = "healthdark.staff"
     )
     public void laterScatterCommand(@Sender Player sender, @Named("player") Player target, @OptArg @Named("team") UhcTeam uhcTeam) {
@@ -99,7 +113,7 @@ public class StaffCommands implements CommandClass {
             }
 
             target.setGameMode(GameMode.SURVIVAL);
-            target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 5));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 400, 15));
 
             Bukkit.broadcastMessage(ChatUtils.PREFIX + ChatUtils.format(String.format("%s scattered", target.getName())));
 

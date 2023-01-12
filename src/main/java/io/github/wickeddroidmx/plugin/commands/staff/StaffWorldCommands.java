@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
+import io.github.wickeddroidmx.plugin.utils.runnable.TaskCreator;
 import io.github.wickeddroidmx.plugin.utils.world.SeedSearcher;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.mcutils.util.pos.BPos;
@@ -19,6 +20,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
+import org.bukkit.event.world.WorldLoadEvent;
 
 import javax.inject.Inject;
 
@@ -33,6 +35,9 @@ public class StaffWorldCommands implements CommandClass {
 
     @Inject
     private GameManager gameManager;
+
+    @Inject
+    private TaskCreator taskCreator;
 
     @Command(names = "bannedbiomes")
     public class BannedBiomesSubCommand implements CommandClass {
@@ -184,7 +189,7 @@ public class StaffWorldCommands implements CommandClass {
             uhcWorld.setSeed(Long.parseLong(seed));
         }
 
-        uhcWorld.recreateWorld(plugin);
+        taskCreator.runSync(()-> uhcWorld.recreateWorld(plugin));
 
         sender.sendMessage(ChatUtils.PREFIX + "Recreando mundo... Puede demorar un tiempo.");
     }
@@ -193,7 +198,7 @@ public class StaffWorldCommands implements CommandClass {
             names = "search"
     )
     public void searchCommand(@Sender Player sender, @Named("trials") int trials, @Named("searchRadius") int searchRadius) {
-        if(trials < 1 || searchRadius < 1 || trials > 75 || searchRadius > 500) {
+        if(trials < 5 || searchRadius < 32 || trials > 150 || searchRadius > 750) {
             sender.sendMessage(ChatUtils.formatComponentPrefix("No se puede poner esta cantidad."));
             return;
         }
@@ -217,16 +222,14 @@ public class StaffWorldCommands implements CommandClass {
 
             sender.sendMessage(ChatUtils.formatC("&6Se han encontrado las siguientes seeds:"));
 
-            seedSearcher.getAvailableSeeds().forEach(s -> {
-                sender.sendMessage(
-                        ChatUtils.formatC("&a"+s).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(s))).hoverEvent(ChatUtils.formatC("&7Click para copiar!"))
-                                .append(
-                                        ChatUtils.formatC( " &6(0, 0 " + spawnBiome(s) + ")")
-                                                .hoverEvent(ChatUtils.formatC("&7Click para establecer seed"))
-                                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/staffworld recreate "+s))
-                                )
-                );
-            });
+            seedSearcher.getAvailableSeeds().forEach(s -> sender.sendMessage(
+                    ChatUtils.formatC("&a"+s).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(s))).hoverEvent(ChatUtils.formatC("&7Click para copiar!"))
+                            .append(
+                                    ChatUtils.formatC( " &6(0, 0 " + spawnBiome(s) + ")")
+                                            .hoverEvent(ChatUtils.formatC("&7Click para establecer seed"))
+                                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/staffworld recreate "+s))
+                            )
+            ));
         };
 
         seedSearcher.startTask();

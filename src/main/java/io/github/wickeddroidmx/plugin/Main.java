@@ -56,6 +56,9 @@ public class Main extends JavaPlugin {
 
     @InjectIgnore
     private Region ARENA_SPAWN;
+
+    @InjectIgnore
+    private Region ARENA_FALL;
     private Rank rank;
 
     @Override
@@ -66,13 +69,18 @@ public class Main extends JavaPlugin {
         loader.load();
 
         ARENA = new Region(
-                new Location(Bukkit.getWorlds().get(0), 188, 55, 179),
-                new Location(Bukkit.getWorlds().get(0), 302, 12, 308)
+                new Location(Bukkit.getWorlds().get(0), 301, 62, 306),
+                new Location(Bukkit.getWorlds().get(0), 180, 7, 182)
         );
 
         ARENA_SPAWN = new Region(
-                new Location(Bukkit.getWorlds().get(0), 220, 12, 237),
-                new Location(Bukkit.getWorlds().get(0), 234, 56, 252)
+                new Location(Bukkit.getWorlds().get(0), 215, 53, 237),
+                new Location(Bukkit.getWorlds().get(0), 237, 65, 216)
+        );
+
+        ARENA_FALL = new Region(
+                new Location(Bukkit.getWorlds().get(0), 222, 57, 223),
+                new Location(Bukkit.getWorlds().get(0), 229, 53, 230)
         );
 
         configuration = new Configuration(this, "config");
@@ -113,6 +121,7 @@ public class Main extends JavaPlugin {
         getARENA().getBlocksTypeOf(Material.OBSIDIAN).forEach(block -> block.setType(Material.AIR));
         getARENA().getBlocksTypeOf(Material.COBBLESTONE).forEach(block -> block.setType(Material.AIR));
         getARENA().getBlocksTypeOf(Material.WATER).forEach(block -> block.setType(Material.AIR));
+        getARENA().getBlocksTypeOf(Material.STONE).forEach(block -> block.setType(Material.AIR));
     }
 
 
@@ -146,6 +155,10 @@ public class Main extends JavaPlugin {
 
     public Region getARENA_SPAWN() {
         return ARENA_SPAWN;
+    }
+
+    public Region getARENA_FALL() {
+        return ARENA_FALL;
     }
 
     public Configuration getConfiguration() {

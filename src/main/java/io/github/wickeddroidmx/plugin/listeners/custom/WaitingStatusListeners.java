@@ -172,6 +172,11 @@ public class WaitingStatusListeners implements Listener {
         if(onStun.contains(event.getPlayer())) {
             event.setCancelled(true);
         }
+
+        if(plugin.getARENA_FALL().isInsideRegion(event.getPlayer().getLocation())) {
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 80, 25, false, false, false));
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60, 25, false, false, false));
+        }
     }
 
     @EventHandler
@@ -230,10 +235,6 @@ public class WaitingStatusListeners implements Listener {
                 return;
             }
 
-            if(plugin.getARENA_WATER().isInsideRegion(blockLoc)) {
-                event.setCancelled(true);
-            }
-
         }
     }
 
@@ -262,10 +263,6 @@ public class WaitingStatusListeners implements Listener {
                 event.setCancelled(true);
                 return;
             }
-
-            if(plugin.getARENA_WATER().isInsideRegion(blockLoc)) {
-                event.setCancelled(true);
-            }
         }
     }
 
@@ -279,7 +276,7 @@ public class WaitingStatusListeners implements Listener {
             event.setCancelled(true);
         }
 
-        if(plugin.getARENA_WATER().isInsideRegion(event.getBlock().getLocation())) {
+        if(plugin.getARENA_SPAWN().isInsideRegion(event.getBlock().getLocation())){
             event.setCancelled(true);
         }
 
@@ -288,6 +285,12 @@ public class WaitingStatusListeners implements Listener {
     @EventHandler
     public void onSpawn(EntitySpawnEvent event) {
         if(event.getEntity() instanceof Player) { return; }
+
+        if(plugin.getARENA_SPAWN().isInsideRegion(event.getLocation())){
+            event.setCancelled(true);
+            return;
+        }
+
         if(event.getEntity() instanceof Arrow) { return; }
 
         if(event.getLocation().getWorld().getName().equalsIgnoreCase("world")) {
@@ -333,6 +336,11 @@ public class WaitingStatusListeners implements Listener {
         if(!(event.getEntity() instanceof Player)) { return; }
         if(gameManager.getGameState() != GameState.WAITING) { return; }
         if(!event.getEntity().getLocation().getWorld().getName().equalsIgnoreCase("world")) { return; }
+
+        if(plugin.getARENA_SPAWN().isInsideRegion(event.getEntity().getLocation())){
+            event.setCancelled(true);
+            return;
+        }
 
         var player = (Player)event.getEntity();
 

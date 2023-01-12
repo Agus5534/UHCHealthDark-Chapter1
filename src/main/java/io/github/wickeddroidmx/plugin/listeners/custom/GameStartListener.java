@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.listeners.custom;
 
+import com.destroystokyo.paper.profile.ProfileProperty;
 import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
@@ -17,6 +18,7 @@ import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
 import me.yushust.inject.InjectAll;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
+import org.bukkit.Statistic;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
@@ -50,9 +52,12 @@ public class GameStartListener implements Listener {
                     potionEffect -> player.removePotionEffect(potionEffect.getType())
             );
 
+            player.closeInventory();
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 9, false, false, false));
             player.sendTitle(ChatUtils.format("&6¡UHC Iniciado!"), ChatUtils.format("&7El UHC ha iniciado"), 20, 60, 20);
             cache.add(player.getUniqueId(), new GameScoreboard(plugin, player, modeManager ,gameManager, playerManager, teamManager));
+
+            player.setStatistic(Statistic.TIME_SINCE_REST, 0);
         });
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()-> {
