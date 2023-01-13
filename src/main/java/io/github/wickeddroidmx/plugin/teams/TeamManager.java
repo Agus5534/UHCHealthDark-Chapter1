@@ -122,7 +122,7 @@ public class TeamManager  {
                 if (player.isOnline())
                     player.sendMessage(ChatUtils.TEAM + "Se ha eliminado la invitación de " + owner.getName());
             }
-        }, 200L);
+        }, 600L);
     }
 
     public void randomizeTeam() {
