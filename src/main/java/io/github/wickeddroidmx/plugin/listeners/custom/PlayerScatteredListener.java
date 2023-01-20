@@ -11,6 +11,8 @@ import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.advancement.Advancement;
+import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffect;
@@ -18,6 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Iterator;
 import java.util.UUID;
 
 public class PlayerScatteredListener implements Listener {
@@ -44,6 +47,14 @@ public class PlayerScatteredListener implements Listener {
 
         if (!playerManager.existsPlayer(player)) {
             playerManager.createPlayer(player, true);
+        }
+
+        Iterator<Advancement> advancements = Bukkit.getServer().advancementIterator();
+
+        while (advancements.hasNext()) {
+            AdvancementProgress progress = player.getAdvancementProgress(advancements.next());
+            for (String s : progress.getAwardedCriteria())
+                progress.revokeCriteria(s);
         }
 
         player.setExp(0);
@@ -79,6 +90,14 @@ public class PlayerScatteredListener implements Listener {
     @EventHandler
     public void onLaterScatter(PlayerLaterScatterEvent e) {
         var player = e.getPlayer();
+
+        Iterator<Advancement> advancements = Bukkit.getServer().advancementIterator();
+
+        while (advancements.hasNext()) {
+            AdvancementProgress progress = player.getAdvancementProgress(advancements.next());
+            for (String s : progress.getAwardedCriteria())
+                progress.revokeCriteria(s);
+        }
 
         player.setExp(0);
         player.closeInventory();
