@@ -1,10 +1,12 @@
 package io.github.wickeddroidmx.plugin.menu;
 
+import io.github.agus5534.hdbot.Ranks;
 import io.github.wickeddroidmx.plugin.cache.ListCache;
 import io.github.wickeddroidmx.plugin.experiments.Experiment;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.game.GameState;
+import io.github.wickeddroidmx.plugin.listeners.custom.WaitingStatusListeners;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
@@ -138,15 +140,15 @@ public class UhcMenu {
                         }).build())
                 .setLayoutItem('e', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.SPAWNER).name(ChatUtils.formatC("&bExperimentos")))
                         .setAction(action -> {
-                           /* var player = action.getWhoClicked();
+                           var player = action.getWhoClicked();
 
-                            var staffrank = WaitingStatusListeners.playerRanksHashMap.get(player);
-                            if(staffrank == null) { return true; }
-                            if(!staffrank.contains(Ranks.StaffRank.TESTER)) { return true; }
+                            var donatorrank = WaitingStatusListeners.playerDonatorRankMap.get(player);
+                            if(donatorrank == null) { return true; }
+                            if(!donatorrank.contains(Ranks.DonatorRank.TESTER)) { return true; }
 
                             player.getInventory().close();
 
-                            player.openInventory(this.getExperimentsMenu((Player) player));*/
+                            player.openInventory(this.getExperimentsMenu((Player) player));
                             return true;
                         }).build())
                 .build();
