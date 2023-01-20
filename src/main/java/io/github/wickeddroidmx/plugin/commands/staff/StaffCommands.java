@@ -62,10 +62,13 @@ public class StaffCommands implements CommandClass {
             names = "setmaxslots", permission = "healthdark.staff"
     )
     public void setMaxSlotsCommand(@Sender Player sender, @Named("slots") int slots) {
-        if(slots < 1 || slots > 120) {
+        int s = Bukkit.getMaxPlayers();
+        if(slots < s || slots > 120) {
             sender.sendMessage(ChatUtils.formatComponentPrefix("No se pueden poner esa cantidad de slots."));
             return;
         }
+
+
 
         gameManager.setMaxPlayerSize(slots);
 
