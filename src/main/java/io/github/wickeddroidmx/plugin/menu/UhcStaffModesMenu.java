@@ -59,7 +59,7 @@ public class UhcStaffModesMenu {
 
                         event.getCurrentItem().setItemMeta(itMeta);
                     } else
-                        mode.desactiveMode();
+                        mode.deactivateMode();
 
                         ic.removeEnchantments();
 
@@ -111,7 +111,7 @@ public class UhcStaffModesMenu {
                     if(!mode.isEnabled())
                         mode.activeMode();
                     else
-                        mode.desactiveMode();
+                        mode.deactivateMode();
 
                     return true;
                 }).build())

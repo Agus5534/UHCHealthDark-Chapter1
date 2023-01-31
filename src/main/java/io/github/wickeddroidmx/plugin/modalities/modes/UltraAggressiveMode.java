@@ -33,8 +33,8 @@ public class UltraAggressiveMode extends Modality {
     }
 
     @Override
-    public void desactiveMode() {
-        super.desactiveMode();
+    public void deactivateMode() {
+        super.deactivateMode();
 
         gameManager.setTimeForPvP(3600);
     }

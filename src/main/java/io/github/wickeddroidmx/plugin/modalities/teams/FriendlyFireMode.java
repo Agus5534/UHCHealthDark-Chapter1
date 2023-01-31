@@ -42,8 +42,8 @@ public class FriendlyFireMode extends Modality {
     }
 
     @Override
-    public void desactiveMode() {
-        super.desactiveMode();
+    public void deactivateMode() {
+        super.deactivateMode();
 
         for(var team : teamManager.getUhcTeams().values()) {
             team.setFriendlyFire(false);

@@ -134,7 +134,7 @@ public class StaffGameCommands implements CommandClass  {
     }
 
     @Command(
-            names = "cleararena"
+            names = "clearer"
     )
     public void clearArenaCommand(@Sender Player sender) {
         sender.sendMessage(ChatUtils.formatComponentPrefix("Limpiando arena"));
@@ -193,7 +193,7 @@ public class StaffGameCommands implements CommandClass  {
                             String.format("> **WorldBorder Final 1:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderOne(), formatAsTimerBig(gameManager.getTimeWorldBorderOne())) +
                             String.format("> **WorldBorder Final 2:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderTwo(), formatAsTimerBig(gameManager.getTimeWorldBorderTwo())) +
                             String.format("> **WorldBorder Final 3:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderThree(), formatAsTimerBig(gameManager.getTimeWorldBorderThree())) +
-                            String.format("> **Cobweb limit:** %s\\n\\n", gameManager.getCobwebLimit()) +
+                            String.format("> **Cobweb limit:** %s\\n\\n", modeManager.isActiveMode("cobweb_less") ? "0" : gameManager.getCobwebLimit()) +
                             String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup()))+
                             String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
                             "> **IP:** ||uhchealthdarks4.minecraft.best||\\n\\n"+

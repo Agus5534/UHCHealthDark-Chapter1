@@ -99,8 +99,8 @@ public class UhcRunMode extends Modality {
     }
 
     @Override
-    public void desactiveMode() {
-        super.desactiveMode();
+    public void deactivateMode() {
+        super.deactivateMode();
 
         gameManager.setTimeForPvP(gameManager.isSkyHighMode() ? 3540 : 3600);
         gameManager.setTimeForMeetup(gameManager.isSkyHighMode() ? 3600 : 7200);

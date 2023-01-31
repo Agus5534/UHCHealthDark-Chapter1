@@ -31,30 +31,6 @@ public abstract class Modality implements Listener  {
     private final boolean experimental;
     private boolean enable;
 
-    public Modality(ModalityType modalityType, String key, String name, Material material, String... lore) {
-        this.modalityType = modalityType;
-        this.key = key;
-        this.name = name;
-        this.material = material;
-        this.lore = lore;
-        this.experimental = false;
-    }
-
-    @Deprecated
-    public Modality(String... lore) throws IllegalClassFormatException {
-        if(this.getClass().isAnnotationPresent(GameModality.class)) {
-            var annotation = this.getClass().getAnnotation(GameModality.class);
-
-            this.name = annotation.name();
-            this.key = annotation.key();
-            this.lore = lore;
-            this.material = annotation.material();
-            this.modalityType = annotation.modalityType();
-            this.experimental = annotation.experimental();
-        } else {
-            throw new IllegalClassFormatException("Missing @GameModality annotation or constructor");
-        }
-    }
     public Modality() throws IllegalClassFormatException {
         if(this.getClass().isAnnotationPresent(GameModality.class)) {
             var annotation = this.getClass().getAnnotation(GameModality.class);
@@ -80,7 +56,7 @@ public abstract class Modality implements Listener  {
         this.enable = true;
     }
 
-    public void desactiveMode() {
+    public void deactivateMode() {
         HandlerList.unregisterAll(this);
 
         Bukkit.getPluginManager().callEvent(new DesactiveModeEvent(this));

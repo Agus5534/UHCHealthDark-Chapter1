@@ -42,8 +42,8 @@ public class DamageCycleMode extends Modality {
 
 
     @Override
-    public void desactiveMode() {
-        super.desactiveMode();
+    public void deactivateMode() {
+        super.deactivateMode();
         if(Bukkit.getScheduler().isCurrentlyRunning(taskID)) {
             Bukkit.getScheduler().cancelTask(taskID);
         }
