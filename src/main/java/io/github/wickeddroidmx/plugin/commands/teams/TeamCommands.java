@@ -237,7 +237,7 @@ public class TeamCommands implements CommandClass {
             return;
         }
 
-        if(color == ChatColor.MAGIC) {
+        if(color == ChatColor.MAGIC || color == ChatColor.UNDERLINE || color == ChatColor.ITALIC || color == ChatColor.STRIKETHROUGH) {
             sender.sendMessage(ChatUtils.PREFIX + "Este color se encuentra vetado.");
             return;
         }
