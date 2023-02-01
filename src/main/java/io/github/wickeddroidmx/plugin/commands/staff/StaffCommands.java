@@ -41,7 +41,8 @@ public class StaffCommands implements CommandClass {
     private Main plugin;
 
     @Command(
-            names = "worldtp", permission = "healthdark.staff"
+            names = "worldtp",
+            permission = "healthdark.host"
     )
     public void teleportCommand(@Sender Player sender, World world) {
         if(world == null) {
@@ -59,7 +60,7 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = "setmaxslots", permission = "healthdark.staff"
+            names = "setmaxslots", permission = "healthdark.host"
     )
     public void setMaxSlotsCommand(@Sender Player sender, @Named("slots") int slots) {
         int s = Bukkit.getMaxPlayers();
@@ -76,7 +77,7 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = { "ls", "laterscatter", "revive" }, permission = "healthdark.staff"
+            names = { "ls", "laterscatter", "revive" }, permission = "healthdark.host"
     )
     public void laterScatterCommand(@Sender Player sender, @Named("player") Player target, @OptArg @Named("team") UhcTeam uhcTeam) {
         var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
@@ -132,7 +133,7 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = {"inv","inventory","invsee"}, permission = "healthdark.staff"
+            names = {"inv","inventory","invsee"}, permission = "healthdark.host"
     )
     public void inventoryCommand(@Sender Player sender, Player target) {
         var senderUhcPlayer = playerManager.getPlayer(sender.getUniqueId());
@@ -162,7 +163,8 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = {"invti", "invseeti", "tisee"}
+            names = {"invti", "invseeti", "tisee"},
+            permission = "healthdark.staff.admin"
     )
     public void teamInventorySeeCommand(@Sender Player sender, @Named("team") UhcTeam uhcTeam) {
         var senderUhcPlayer = playerManager.getPlayer(sender.getUniqueId());
@@ -191,7 +193,7 @@ public class StaffCommands implements CommandClass {
 
     @Command(
             names = {"spect", "spectate", "moderate", "mod"},
-            permission = "healthdark.staff"
+            permission = "healthdark.staff.mod"
     )
     public void spectateCommand(@Sender Player sender) {
         var player = playerManager.getPlayer(sender.getUniqueId());

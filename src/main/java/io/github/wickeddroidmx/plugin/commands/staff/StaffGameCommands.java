@@ -42,7 +42,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @InjectAll
-@Command( names = "staffgame", permission = "healthdark.staff")
+@Command( names = "staffgame")
 @SubCommandClasses(value = {StaffGameCommands.SettingsSubCommand.class, StaffGameCommands.PollSubCommand.class})
 public class StaffGameCommands implements CommandClass  {
 
@@ -64,7 +64,8 @@ public class StaffGameCommands implements CommandClass  {
     private MapCache<UUID, UHCScoreboard> cache;
 
     @Command(
-            names = "start"
+            names = "start",
+            permission = "healthdark.host"
     )
     public void startCommand() {
         if(plugin.getWorldGenerator().getUhcWorld().isRecreatingWorld()) {
@@ -127,14 +128,16 @@ public class StaffGameCommands implements CommandClass  {
     }
 
     @Command(
-            names = "host"
+            names = "host",
+            permission = "healthdark.host"
     )
     public void hostCommand(@Sender Player sender) {
         gameManager.setHost(sender);
     }
 
     @Command(
-            names = "clearer"
+            names = "cleararena",
+            permission = "healthdark.staff.mod"
     )
     public void clearArenaCommand(@Sender Player sender) {
         sender.sendMessage(ChatUtils.formatComponentPrefix("Limpiando arena"));
@@ -142,7 +145,8 @@ public class StaffGameCommands implements CommandClass  {
     }
 
     @Command(
-            names="post"
+            names = "post",
+            permission = "healthdark.host"
     )
     public void postCommand(@Sender Player sender, @Named("minutes") int minutes) {
         var timeConverted = (minutes * 60);
@@ -204,7 +208,7 @@ public class StaffGameCommands implements CommandClass  {
             e.printStackTrace();
         }
     }
-    @Command(names = "notify")
+    @Command(names = "notify", permission = "healthdark.host")
     public void notifyCommand(@Named("message")@Text String message) {
         Bukkit.broadcast(ChatUtils.formatC(ChatUtils.NOTIFICATION + message));
     }
@@ -213,7 +217,8 @@ public class StaffGameCommands implements CommandClass  {
     @Command(names = "settings")
     public class SettingsSubCommand implements CommandClass {
         @Command(
-                names = "tisize"
+                names = "tisize",
+                permission = "healthdark.host"
         )
         public void teamInventorySizeCommand(@Sender Player sender, @Named("tiSize") int tiSize) {
             if(tiSize < 9 || tiSize > 54) {
@@ -230,7 +235,8 @@ public class StaffGameCommands implements CommandClass  {
             sender.sendMessage(ChatUtils.formatComponentPrefix("Has cambiado el tamaño del Team Inventory a " + tiSize + " slots"));
         }
         @Command(
-                names = "arenaenabled"
+                names = "arenaenabled",
+                permission = "healthdark.staff.mod"
         )
         public void arenaEnabledCommand(@Sender Player sender, @Named("enabled") boolean enabled) {
             if(gameManager.isArenaEnabled() == enabled) {
@@ -244,7 +250,8 @@ public class StaffGameCommands implements CommandClass  {
         }
 
         @Command(
-                names = "spectators"
+                names = "spectators",
+                permission = "healthdark.staff.admin"
         )
         public void spectatorsCommand(@Sender Player sender, @Named("enabled") boolean enabled) {
             if(gameManager.isSpectators() == enabled) {
@@ -258,7 +265,8 @@ public class StaffGameCommands implements CommandClass  {
         }
 
         @Command(
-                names = "cobweblimit"
+                names = "cobweblimit",
+                permission = "healthdark.host"
         )
         public void cobwebLimitCommand(@Sender Player sender, @Named("limit") int cobwebLimit) {
             if (cobwebLimit > 64 || cobwebLimit < 0) {
@@ -275,7 +283,8 @@ public class StaffGameCommands implements CommandClass  {
         }
 
         @Command(
-                names = "id"
+                names = "id",
+                permission = "healthdark.host"
         )
         public void uhcIDCommand(@Sender Player sender, @Named("id") int uhcId) {
             if (uhcId < 0) {
@@ -291,7 +300,8 @@ public class StaffGameCommands implements CommandClass  {
         }
 
         @Command(
-                names = "time"
+                names = "time",
+                permission = "healthdark.host"
         )
         public void timeCommand(@Sender Player sender, @Named("pvp") @OptArg Integer pvp, @Named("meetup") @OptArg Integer meetup) {
             if(pvp != null && meetup != null) {
@@ -317,14 +327,16 @@ public class StaffGameCommands implements CommandClass  {
         }
 
         @Command(
-                names = "worldborder"
+                names = "worldborder",
+                permission = "healthdark.host"
         )
         public void worldBorderMoveCommand(@Sender Player target, @Named("size") int size, @Named("time") int seconds) {
             Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(size, seconds, false));
         }
 
         @Command(
-                names = "startworldborder"
+                names = "startworldborder",
+                permission = "healthdark.host"
         )
         public void startWorldBorderCommand(@Sender Player sender, @Named("size") int size) {
             Bukkit.getPluginManager().callEvent(new WorldBorderSetEvent(size));
@@ -333,7 +345,8 @@ public class StaffGameCommands implements CommandClass  {
         }
 
         @Command(
-                names = "applerate"
+                names = "applerate",
+                permission = "healthdark.host"
         )
         public void appleRateCommand(@Sender Player target, @Named("percentage") int n) {
             if(n < 2 || n > 99) {
@@ -346,7 +359,8 @@ public class StaffGameCommands implements CommandClass  {
         }
 
         @Command(
-                names = "revealtime"
+                names = "revealtime",
+                permission = "healthdark.host"
         )
         public void revealTime(@Sender Player sender, @Named("minutes") int min) {
             int sec = min * 60;
@@ -376,7 +390,7 @@ public class StaffGameCommands implements CommandClass  {
         }
     }
 
-    @Command(names = "poll")
+    @Command(names = "poll", permission = "healthdark.host")
     public class PollSubCommand implements CommandClass {
         @Command(names = "create")
         public void createCommand(@Sender Player target, @Named("concursantType") ConcursantTypes concursantTypes, @Named("duration") int duration, @Named("pollData") @Text String pollData) {

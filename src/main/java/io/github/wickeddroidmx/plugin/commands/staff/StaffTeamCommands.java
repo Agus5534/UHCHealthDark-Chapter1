@@ -32,8 +32,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Command(
-        names="staffteam",
-        permission = "healthdark.staffteam"
+        names="staffteam"
 )
 @SubCommandClasses(value = { StaffTeamCommands.ModifyTeamSubCommand.class, StaffTeamCommands.CreateTeamSubCommand.class, StaffTeamCommands.DeleteTeamSubCommand.class, StaffTeamCommands.MemberTeamSubCommand.class})
 public class StaffTeamCommands implements CommandClass {
@@ -56,7 +55,8 @@ public class StaffTeamCommands implements CommandClass {
     private Main plugin;
 
     @Command(
-            names = "size"
+            names = "size",
+            permission = "healthdark.host"
     )
     public void sizeCommand(@Sender Player sender, @Named("size") int size) {
         if(size <= 0) {
@@ -71,7 +71,7 @@ public class StaffTeamCommands implements CommandClass {
 
 
     // MEMBER SUBCOMMAND
-    @Command(names = "member")
+    @Command(names = "member", permission = "healthdark.host")
     public class MemberTeamSubCommand implements CommandClass {
         @Command(
                 names = "join"
@@ -125,7 +125,8 @@ public class StaffTeamCommands implements CommandClass {
         }
 
         @Command(
-                names = "kill"
+                names = "kill",
+                permission = "healthdark.staff.admin"
         )
         public void killCommand(@Sender Player sender, @Named("killPlayer") Player target, @Named("ban") boolean ban) {
             var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
@@ -157,7 +158,7 @@ public class StaffTeamCommands implements CommandClass {
 
         }
 
-        @Command(names = "revive")
+        @Command(names = "revive", permission = "healthdark.staff.mod")
         public void reviveCommand(@Sender Player sender, @Named("toRevive") Player target, @Named("recoverInv") Boolean setInv, @Named("health") int health) {
             var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
             var uhcTeam = teamManager.getPlayerTeam(target.getUniqueId());
@@ -249,7 +250,7 @@ public class StaffTeamCommands implements CommandClass {
 
 
     // DELETE SUBCOMMAND
-    @Command(names = "delete")
+    @Command(names = "delete", permission = "healthdark.host")
     public class DeleteTeamSubCommand implements CommandClass {
         @Command(
                 names = "player"
@@ -299,7 +300,7 @@ public class StaffTeamCommands implements CommandClass {
 
 
     // CREATE SUBCOMMAND
-    @Command(names = "create")
+    @Command(names = "create", permission = "healthdark.host")
     public class CreateTeamSubCommand implements CommandClass {
         @Command(
                 names = "team"
@@ -416,7 +417,7 @@ public class StaffTeamCommands implements CommandClass {
 
 
     // MODIFY SUBCOMMAND
-    @Command(names = "modify")
+    @Command(names = "modify", permission = "healthdark.staff.mod")
     public class ModifyTeamSubCommand implements CommandClass {
         @Command(names = "prefix")
         public void modifyPrefixCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Text @Named("newPrefix") String prefix) {
@@ -433,7 +434,7 @@ public class StaffTeamCommands implements CommandClass {
             uhcTeam.sendMessage(String.format("%s ha cambiado su prefix a %s", sender.getName(), prefix));
         }
 
-        @Command(names = "color")
+        @Command(names = "color", permission = "healthdark.staff.admin")
         public void modifyColorCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Named("color") ChatColor color) {
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
@@ -461,7 +462,7 @@ public class StaffTeamCommands implements CommandClass {
             uhcTeam.setName(name);
         }
 
-        @Command(names = "owner")
+        @Command(names = "owner", permission = "healthdark.staff.admin")
         public void modifyOwnerCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Named("newOwner") Player newOwner) {
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");
@@ -483,7 +484,7 @@ public class StaffTeamCommands implements CommandClass {
             uhcTeam.setOwner(newOwner);
         }
 
-        @Command(names = "flag")
+        @Command(names = "flag", permission = "healthdark.staff.admin")
         public void flagCommand(@Sender Player sender, @Named("teamOwner") UhcTeam uhcTeam, @Named("flag") TeamFlags flag, @Named("newValue") boolean value) {
             if (uhcTeam == null) {
                 sender.sendMessage(ChatUtils.PREFIX + "No existe ese equipo");

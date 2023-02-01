@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 @Command(
         names="staffworld",
-        permission = "healthdark.staffteam"
+        permission = "healthdark.host"
 )
 @SubCommandClasses(value = {StaffWorldCommands.BannedBiomesSubCommand.class, StaffWorldCommands.BorderSubCommand.class})
 public class StaffWorldCommands implements CommandClass {

@@ -17,7 +17,7 @@ public class StaffModeCommands implements CommandClass {
 
     @Command(
             names = "staffmodes",
-            permission = "healthdark.staff"
+            permission = "healthdark.host"
     )
     public void staffModesCommand(@Sender Player sender, @Named("modalityType") ModalityType modalityType) {
         if(modalityType == ModalityType.UHC) {

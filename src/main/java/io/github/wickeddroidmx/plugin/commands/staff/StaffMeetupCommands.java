@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 @InjectAll
-@Command(names = "staffmeetup", permission = "healthdark.staff")
+@Command(names = "staffmeetup", permission = "healthdark.host")
 public class StaffMeetupCommands implements CommandClass {
 
     private PlayerManager playerManager;
