@@ -36,6 +36,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.DisplaySlot;
 
 import java.io.IOException;
 import java.util.*;
@@ -216,6 +217,23 @@ public class StaffGameCommands implements CommandClass  {
     // SETTINGS SUBCOMMAND
     @Command(names = "settings", permission = "healthdark.host")
     public class SettingsSubCommand implements CommandClass {
+        @Command(
+                names = "togglebelownamehp",
+                permission = "healthdark.host"
+        )
+        public void toggleBelowNameHP(@Sender Player sender) {
+            var scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+
+            gameManager.setBelowNameHealth(!gameManager.isBelowNameHealth());
+
+            if (gameManager.isBelowNameHealth()) {
+                scoreboard.getObjective("health").setDisplaySlot(DisplaySlot.BELOW_NAME);
+            } else {
+                scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
+            }
+
+            sender.sendMessage(ChatUtils.formatComponentPrefix(String.format("Se ha %s la vida del DisplaySlot BelowName", gameManager.isBelowNameHealth() ? "Agregado" : "Removido")));
+        }
         @Command(
                 names = "tisize",
                 permission = "healthdark.host"
