@@ -42,6 +42,7 @@ public class GameManager {
     private boolean arenaEnabled;
     private boolean gameStart;
     private boolean runMode;
+    private boolean belowNameHealth;
 
     private boolean skyHighMode;
     private boolean scenarioLimit;
@@ -341,5 +342,13 @@ public class GameManager {
 
     public void setMaxPlayerSize(int maxPlayerSize) {
         this.maxPlayerSize = maxPlayerSize;
+    }
+
+    public boolean isBelowNameHealth() {
+        return belowNameHealth;
+    }
+
+    public void setBelowNameHealth(boolean belowNameHealth) {
+        this.belowNameHealth = belowNameHealth;
     }
 }
