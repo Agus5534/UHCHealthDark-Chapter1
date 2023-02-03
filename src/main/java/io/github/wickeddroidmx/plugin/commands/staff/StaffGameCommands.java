@@ -216,196 +216,196 @@ public class StaffGameCommands implements CommandClass  {
 
     // SETTINGS SUBCOMMAND
     @Command(names = "settings", permission = "healthdark.host")
+    @SubCommandClasses(value = {SettingsSubCommand.ToggleSubCommand.class, SettingsSubCommand.SetSubCommand.class})
     public class SettingsSubCommand implements CommandClass {
-        @Command(
-                names = "togglebelownamehp",
-                permission = "healthdark.host"
-        )
-        public void toggleBelowNameHP(@Sender Player sender) {
-            var scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+        @Command(names = "toggle", permission = "healthdark.host")
+        public class ToggleSubCommand implements CommandClass {
+            @Command(
+                    names = "belownamehp",
+                    permission = "healthdark.host"
+            )
+            public void belowNameHP(@Sender Player sender) {
+                var scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
-            gameManager.setBelowNameHealth(!gameManager.isBelowNameHealth());
+                gameManager.setBelowNameHealth(!gameManager.isBelowNameHealth());
 
-            if (gameManager.isBelowNameHealth()) {
-                scoreboard.getObjective("health").setDisplaySlot(DisplaySlot.BELOW_NAME);
-            } else {
-                scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
+                if (gameManager.isBelowNameHealth()) {
+                    scoreboard.getObjective("health").setDisplaySlot(DisplaySlot.BELOW_NAME);
+                } else {
+                    scoreboard.clearSlot(DisplaySlot.BELOW_NAME);
+                }
+
+                sender.sendMessage(ChatUtils.formatComponentPrefix(String.format("Se ha %s la vida del DisplaySlot BelowName", gameManager.isBelowNameHealth() ? "Agregado" : "Removido")));
             }
 
-            sender.sendMessage(ChatUtils.formatComponentPrefix(String.format("Se ha %s la vida del DisplaySlot BelowName", gameManager.isBelowNameHealth() ? "Agregado" : "Removido")));
-        }
-        @Command(
-                names = "tisize",
-                permission = "healthdark.host"
-        )
-        public void teamInventorySizeCommand(@Sender Player sender, @Named("tiSize") int tiSize) {
-            if(tiSize < 9 || tiSize > 54) {
-                sender.sendMessage(ChatUtils.formatComponentPrefix("El inventario puede tener de 9 a 54 slots."));
-                return;
+            @Command(
+                    names = "arena",
+                    permission = "healthdark.staff.mod"
+            )
+            public void arenaCommand(@Sender Player sender) {
+                gameManager.setArenaEnabled(!gameManager.isArenaEnabled());
+
+                sender.sendMessage(ChatUtils.formatComponentPrefix("La arena ahora está " + (gameManager.isArenaEnabled() ? "&ahabilitada" : "&cdeshabilitada")));
             }
 
-            if(tiSize % 9 != 0) {
-                sender.sendMessage(ChatUtils.formatComponentPrefix("El número tiene que ser múltiplo de 9"));
-                return;
+            @Command(
+                    names = "spectators",
+                    permission = "healthdark.staff.admin"
+            )
+            public void spectatorsCommand(@Sender Player sender) {
+                gameManager.setSpectators(!gameManager.isSpectators());
+
+                sender.sendMessage(ChatUtils.formatComponentPrefix("Los espectadores ahora están " + (gameManager.isSpectators() ? "&ahabilitados" : "&cdeshabilitados")));
             }
-
-            gameManager.setTiSize(tiSize);
-            sender.sendMessage(ChatUtils.formatComponentPrefix("Has cambiado el tamaño del Team Inventory a " + tiSize + " slots"));
-        }
-        @Command(
-                names = "arenaenabled",
-                permission = "healthdark.staff.mod"
-        )
-        public void arenaEnabledCommand(@Sender Player sender, @Named("enabled") boolean enabled) {
-            if(gameManager.isArenaEnabled() == enabled) {
-                sender.sendMessage(ChatUtils.formatComponentPrefix("La arena ya está " + (enabled ? "habilitada" : "deshabilitada")));
-                return;
-            }
-
-            gameManager.setArenaEnabled(enabled);
-
-            sender.sendMessage(ChatUtils.formatComponentPrefix("La arena ahora está " + (enabled ? "&ahabilitada" : "&cdeshabilitada")));
         }
 
-        @Command(
-                names = "spectators",
-                permission = "healthdark.staff.admin"
-        )
-        public void spectatorsCommand(@Sender Player sender, @Named("enabled") boolean enabled) {
-            if(gameManager.isSpectators() == enabled) {
-                sender.sendMessage(ChatUtils.formatComponentPrefix("Los espectadores ya están " + (enabled ? "habilitados" : "deshabilitados")));
-                return;
-            }
-
-            gameManager.setSpectators(enabled);
-
-            sender.sendMessage(ChatUtils.formatComponentPrefix("Los espectadores ahora están " + (enabled ? "&ahabilitados" : "&cdeshabilitados")));
-        }
-
-        @Command(
-                names = "cobweblimit",
-                permission = "healthdark.host"
-        )
-        public void cobwebLimitCommand(@Sender Player sender, @Named("limit") int cobwebLimit) {
-            if (cobwebLimit > 64 || cobwebLimit < 0) {
-                sender.sendMessage(ChatUtils.PREFIX + "No puedes poner ese límite.");
-                return;
-            }
-
-            sender.sendMessage(String.format(
-                    ChatUtils.PREFIX + ChatUtils.format("El cobweb limit de ahora es de %d"),
-                    cobwebLimit
-            ));
-
-            gameManager.setCobwebLimit(cobwebLimit);
-        }
-
-        @Command(
-                names = "id",
-                permission = "healthdark.host"
-        )
-        public void uhcIDCommand(@Sender Player sender, @Named("id") int uhcId) {
-            if (uhcId < 0) {
-                sender.sendMessage(ChatUtils.PREFIX + "No es válido ese número.");
-                return;
-            }
-
-            gameManager.setUhcId(uhcId);
-
-            sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha cambiado al UHC &6#" + uhcId));
-
-            new UhcIdLoader().getID();
-        }
-
-        @Command(
-                names = "time",
-                permission = "healthdark.host"
-        )
-        public void timeCommand(@Sender Player sender, @Named("pvp") @OptArg Integer pvp, @Named("meetup") @OptArg Integer meetup) {
-            if(pvp != null && meetup != null) {
-                if(pvp > meetup) {
-                    sender.sendMessage(ChatUtils.PREFIX + "El tiempo meetup no puede ser mayor al de pvp.");
+        @Command(names = "set", permission = "healthdark.host")
+        public class SetSubCommand implements CommandClass {
+            @Command(
+                    names = "tisize",
+                    permission = "healthdark.host"
+            )
+            public void teamInventorySizeCommand(@Sender Player sender, @Named("tiSize") int tiSize) {
+                if(tiSize < 9 || tiSize > 54) {
+                    sender.sendMessage(ChatUtils.formatComponentPrefix("El inventario puede tener de 9 a 54 slots."));
                     return;
                 }
 
-                Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(meetup, pvp));
+                if(tiSize % 9 != 0) {
+                    sender.sendMessage(ChatUtils.formatComponentPrefix("El número tiene que ser múltiplo de 9"));
+                    return;
+                }
+
+                gameManager.setTiSize(tiSize);
+                sender.sendMessage(ChatUtils.formatComponentPrefix("Has cambiado el tamaño del Team Inventory a " + tiSize + " slots"));
             }
 
-            if(pvp != null) {
-                Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(gameManager.getTimeForMeetup(), pvp));
-                return;
+            @Command(
+                    names = "cobweblimit",
+                    permission = "healthdark.host"
+            )
+            public void cobwebLimitCommand(@Sender Player sender, @Named("limit") int cobwebLimit) {
+                if (cobwebLimit > 64 || cobwebLimit < 0) {
+                    sender.sendMessage(ChatUtils.PREFIX + "No puedes poner ese límite.");
+                    return;
+                }
+
+                sender.sendMessage(String.format(
+                        ChatUtils.PREFIX + ChatUtils.format("El cobweb limit de ahora es de %d"),
+                        cobwebLimit
+                ));
+
+                gameManager.setCobwebLimit(cobwebLimit);
             }
 
-            if(meetup != null) {
-                Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(meetup, gameManager.getTimeForPvP()));
-                return;
+            @Command(
+                    names = "id",
+                    permission = "healthdark.host"
+            )
+            public void uhcIDCommand(@Sender Player sender, @Named("id") int uhcId) {
+                if (uhcId < 0) {
+                    sender.sendMessage(ChatUtils.PREFIX + "No es válido ese número.");
+                    return;
+                }
+
+                gameManager.setUhcId(uhcId);
+
+                sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha cambiado al UHC &6#" + uhcId));
+
+                new UhcIdLoader().getID();
             }
 
-            sender.openInventory(uhcStaffMenu.getTimeInventory());
+            @Command(
+                    names = "time",
+                    permission = "healthdark.host"
+            )
+            public void timeCommand(@Sender Player sender, @Named("pvp") @OptArg Integer pvp, @Named("meetup") @OptArg Integer meetup) {
+                if(pvp != null && meetup != null) {
+                    if(pvp > meetup) {
+                        sender.sendMessage(ChatUtils.PREFIX + "El tiempo meetup no puede ser mayor al de pvp.");
+                        return;
+                    }
+
+                    Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(meetup, pvp));
+                }
+
+                if(pvp != null) {
+                    Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(gameManager.getTimeForMeetup(), pvp));
+                    return;
+                }
+
+                if(meetup != null) {
+                    Bukkit.getPluginManager().callEvent(new ChangeGameTimeEvent(meetup, gameManager.getTimeForPvP()));
+                    return;
+                }
+
+                sender.openInventory(uhcStaffMenu.getTimeInventory());
+            }
+
+            @Command(
+                    names = "worldborder",
+                    permission = "healthdark.host"
+            )
+            public void worldBorderMoveCommand(@Sender Player target, @Named("size") int size, @Named("time") int seconds) {
+                Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(size, seconds, false));
+            }
+
+            @Command(
+                    names = "startworldborder",
+                    permission = "healthdark.host"
+            )
+            public void startWorldBorderCommand(@Sender Player sender, @Named("size") int size) {
+                Bukkit.getPluginManager().callEvent(new WorldBorderSetEvent(size));
+
+                sender.sendMessage(ChatUtils.formatComponentPrefix("Has establecido el borde en " + size +"x" + size));
+            }
+
+            @Command(
+                    names = "applerate",
+                    permission = "healthdark.host"
+            )
+            public void appleRateCommand(@Sender Player target, @Named("percentage") int n) {
+                if(n < 2 || n > 99) {
+                    target.sendMessage(ChatUtils.PREFIX + "Ese porcentaje no es válido.");
+                }
+
+                gameManager.setAppleRate(n);
+
+                target.sendMessage(ChatUtils.PREFIX + "El porcentaje de apple rate ha cambiado al " + n + "%");
+            }
+
+            @Command(
+                    names = "revealtime",
+                    permission = "healthdark.host"
+            )
+            public void revealTime(@Sender Player sender, @Named("minutes") int min) {
+                int sec = min * 60;
+
+                if(sec > gameManager.getTimeForMeetup() + 300) {
+                    sender.sendMessage(ChatUtils.formatComponentPrefix("El tiempo de revelación no puede ser mayor a 5 minutos después del meetup"));
+                    return;
+                }
+
+                if(sec < 300) {
+                    sender.sendMessage(ChatUtils.formatComponentPrefix("El tiempo de revelación no puede ser menos a 5 minutos"));
+                    return;
+                }
+
+                if(gameManager.getCurrentTime() > sec) {
+                    sender.sendMessage(ChatUtils.formatComponentPrefix("Ese minuto de la partida ya ha pasado!"));
+                    return;
+                }
+
+
+                sender.sendMessage(ChatUtils.formatComponentPrefix("Has cambiado el minuto de revelación a " + min));
+                gameManager.setRevealTime(sec);
+
+                if(!modeManager.isActiveMode("unknown_team")) {
+                    sender.sendMessage(ChatUtils.formatComponentNotification("No se encuentra activo el modo &6Unknown Teams"));
+                }
+            }
         }
 
-        @Command(
-                names = "worldborder",
-                permission = "healthdark.host"
-        )
-        public void worldBorderMoveCommand(@Sender Player target, @Named("size") int size, @Named("time") int seconds) {
-            Bukkit.getPluginManager().callEvent(new WorldBorderMoveEvent(size, seconds, false));
-        }
-
-        @Command(
-                names = "startworldborder",
-                permission = "healthdark.host"
-        )
-        public void startWorldBorderCommand(@Sender Player sender, @Named("size") int size) {
-            Bukkit.getPluginManager().callEvent(new WorldBorderSetEvent(size));
-
-            sender.sendMessage(ChatUtils.formatComponentPrefix("Has establecido el borde en " + size +"x" + size));
-        }
-
-        @Command(
-                names = "applerate",
-                permission = "healthdark.host"
-        )
-        public void appleRateCommand(@Sender Player target, @Named("percentage") int n) {
-            if(n < 2 || n > 99) {
-                target.sendMessage(ChatUtils.PREFIX + "Ese porcentaje no es válido.");
-            }
-
-            gameManager.setAppleRate(n);
-
-            target.sendMessage(ChatUtils.PREFIX + "El porcentaje de apple rate ha cambiado al " + n + "%");
-        }
-
-        @Command(
-                names = "revealtime",
-                permission = "healthdark.host"
-        )
-        public void revealTime(@Sender Player sender, @Named("minutes") int min) {
-            int sec = min * 60;
-
-            if(sec > gameManager.getTimeForMeetup() + 300) {
-                sender.sendMessage(ChatUtils.formatComponentPrefix("El tiempo de revelación no puede ser mayor a 5 minutos después del meetup"));
-                return;
-            }
-
-            if(sec < 300) {
-                sender.sendMessage(ChatUtils.formatComponentPrefix("El tiempo de revelación no puede ser menos a 5 minutos"));
-                return;
-            }
-
-            if(gameManager.getCurrentTime() > sec) {
-                sender.sendMessage(ChatUtils.formatComponentPrefix("Ese minuto de la partida ya ha pasado!"));
-                return;
-            }
-
-
-            sender.sendMessage(ChatUtils.formatComponentPrefix("Has cambiado el minuto de revelación a " + min));
-            gameManager.setRevealTime(sec);
-
-            if(!modeManager.isActiveMode("unknown_team")) {
-                sender.sendMessage(ChatUtils.formatComponentNotification("No se encuentra activo el modo &6Unknown Teams"));
-            }
-        }
     }
 
     @Command(names = "poll", permission = "healthdark.host")
@@ -451,6 +451,18 @@ public class StaffGameCommands implements CommandClass  {
 
             target.sendMessage(ChatUtils.PREFIX + "Se ha creado la encuesta.");
 
+        }
+
+        @Command(names = "end")
+        public void endCommand(@Sender Player sender) {
+            if(pollManager.getActivePoll() == null) {
+                sender.sendMessage(ChatUtils.PREFIX + "No hay una encuesta en curso.");
+                return;
+            }
+
+            pollManager.closeActivePoll();
+
+            Bukkit.broadcast(ChatUtils.formatComponentPrefix(sender.getName() + " ha finalizado la poll."));
         }
     }
 

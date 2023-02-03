@@ -43,7 +43,6 @@ public class GameManager {
     private boolean gameStart;
     private boolean runMode;
     private boolean belowNameHealth;
-
     private boolean skyHighMode;
     private boolean scenarioLimit;
     private boolean scatteredPlayers;
