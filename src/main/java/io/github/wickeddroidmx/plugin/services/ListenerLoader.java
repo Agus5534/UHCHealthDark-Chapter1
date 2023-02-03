@@ -33,7 +33,7 @@ public class ListenerLoader implements Loader {
     private AsyncChatListener asyncChatListener;
     private PlayerInteractAtEntityListener playerInteractAtEntityListener;
     private PlayerAssignRankListener assignRankListener;
-
+    private PlayerRankProfileRequestListener playerRankProfileRequestListener;
     private PlayerPreLoginListener playerPreLoginListener;
 
     // Block Events
@@ -118,7 +118,8 @@ public class ListenerLoader implements Loader {
                 statusListeners,
                 lootGenerateListener,
                 prefixChangeReturnListener,
-                playerDeathListener
+                assignRankListener,
+                playerRankProfileRequestListener
         );
     }
 

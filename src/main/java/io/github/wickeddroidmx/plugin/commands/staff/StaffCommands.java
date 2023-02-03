@@ -41,10 +41,14 @@ public class StaffCommands implements CommandClass {
     private Main plugin;
 
     @Command(
-            names = "worldtp",
-            permission = "healthdark.host"
+            names = "worldtp"
     )
     public void teleportCommand(@Sender Player sender, World world) {
+        if(!sender.hasPermission("healthdark.host")) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("&4Missing Permissions"));
+            return;
+        }
+
         if(world == null) {
             sender.sendMessage(ChatUtils.PREFIX + "No existe ese mundo");
             return;
@@ -60,9 +64,14 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = "setmaxslots", permission = "healthdark.host"
+            names = "setmaxslots"
     )
     public void setMaxSlotsCommand(@Sender Player sender, @Named("slots") int slots) {
+        if(!sender.hasPermission("healthdark.host")) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("&4Missing Permissions"));
+            return;
+        }
+
         int s = Bukkit.getMaxPlayers();
         if(slots < s || slots > 120) {
             sender.sendMessage(ChatUtils.formatComponentPrefix("No se pueden poner esa cantidad de slots."));
@@ -77,9 +86,14 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = { "ls", "laterscatter", "revive" }, permission = "healthdark.host"
+            names = { "ls", "laterscatter", "revive" }
     )
     public void laterScatterCommand(@Sender Player sender, @Named("player") Player target, @OptArg @Named("team") UhcTeam uhcTeam) {
+        if(!sender.hasPermission("healthdark.host")) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("&4Missing Permissions"));
+            return;
+        }
+
         var uhcPlayer = playerManager.getPlayer(target.getUniqueId());
         var teamPlayer = teamManager.getPlayerTeam(target.getUniqueId());
         var random = new Random();
@@ -133,9 +147,14 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = {"inv","inventory","invsee"}, permission = "healthdark.host"
+            names = {"inv","inventory","invsee"}
     )
     public void inventoryCommand(@Sender Player sender, Player target) {
+        if(!sender.hasPermission("healthdark.host")) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("&4Missing Permissions"));
+            return;
+        }
+
         var senderUhcPlayer = playerManager.getPlayer(sender.getUniqueId());
 
         if(senderUhcPlayer != null) {
@@ -163,10 +182,13 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = {"invti", "invseeti", "tisee"},
-            permission = "healthdark.staff.admin"
+            names = {"invti", "invseeti", "tisee"}
     )
     public void teamInventorySeeCommand(@Sender Player sender, @Named("team") UhcTeam uhcTeam) {
+        if(!sender.hasPermission("healthdark.staff.admin")) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("&4Missing Permissions"));
+            return;
+        }
         var senderUhcPlayer = playerManager.getPlayer(sender.getUniqueId());
 
         if(senderUhcPlayer != null) {
@@ -192,10 +214,13 @@ public class StaffCommands implements CommandClass {
     }
 
     @Command(
-            names = {"spect", "spectate", "moderate", "mod"},
-            permission = "healthdark.staff.mod"
+            names = {"spect", "spectate", "moderate", "mod"}
     )
     public void spectateCommand(@Sender Player sender) {
+        if(!sender.hasPermission("healthdark.staff.mod")) {
+            sender.sendMessage(ChatUtils.formatComponentPrefix("&4Missing Permissions"));
+            return;
+        }
         var player = playerManager.getPlayer(sender.getUniqueId());
 
         if(player == null) {

@@ -2,12 +2,14 @@ package io.github.wickeddroidmx.plugin.scoreboard;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.listeners.players.PlayerRankProfileRequestListener;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -24,10 +26,14 @@ public class LobbyScoreboard extends UHCScoreboard {
 
         var host = gameManager.getHost();
         var uhcType = modeManager.getModesActive(ModalityType.UHC).stream().findFirst();
+        var ranks = PlayerRankProfileRequestListener.playerRanksHashMap.get(player);
+        var online = Bukkit.getOnlinePlayers().stream().filter(p -> p.getGameMode() != GameMode.SPECTATOR).toList().size();
 
         this.updateLines(
                          ChatUtils.format("&7&m--------------------"),
-                         ChatUtils.format("&7Players: &f" + Bukkit.getOnlinePlayers().stream().filter(p -> p.getGameMode() != GameMode.SPECTATOR).toList().size()),
+                         ranks != null ? String.format(ChatUtils.format("&7Prefixes: %s%s"), ranks.getStaffRank().getPrefix(), ranks.getDonatorRank().getPrefix()) : null,
+                         ranks != null ? " " : null,
+                         ChatUtils.format("&7Players: &f" + online),
                          ChatUtils.format("&7Host: &f" + (host != null ? host.getName() : "No hay host")),
                          ChatUtils.format("&7Uhc Type: &f" + (uhcType.isPresent() ? uhcType.get().getName() : "&cUhc Vanilla")),
                          " ",

@@ -214,7 +214,7 @@ public class StaffGameCommands implements CommandClass  {
     }
 
     // SETTINGS SUBCOMMAND
-    @Command(names = "settings")
+    @Command(names = "settings", permission = "healthdark.host")
     public class SettingsSubCommand implements CommandClass {
         @Command(
                 names = "tisize",

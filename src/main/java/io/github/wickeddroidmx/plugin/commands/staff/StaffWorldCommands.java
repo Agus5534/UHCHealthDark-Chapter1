@@ -25,8 +25,7 @@ import org.bukkit.event.world.WorldLoadEvent;
 import javax.inject.Inject;
 
 @Command(
-        names="staffworld",
-        permission = "healthdark.host"
+        names="staffworld"
 )
 @SubCommandClasses(value = {StaffWorldCommands.BannedBiomesSubCommand.class, StaffWorldCommands.BorderSubCommand.class})
 public class StaffWorldCommands implements CommandClass {
@@ -39,7 +38,7 @@ public class StaffWorldCommands implements CommandClass {
     @Inject
     private TaskCreator taskCreator;
 
-    @Command(names = "bannedbiomes")
+    @Command(names = "bannedbiomes", permission = "healthdark.host")
     public class BannedBiomesSubCommand implements CommandClass {
 
         @Command(names = "list")
@@ -137,7 +136,7 @@ public class StaffWorldCommands implements CommandClass {
         }
     }
 
-    @Command(names = "border")
+    @Command(names = "border", permission = "healthdark.host")
     public class BorderSubCommand implements CommandClass {
         @Command(names = "delay")
         public void setDelay(@Sender Player sender, @Named("delaySeconds") int delay) {
@@ -175,7 +174,7 @@ public class StaffWorldCommands implements CommandClass {
         }
     }
 
-    @Command(names = "recreate")
+    @Command(names = "recreate", permission = "healthdark.host")
     public void recreateCommand(@Sender Player sender, @Named("seed") String seed) {
 
         var uhcWorld = plugin.getWorldGenerator().getUhcWorld();
@@ -195,7 +194,8 @@ public class StaffWorldCommands implements CommandClass {
     }
 
     @Command(
-            names = "search"
+            names = "search",
+            permission = "healthdark.host"
     )
     public void searchCommand(@Sender Player sender, @Named("trials") int trials, @Named("searchRadius") int searchRadius) {
         if(trials < 5 || searchRadius < 32 || trials > 150 || searchRadius > 750) {

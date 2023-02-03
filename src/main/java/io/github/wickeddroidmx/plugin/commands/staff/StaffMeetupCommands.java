@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 @InjectAll
-@Command(names = "staffmeetup", permission = "healthdark.host")
+@Command(names = "staffmeetup")
 public class StaffMeetupCommands implements CommandClass {
 
     private PlayerManager playerManager;
@@ -54,7 +54,8 @@ public class StaffMeetupCommands implements CommandClass {
     }
 
     @Command(
-            names = "givekit"
+            names = "givekit",
+            permission = "healthdark.host"
     )
     public void giveKitCommand(@Sender Player sender) {
         if(gameKit.isEmpty()) {
@@ -75,7 +76,8 @@ public class StaffMeetupCommands implements CommandClass {
     }
 
     @Command(
-            names = "copykit"
+            names = "copykit",
+            permission = "healthdark.host"
     )
     public void copyKitCommand(@Sender Player sender) {
         if(gameManager.getHost() != sender) {
@@ -98,7 +100,8 @@ public class StaffMeetupCommands implements CommandClass {
     }
 
     @Command(
-            names = "givekitplayer"
+            names = "givekitplayer",
+            permission = "healthdark.host"
     )
     public void giveKitPlayer(@Sender Player sender, Player target) {
         if(gameKit.isEmpty()) {
