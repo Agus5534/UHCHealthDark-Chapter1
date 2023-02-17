@@ -33,7 +33,7 @@ public class GameManager {
 
     private long seconds;
     private GameState gameState;
-    private int uhcId;
+    private String uhcId;
     private int maxPlayerSize;
     private int cape;
     private int appleRate;
@@ -49,7 +49,7 @@ public class GameManager {
 
     public GameManager() {
         this.host = null;
-        this.uhcId = 253;
+        this.uhcId = "253";
 
         this.gameState = GameState.WAITING;
         this.scatteredPlayers = false;
@@ -177,7 +177,7 @@ public class GameManager {
         this.timeForPvP = timeForPvP;
     }
 
-    public void setUhcId(int uhcId) {
+    public void setUhcId(String uhcId) {
         this.uhcId = uhcId;
     }
 
@@ -205,7 +205,7 @@ public class GameManager {
         return host;
     }
 
-    public int getUhcId() {
+    public String getUhcId() {
         return uhcId;
     }
 

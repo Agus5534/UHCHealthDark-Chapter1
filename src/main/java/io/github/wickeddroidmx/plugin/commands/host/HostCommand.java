@@ -88,11 +88,113 @@ public class HostCommand implements CommandClass {
     @javax.inject.Named("scoreboard-cache")
     private MapCache<UUID, UHCScoreboard> cache;
 
+    private String removeColors(String s) {
+        return s.replaceAll("&[0-9a-z]", "").replaceAll("§[0-9a-z]", "");
+    }
+
+    private String formatTime(int totalSecs) {
+        int hours = totalSecs / 3600;
+        int minutes = (totalSecs % 3600) / 60;
+
+        if (totalSecs >= 60 && totalSecs < 3600)
+            return minutes + " minutos";
+        else if (totalSecs >= 3600)
+            return hours + " horas";
+
+        return totalSecs + " segundos";
+    }
+
+    private String formatAsTimerBig(int seconds) {
+
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        seconds = seconds % 60;
+
+        String s = "";
+
+        if (hours >= 1) {
+            s += hours == 1 ? String.format("%d hora", hours) : String.format("%d horas", hours);
+        }
+
+        if (minutes >= 1) {
+            s += minutes == 1 ? String.format(" %d minuto", minutes) : String.format(" %d minutos", minutes);
+        }
+
+        if (seconds >= 1) {
+            s += minutes == 1 ? String.format(" %d segundo", seconds) : String.format(" %d segundos", seconds);
+        }
+
+        return s;
+    }
+
+    @Command(names = "post", permission = "healthdark.host")
+    public void postCommand(@Sender Player sender, @Named("time") TimeFormatter timeFormatter, @Named("id") @OptArg String id) {
+        if(id != null) {
+            gameManager.setUhcId(id);
+        }
+
+        var timeToStart = (System.currentTimeMillis() + ((long)timeFormatter.convertTo(TimeFormatter.Format.SECONDS) * 1000L)) / 1000L;
+
+        try {
+            var hook = discordManager.getDiscordHook(HookType.POST_UHC);
+
+            hook.setContent(String.format("> **UHCHealthDark | #%d**\\n\\n", gameManager.getUhcId(), Bukkit.getVersion()) +
+                    String.format("> **Host:** %s\\n", sender.getName()) +
+                    String.format("> **Inicia en:** <t:%s:R>\\n\\n", new Date(timeToStart).getTime()) +
+                    String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.getModesActive(ModalityType.TEAM).size() == 0
+                            ? "Random"
+                            : modeManager.getModesActive(ModalityType.TEAM)
+                            .stream()
+                            .map(modality -> removeColors(modality.getName()))
+                            .collect(Collectors.joining(", "))
+                    ) +
+                    String.format("> **UHC:** %s\\n", removeColors(modeManager.getModesActive(ModalityType.UHC).size() == 0
+                            ? uhcVanillaMode.getName()
+                            : modeManager.getModesActive(ModalityType.UHC)
+                            .stream()
+                            .map(modality -> removeColors(modality.getName()))
+                            .collect(Collectors.joining(", ")))) +
+                    String.format("> **Scenarios:** %s\\n", modeManager.getModesActive(ModalityType.SCENARIO).size() == 0
+                            ? "No hay scenarios activos."
+                            : modeManager.getModesActive(ModalityType.SCENARIO)
+                            .stream()
+                            .map(modality -> removeColors(modality.getName()))
+                            .collect(Collectors.joining(", "))
+                    ) +
+                    String.format("> **Modos:** %s\\n", modeManager.getModesActive(ModalityType.MODE).size() == 0
+                            ? "No hay modos activos."
+                            : modeManager.getModesActive(ModalityType.MODE)
+                            .stream()
+                            .map(modality -> removeColors(modality.getName()))
+                            .collect(Collectors.joining(", "))
+                    ) +
+                    String.format("> **Settings:** %s\\n\\n", modeManager.getModesActive(ModalityType.SETTING).size() == 0
+                            ? "No hay settings activas."
+                            : modeManager.getModesActive(ModalityType.SETTING)
+                            .stream()
+                            .map(modality -> removeColors(modality.getName()))
+                            .collect(Collectors.joining(", "))
+                    ) +
+                    String.format("> **WorldBorder Inicial:** %s\\n", gameManager.getWorldBorder()) +
+                    String.format("> **WorldBorder Delay:** %s\\n", formatAsTimerBig(gameManager.getBorderDelay())) +
+                    String.format("> **WorldBorder Final 1:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderOne(), formatAsTimerBig(gameManager.getTimeWorldBorderOne())) +
+                    String.format("> **WorldBorder Final 2:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderTwo(), formatAsTimerBig(gameManager.getTimeWorldBorderTwo())) +
+                    String.format("> **WorldBorder Final 3:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderThree(), formatAsTimerBig(gameManager.getTimeWorldBorderThree())) +
+                    String.format("> **Cobweb limit:** %s\\n\\n", modeManager.isActiveMode("cobweb_less") ? "0" : gameManager.getCobwebLimit()) +
+                    String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup())) +
+                    String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
+                    "> **IP:** ||uhchealthdarks4.minecraft.best||\\n\\n" +
+                    "<@&892533124083384361> <@&896190893558751282>");
+
+            hook.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Command(names = "game")
     @SubCommandClasses(value = {HostGameSubCommand.SettingsSubCommand.class, HostGameSubCommand.PollSubCommand.class})
     public class HostGameSubCommand implements CommandClass {
-
-
         @Command(
                 names = "start",
                 permission = "healthdark.host"
@@ -179,112 +281,9 @@ public class HostCommand implements CommandClass {
             Bukkit.getScheduler().runTaskLater(plugin, ()-> plugin.clearArena(), (long)timeFormatter.convertTo(TimeFormatter.Format.TICKS));
         }
 
-        @Command(
-                names = "post",
-                permission = "healthdark.host"
-        )
-        public void postCommand(@Sender Player sender, @Named("time") TimeFormatter timeFormatter) {
-            var timeToStart = (System.currentTimeMillis() + ((long)timeFormatter.convertTo(TimeFormatter.Format.SECONDS) * 1000L)) / 1000L;
-
-            try {
-                var hook = discordManager.getDiscordHook(HookType.POST_UHC);
-
-                hook.setContent(String.format("> **UHCHealthDark | #%d**\\n\\n", gameManager.getUhcId(), Bukkit.getVersion()) +
-                        String.format("> **Host:** %s\\n", sender.getName()) +
-                        String.format("> **Inicia en:** <t:%s:R>\\n\\n", new Date(timeToStart).getTime()) +
-                        String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.getModesActive(ModalityType.TEAM).size() == 0
-                                ? "Random"
-                                : modeManager.getModesActive(ModalityType.TEAM)
-                                .stream()
-                                .map(modality -> removeColors(modality.getName()))
-                                .collect(Collectors.joining(", "))
-                        ) +
-                        String.format("> **UHC:** %s\\n", removeColors(modeManager.getModesActive(ModalityType.UHC).size() == 0
-                                ? uhcVanillaMode.getName()
-                                : modeManager.getModesActive(ModalityType.UHC)
-                                .stream()
-                                .map(modality -> removeColors(modality.getName()))
-                                .collect(Collectors.joining(", ")))) +
-                        String.format("> **Scenarios:** %s\\n", modeManager.getModesActive(ModalityType.SCENARIO).size() == 0
-                                ? "No hay scenarios activos."
-                                : modeManager.getModesActive(ModalityType.SCENARIO)
-                                .stream()
-                                .map(modality -> removeColors(modality.getName()))
-                                .collect(Collectors.joining(", "))
-                        ) +
-                        String.format("> **Modos:** %s\\n", modeManager.getModesActive(ModalityType.MODE).size() == 0
-                                ? "No hay modos activos."
-                                : modeManager.getModesActive(ModalityType.MODE)
-                                .stream()
-                                .map(modality -> removeColors(modality.getName()))
-                                .collect(Collectors.joining(", "))
-                        ) +
-                        String.format("> **Settings:** %s\\n\\n", modeManager.getModesActive(ModalityType.SETTING).size() == 0
-                                ? "No hay settings activas."
-                                : modeManager.getModesActive(ModalityType.SETTING)
-                                .stream()
-                                .map(modality -> removeColors(modality.getName()))
-                                .collect(Collectors.joining(", "))
-                        ) +
-                        String.format("> **WorldBorder Inicial:** %s\\n", gameManager.getWorldBorder()) +
-                        String.format("> **WorldBorder Delay:** %s\\n", formatAsTimerBig(gameManager.getBorderDelay())) +
-                        String.format("> **WorldBorder Final 1:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderOne(), formatAsTimerBig(gameManager.getTimeWorldBorderOne())) +
-                        String.format("> **WorldBorder Final 2:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderTwo(), formatAsTimerBig(gameManager.getTimeWorldBorderTwo())) +
-                        String.format("> **WorldBorder Final 3:** %1$sx%1$s | %2$s\\n", gameManager.getSizeWorldBorderThree(), formatAsTimerBig(gameManager.getTimeWorldBorderThree())) +
-                        String.format("> **Cobweb limit:** %s\\n\\n", modeManager.isActiveMode("cobweb_less") ? "0" : gameManager.getCobwebLimit()) +
-                        String.format("> **Tiempo total:** %s\\n", formatTime(gameManager.getTimeForMeetup())) +
-                        String.format("> **PvP:** %s\\n\\n", formatTime(gameManager.getTimeForPvP())) +
-                        "> **IP:** ||uhchealthdarks4.minecraft.best||\\n\\n" +
-                        "<@&892533124083384361> <@&896190893558751282>");
-
-                hook.execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         @Command(names = "notify", permission = "healthdark.host")
         public void notifyCommand(@Named("message") @Text String message) {
             Bukkit.broadcast(ChatUtils.formatC(ChatUtils.NOTIFICATION + message));
-        }
-
-        private String formatTime(int totalSecs) {
-            int hours = totalSecs / 3600;
-            int minutes = (totalSecs % 3600) / 60;
-
-            if (totalSecs >= 60 && totalSecs < 3600)
-                return minutes + " minutos";
-            else if (totalSecs >= 3600)
-                return hours + " horas";
-
-            return totalSecs + " segundos";
-        }
-
-        private String formatAsTimerBig(int seconds) {
-
-            int hours = seconds / 3600;
-            int minutes = (seconds % 3600) / 60;
-            seconds = seconds % 60;
-
-            String s = "";
-
-            if (hours >= 1) {
-                s += hours == 1 ? String.format("%d hora", hours) : String.format("%d horas", hours);
-            }
-
-            if (minutes >= 1) {
-                s += minutes == 1 ? String.format(" %d minuto", minutes) : String.format(" %d minutos", minutes);
-            }
-
-            if (seconds >= 1) {
-                s += minutes == 1 ? String.format(" %d segundo", seconds) : String.format(" %d segundos", seconds);
-            }
-
-            return s;
-        }
-
-        private String removeColors(String s) {
-            return s.replaceAll("&[0-9a-z]", "").replaceAll("§[0-9a-z]", "");
         }
 
         // SETTINGS SUBCOMMAND
@@ -375,17 +374,10 @@ public class HostCommand implements CommandClass {
                         names = "id",
                         permission = "healthdark.host"
                 )
-                public void uhcIDCommand(@Sender Player sender, @Named("id") int uhcId) {
-                    if (uhcId < 0) {
-                        sender.sendMessage(ChatUtils.PREFIX + "No es válido ese número.");
-                        return;
-                    }
-
+                public void uhcIDCommand(@Sender Player sender, @Named("id") String uhcId) {
                     gameManager.setUhcId(uhcId);
 
                     sender.sendMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha cambiado al UHC &6#" + uhcId));
-
-                    new UhcIdLoader().getID();
                 }
 
                 @Command(
