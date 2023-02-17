@@ -1,9 +1,10 @@
 package io.github.wickeddroidmx.plugin.services;
 
+import io.github.wickeddroidmx.plugin.commands.StaffCommands;
+import io.github.wickeddroidmx.plugin.commands.host.HostCommand;
 import io.github.wickeddroidmx.plugin.commands.MainCommand;
 import io.github.wickeddroidmx.plugin.commands.PlayerCommands;
 import io.github.wickeddroidmx.plugin.commands.PrefixesCommands;
-import io.github.wickeddroidmx.plugin.commands.staff.*;
 import io.github.wickeddroidmx.plugin.commands.teams.TeamCommands;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.module.commands.ExtraBukkitModule;
@@ -18,22 +19,15 @@ import me.yushust.inject.InjectAll;
 
 @InjectAll
 public class CommandLoader implements Loader {
-
-    // Main Commands
-    private MainCommand mainCommand;
-    private PlayerCommands playerCommands;
-    private TeamCommands teamCommands;
-
-    // Staff Commands
+    // Commands
+    private HostCommand hostCommand;
     private StaffCommands staffCommands;
-    private StaffGameCommands staffGameCommands;
-    private StaffTeamCommands staffTeamCommands;
-    private StaffModeCommands staffModeCommands;
-    private StaffMeetupCommands staffMeetupCommands;
-    private StaffWorldCommands staffWorldCommands;
     private TeamManager teamManager;
     private ExperimentManager experimentManager;
     private PrefixesCommands prefixesCommands;
+    private MainCommand mainCommand;
+    private PlayerCommands playerCommands;
+    private TeamCommands teamCommands;
 
     @Override
     public void load() {
@@ -42,11 +36,7 @@ public class CommandLoader implements Loader {
                 staffCommands,
                 teamCommands,
                 playerCommands,
-                staffGameCommands,
-                staffTeamCommands,
-                staffModeCommands,
-                staffMeetupCommands,
-                staffWorldCommands,
+                hostCommand,
                 prefixesCommands
         );
     }

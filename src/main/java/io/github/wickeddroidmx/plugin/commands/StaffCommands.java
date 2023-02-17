@@ -1,4 +1,4 @@
-package io.github.wickeddroidmx.plugin.commands.staff;
+package io.github.wickeddroidmx.plugin.commands;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.player.PlayerLaterScatterEvent;
