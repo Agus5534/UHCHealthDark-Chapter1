@@ -5,7 +5,7 @@ import io.github.wickeddroidmx.plugin.modalities.scenarios.*;
 import io.github.wickeddroidmx.plugin.modalities.settings.*;
 import io.github.wickeddroidmx.plugin.modalities.teams.*;
 import io.github.wickeddroidmx.plugin.modalities.uhc.UhcRunMode;
-import io.github.wickeddroidmx.plugin.modalities.uhc.UhcSkyHighMode;
+import io.github.wickeddroidmx.plugin.modalities.modes.SkyHighMode;
 import me.yushust.inject.InjectAll;
 
 import javax.inject.Singleton;
@@ -60,6 +60,7 @@ public class ModeManager {
     private TradeParanoiaMode tradeParanoiaMode;
     private BestPVEMode bestPVEMode;
     private InventoryShuffleMode inventoryShuffleMode;
+    private SkyHighMode skyHighMode;
 
     // Team
     private LoveAtFirstSightMode loveAtFirstSightMode;
@@ -98,7 +99,6 @@ public class ModeManager {
     //UHC
     private UhcRunMode uhcRunMode;
 
-    private UhcSkyHighMode uhcSkyHighMode;
 
     //SETTING
     private CobbleOnlySetting cobbleOnlySetting;
@@ -153,7 +153,7 @@ public class ModeManager {
                 secondLifeMode,
                 molesMode,
                 captainsMode,
-                uhcSkyHighMode,
+                skyHighMode,
                 anvilDiscountsMode,
                 noBurnSetting,
                 encyclopediaMode,
