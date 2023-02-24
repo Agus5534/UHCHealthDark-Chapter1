@@ -16,7 +16,6 @@ java {
         languageVersion = JavaLanguageVersion.of(16)
     }
 }
-
 repositories {
     mavenCentral()
     mavenLocal()
