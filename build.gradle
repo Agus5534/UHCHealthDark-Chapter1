@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'io.github.wickeddroidmx'
-version '1.0'
+version '1.0.0'
 
 compileJava {
     options.encoding = "UTF-8"
