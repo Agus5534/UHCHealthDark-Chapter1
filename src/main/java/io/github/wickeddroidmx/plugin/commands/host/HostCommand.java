@@ -128,17 +128,13 @@ public class HostCommand implements CommandClass {
     }
 
     @Command(names = "post", permission = "healthdark.host")
-    public void postCommand(@Sender Player sender, @Named("time") TimeFormatter timeFormatter, @Named("id") @OptArg String id) {
-        if(id != null) {
-            gameManager.setUhcId(id);
-        }
-
+    public void postCommand(@Sender Player sender, @Named("time") TimeFormatter timeFormatter) {
         var timeToStart = (System.currentTimeMillis() + ((long)timeFormatter.convertTo(TimeFormatter.Format.SECONDS) * 1000L)) / 1000L;
 
         try {
             var hook = discordManager.getDiscordHook(HookType.POST_UHC);
 
-            hook.setContent(String.format("> **UHCHealthDark | #%d**\\n\\n", gameManager.getUhcId(), Bukkit.getVersion()) +
+            hook.setContent(String.format("> **UHCHealthDark | #%s**\\n\\n", gameManager.getUhcId(), Bukkit.getVersion()) +
                     String.format("> **Host:** %s\\n", sender.getName()) +
                     String.format("> **Inicia en:** <t:%s:R>\\n\\n", new Date(timeToStart).getTime()) +
                     String.format("> **Teams:** %s | %s\\n", teamManager.getFormatTeamSize(), modeManager.getModesActive(ModalityType.TEAM).size() == 0
@@ -829,6 +825,7 @@ public class HostCommand implements CommandClass {
                 target.teleport(loc);
 
                 target.getActivePotionEffects().forEach(potionEffect -> target.removePotionEffect(potionEffect.getType()));
+                target.setInvulnerable(false);
                 target.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 400, 10, false, false, false));
 
                 Bukkit.broadcastMessage(ChatUtils.PREFIX + ChatUtils.format("Se ha revivido al jugador &6" + target.getName()));
