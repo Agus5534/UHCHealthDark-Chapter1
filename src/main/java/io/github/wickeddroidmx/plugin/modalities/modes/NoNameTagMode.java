@@ -52,8 +52,8 @@ public class NoNameTagMode extends Modality {
     }
 
     @Override
-    public void desactiveMode() {
-        super.desactiveMode();
+    public void deactivateMode() {
+        super.deactivateMode();
         teamManager.getUhcTeams().values().forEach(team -> team.removeFlag(TeamFlags.HIDE_NICKNAMES));
     }
 }

@@ -16,13 +16,9 @@ import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerPortalListener implements Listener {
-
-    @Inject
-    private GameManager gameManager;
     @Inject
     private Main plugin;
     private HashMap<Location, Double> portalLocationMultiplier;
-
 
     public PlayerPortalListener() {
         portalLocationMultiplier = new HashMap<>();
@@ -59,7 +55,7 @@ public class PlayerPortalListener implements Listener {
                 Location secondLoc = null;
 
                 for(var locs : portalLocationMultiplier.keySet()) {
-                    if(loc.distance(secondLoc) < 10) {
+                    if(loc.distance(locs) < 10) {
                         secondLoc = locs;
                     }
                 }
@@ -78,13 +74,6 @@ public class PlayerPortalListener implements Listener {
         if(e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
             if(e.getFrom().getWorld().getEnvironment() == World.Environment.THE_END) {
                 var world = plugin.getWorldGenerator().getUhcWorld().getWorld();
-
-                if(player.getBedSpawnLocation() != null) {
-                    if(player.getBedSpawnLocation().getWorld().getName().equals(world.getName())) {
-                        e.setTo(player.getBedSpawnLocation());
-                        return;
-                    }
-                }
 
                 e.setTo(world.getSpawnLocation());
             }
@@ -125,11 +114,6 @@ public class PlayerPortalListener implements Listener {
     }
 
     private double multiplierRest(Location location) {
-        var x = location.getX();
-        var z = location.getZ();
-
-        var size = plugin.getWorldGenerator().getUhcWorld().getWorld().getWorldBorder().getSize() / 2;
-
         if(isOutsideBorder(location)) {
             return 0.30D;
         }

@@ -9,6 +9,25 @@ public class PrefixChangeReturnListener implements Listener {
 
     @EventHandler
     public void onReturn(PrefixChangeReturnEvent event) {
-        event.getPlayer().sendMessage(ChatUtils.formatComponentPrefix(event.getMessage()));
+        int code = event.getReturnCode();
+
+        event.getPlayer().sendMessage(ChatUtils.formatComponentPrefix("&6Returned Code " + code + ": " + getReturnCode(code)));
+    }
+
+    private String getReturnCode(int code) {
+        switch (code) {
+            case 0 -> {
+                return "&aSe ha cambiado el prefix del usuario exitosamente.";
+            }
+            case 1 -> {
+                return "&4No se ha encontrado el usuario correspondiente a la petición.";
+            }
+            case 2 -> {
+                return "&4El usuario no está habilitado para colocarse este prefix.";
+            }
+            default -> {
+                return "&4Ha ocurrido un error inesperado.";
+            }
+        }
     }
 }

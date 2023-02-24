@@ -33,7 +33,7 @@ public class GameManager {
 
     private long seconds;
     private GameState gameState;
-    private int uhcId;
+    private String uhcId;
     private int maxPlayerSize;
     private int cape;
     private int appleRate;
@@ -42,21 +42,19 @@ public class GameManager {
     private boolean arenaEnabled;
     private boolean gameStart;
     private boolean runMode;
-
-    private boolean skyHighMode;
+    private boolean belowNameHealth;
     private boolean scenarioLimit;
     private boolean scatteredPlayers;
 
     public GameManager() {
         this.host = null;
-        this.uhcId = 253;
+        this.uhcId = "253";
 
         this.gameState = GameState.WAITING;
         this.scatteredPlayers = false;
 
         this.gameStart = false;
         this.runMode = false;
-        this.skyHighMode = false;
         this.scenarioLimit = true;
         this.spectators = true;
         this.arenaEnabled = true;
@@ -112,10 +110,6 @@ public class GameManager {
 
     public void setRunMode(boolean runMode) {
         this.runMode = runMode;
-    }
-
-    public void setSkyHighMode(boolean skyHighMode) {
-        this.skyHighMode = skyHighMode;
     }
 
     public void setCurrentTime(int currentTime) {
@@ -177,7 +171,7 @@ public class GameManager {
         this.timeForPvP = timeForPvP;
     }
 
-    public void setUhcId(int uhcId) {
+    public void setUhcId(String uhcId) {
         this.uhcId = uhcId;
     }
 
@@ -205,7 +199,7 @@ public class GameManager {
         return host;
     }
 
-    public int getUhcId() {
+    public String getUhcId() {
         return uhcId;
     }
 
@@ -261,10 +255,6 @@ public class GameManager {
 
     public boolean isRunMode() {
         return runMode;
-    }
-
-    public boolean isSkyHighMode() {
-        return skyHighMode;
     }
 
     public boolean isPvpEnabled() {
@@ -341,5 +331,13 @@ public class GameManager {
 
     public void setMaxPlayerSize(int maxPlayerSize) {
         this.maxPlayerSize = maxPlayerSize;
+    }
+
+    public boolean isBelowNameHealth() {
+        return belowNameHealth;
+    }
+
+    public void setBelowNameHealth(boolean belowNameHealth) {
+        this.belowNameHealth = belowNameHealth;
     }
 }

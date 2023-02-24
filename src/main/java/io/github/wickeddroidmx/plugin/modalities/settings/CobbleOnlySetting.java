@@ -31,8 +31,8 @@ public class CobbleOnlySetting extends Modality {
     }
 
     @Override
-    public void desactiveMode() {
-        super.desactiveMode();
+    public void deactivateMode() {
+        super.deactivateMode();
 
         playerManager.getUhcPlayers().values().forEach(uP -> uP.setCobbleOnly(false));
     }

@@ -32,7 +32,8 @@ public class ListenerLoader implements Loader {
     private FoodLevelChangeListener foodLevelChangeListener;
     private AsyncChatListener asyncChatListener;
     private PlayerInteractAtEntityListener playerInteractAtEntityListener;
-
+    private PlayerAssignRankListener assignRankListener;
+    private PlayerRankProfileRequestListener playerRankProfileRequestListener;
     private PlayerPreLoginListener playerPreLoginListener;
 
     // Block Events
@@ -116,7 +117,9 @@ public class ListenerLoader implements Loader {
                 teamFlagChangedListener,
                 statusListeners,
                 lootGenerateListener,
-                prefixChangeReturnListener
+                prefixChangeReturnListener,
+                assignRankListener,
+                playerRankProfileRequestListener
         );
     }
 

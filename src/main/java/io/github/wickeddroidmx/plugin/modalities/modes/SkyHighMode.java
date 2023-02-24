@@ -1,4 +1,4 @@
-package io.github.wickeddroidmx.plugin.modalities.uhc;
+package io.github.wickeddroidmx.plugin.modalities.modes;
 
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.events.game.GameTickEvent;
@@ -19,15 +19,13 @@ import javax.inject.Inject;
 import java.lang.instrument.IllegalClassFormatException;
 
 @GameModality(
-        modalityType = ModalityType.UHC,
+        modalityType = ModalityType.MODE,
         key = "skyhigh",
         name = "&bUHC SkyHigh",
         material = Material.ELYTRA,
         lore = {"&7- PvP en capa +150"}
 )
-public class UhcSkyHighMode extends Modality {
-    @Inject
-    private PlayerManager playerManager;
+public class SkyHighMode extends Modality {
     @Inject
     private Main plugin;
     @Inject
@@ -35,7 +33,7 @@ public class UhcSkyHighMode extends Modality {
 
     int taskID;
 
-    public UhcSkyHighMode() throws IllegalClassFormatException {
+    public SkyHighMode() throws IllegalClassFormatException {
         super();
     }
 
@@ -43,23 +41,12 @@ public class UhcSkyHighMode extends Modality {
     @Override
     public void activeMode() {
         super.activeMode();
-        gameManager.setSkyHighMode(true);
-        gameManager.setTimeForPvP(3540);
-        gameManager.setTimeForMeetup(3600);
-        gameManager.setCobwebLimit(1);
-
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> check(), 2L, 2L);
     }
 
     @Override
-    public void desactiveMode() {
-        super.desactiveMode();
-        gameManager.setSkyHighMode(false);
-        gameManager.setTimeForPvP(gameManager.isRunMode() ? 1800 : 3600);
-        gameManager.setTimeForPvP(gameManager.isRunMode() ? 3600 : 7200);
-        gameManager.setCobwebLimit(gameManager.isRunMode() ? 8 : 12);
-        //gameManager.setScenarioLimit(true);
-
+    public void deactivateMode() {
+        super.deactivateMode();
         Bukkit.getScheduler().cancelTask(taskID);
     }
 
@@ -68,23 +55,14 @@ public class UhcSkyHighMode extends Modality {
             return;
         }
 
-        if(!gameManager.isSkyHighMode()) { return; }
+        if(!this.isEnabled()) { return; }
 
         Bukkit.getOnlinePlayers().forEach(p -> {
-            var uhcPlayer = playerManager.getPlayer(p.getUniqueId());
-
-            if(uhcPlayer == null) { return; }
-
-            if(!uhcPlayer.isAlive()) { return; }
-
             double y = p.getLocation().getY();
 
             if(y >= gameManager.getCape()) { return; }
 
-            int amplifier = (int) ((gameManager.getCape() - y) / 50);
-
-            p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 45, amplifier, true,true,true));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 45, amplifier, true,true,true));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 30, 0, true,true,true));
         });
     }
 
@@ -105,6 +83,6 @@ public class UhcSkyHighMode extends Modality {
 
         tid = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()->gameManager.setCape(gameManager.getCape()+1), 120L, 120L);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->Bukkit.getScheduler().cancelTask(tid), 20*capes*6);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ()->Bukkit.getScheduler().cancelTask(tid), 20L *capes*6);
     }
 }

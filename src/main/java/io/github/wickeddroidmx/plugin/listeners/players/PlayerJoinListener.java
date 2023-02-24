@@ -1,5 +1,6 @@
 package io.github.wickeddroidmx.plugin.listeners.players;
 
+import io.github.agus5534.hdbot.minecraft.events.PlayerRankProfileRequestEvent;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.game.GameManager;
@@ -42,14 +43,18 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         int maxSize = gameManager.getMaxPlayerSize();
+        int maxServerSize = Bukkit.getMaxPlayers();
         int online = Bukkit.getOnlinePlayers().size();
 
-        if(online < maxSize || event.getPlayer().isOp()) {
-            event.allow();
+
+        if(online < maxServerSize) {
+            return;
         }
 
-        if(online >= maxSize) {
+        if(online >= maxSize && !event.getPlayer().isOp()) {
             event.disallow(PlayerLoginEvent.Result.KICK_FULL, ChatUtils.formatC("&4El server está lleno!"));
+        } else {
+            event.allow();
         }
     }
     @EventHandler
@@ -115,5 +120,7 @@ public class PlayerJoinListener implements Listener {
 
             cache.add(player.getUniqueId(), new KillTopScoreboard(plugin, player, modeManager, gameManager, playerManager, teamManager));
         }
+
+        Bukkit.getScheduler().runTaskLater(plugin, ()-> Bukkit.getPluginManager().callEvent(new PlayerRankProfileRequestEvent(PlayerRankProfileRequestEvent.TYPE.REQUEST, player, null)), 10L);
     }
 }

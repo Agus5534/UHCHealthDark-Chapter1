@@ -4,6 +4,7 @@ import io.github.wickeddroidmx.plugin.game.GameManager;
 import io.github.wickeddroidmx.plugin.modalities.Modality;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
+import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -58,7 +59,7 @@ public class UhcStaffModesMenu {
 
                         event.getCurrentItem().setItemMeta(itMeta);
                     } else
-                        mode.desactiveMode();
+                        mode.deactivateMode();
 
                         ic.removeEnchantments();
 
@@ -68,13 +69,13 @@ public class UhcStaffModesMenu {
                 }).build())
                 .setNextPageItem(page -> ItemClickable.builder(52)
                         .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName("Siguiente pagina - " + page)
+                                .setName(ChatUtils.format("&6Siguiente página - " + page))
                                 .build()
                         )
                         .build())
                 .setPreviousPageItem(page -> ItemClickable.builder(46)
                         .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName("Anterior pagina - " + page)
+                                .setName(ChatUtils.format("&6Anterior página - " + page))
                                 .build()
                         )
                         .build()
@@ -110,19 +111,19 @@ public class UhcStaffModesMenu {
                     if(!mode.isEnabled())
                         mode.activeMode();
                     else
-                        mode.desactiveMode();
+                        mode.deactivateMode();
 
                     return true;
                 }).build())
                 .setNextPageItem(page -> ItemClickable.builder(53)
                         .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName("Siguiente pagina - " + page)
+                                .setName(ChatUtils.format("&6Siguiente página - " + page))
                                 .build()
                         )
                         .build())
                 .setPreviousPageItem(page -> ItemClickable.builder(45)
                         .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName("Anterior pagina - " + page)
+                                .setName(ChatUtils.format("&6Anterior página - " + page))
                                 .build()
                         )
                         .build()

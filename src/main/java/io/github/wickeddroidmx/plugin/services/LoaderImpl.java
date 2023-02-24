@@ -10,6 +10,7 @@ public class LoaderImpl implements Loader {
 
     private ListenerLoader listenerLoader;
     private CommandLoader commandLoader;
+    private UhcIdLoader uhcIdLoader;
     private ModeManager modeManager;
     private ExperimentManager experimentManager;
 
@@ -17,6 +18,7 @@ public class LoaderImpl implements Loader {
     public void load() {
         listenerLoader.load();
         commandLoader.load();
+        uhcIdLoader.load();
 
         modeManager.registerModes();
         experimentManager.registerExperiments();

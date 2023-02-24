@@ -94,8 +94,6 @@ public class Main extends JavaPlugin {
 
         createScoreboard();
 
-        gameManager.setUhcId(new UhcIdLoader().getID());
-
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, ()-> pollManager.updatePollStatus(this),2L, 10L);
 
         Bukkit.getWorlds().get(0).setPVP(true);

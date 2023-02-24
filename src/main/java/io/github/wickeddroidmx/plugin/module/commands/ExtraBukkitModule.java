@@ -4,11 +4,13 @@ import io.github.agus5534.hdbot.Ranks;
 import io.github.wickeddroidmx.plugin.experiments.Experiment;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.modalities.ModalityType;
+import io.github.wickeddroidmx.plugin.module.commands.parts.TimeFormatterPart;
 import io.github.wickeddroidmx.plugin.module.commands.parts.factory.*;
 import io.github.wickeddroidmx.plugin.poll.ConcursantTypes;
 import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
+import io.github.wickeddroidmx.plugin.utils.time.TimeFormatter;
 import me.fixeddev.commandflow.annotated.part.AbstractModule;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
@@ -36,6 +38,7 @@ public class ExtraBukkitModule extends AbstractModule {
         this.bindFactory(Ranks.StaffRank.class, new StaffRankFactory());
         this.bindFactory(Ranks.DonatorRank.class, new DonatorRankFactory());
         this.bindFactory(kaptainwutax.biomeutils.biome.Biome.Category.class, new BiomeCategoryFactory());
+        this.bindFactory(TimeFormatter.class, new TimeFormatterFactory());
     }
 
 }

@@ -42,23 +42,7 @@ public class PollManager {
     }
 
     public Winner getWinner() {
-        if(!activePoll.isClosed()) {
-            return Winner.NOBODY_YET;
-        }
-
-        if(activePoll.getAns1Votes() == activePoll.getAns2Votes()) {
-            return Winner.DRAW;
-        }
-
-        if(activePoll.getAns1Votes() > activePoll.getAns2Votes()) {
-            return Winner.ANSWER1;
-        }
-
-        if(activePoll.getAns2Votes() > activePoll.getAns1Votes()) {
-            return Winner.ANSWER2;
-        }
-
-        return Winner.NOBODY_YET;
+        return (!activePoll.isClosed() ? Winner.NOBODY_YET : (activePoll.getAns1Votes() == activePoll.getAns2Votes() ? Winner.DRAW : (activePoll.getAns1Votes() > activePoll.getAns2Votes() ? Winner.ANSWER1 : Winner.ANSWER2)));
     }
 
     public void updatePollStatus(JavaPlugin plugin) {

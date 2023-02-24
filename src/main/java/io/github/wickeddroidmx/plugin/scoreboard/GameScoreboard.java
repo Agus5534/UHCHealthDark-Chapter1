@@ -31,7 +31,7 @@ public class GameScoreboard extends UHCScoreboard {
                 ChatUtils.format("&7 &f"),
                 ChatUtils.format("&7Players Left: &f" + playerManager.getUhcPlayers().values().stream().filter(UhcPlayer::isAlive).filter(uhcPlayer1 -> !uhcPlayer1.isSpect()).toList().size()),
                 ChatUtils.format("&7WorldBorder: &f" + Math.round(plugin.getWorldGenerator().getUhcWorld().getWorld().getWorldBorder().getSize()/2)),
-                gameManager.isSkyHighMode() ? ChatUtils.format("&7Height: &fY"+gameManager.getCape()) : null,
+                modeManager.isActiveMode("skyhigh") ? ChatUtils.format("&7Height: &fY"+gameManager.getCape()) : null,
                 uhcPlayer != null || teamPlayer != null ? ChatUtils.format("&7 &f") : null,
                 uhcPlayer != null ? ChatUtils.format("&7Kills: &f" + uhcPlayer.getKills()) : null,
                 teamPlayer != null ? ChatUtils.format("&7Team Kills: &f" + teamPlayer.getKills()) : null,
