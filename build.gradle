@@ -30,9 +30,13 @@ repositories {
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT"
     implementation 'me.fixeddev:commandflow-bukkit:0.5.2'
-    implementation 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+    implementation 'me.yushust.inject:core:0.4.6-SNAPSHOT'
 
-    implementation 'team.unnamed.gui:core:2.3.3-SNAPSHOT'
+    implementation 'team.unnamed:gui-item-api:3.3.2'
+    implementation 'team.unnamed:gui-item-skull-api:3.3.2'
+    implementation 'team.unnamed:gui-menu-api:3.3.2'
+    implementation 'team.unnamed:gui-menu-adapt-v1_18_R2:3.3.2'
+
     compileOnly 'io.github.agus5534:HDBot:1.0'
     implementation "org.jdbi:jdbi3-core:3.30.0"
     implementation 'mysql:mysql-connector-java:8.0.30'
