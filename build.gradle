@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly "io.papermc.paper:paper:1.17-R0.1-SNAPSHOT"
+    compileOnly "io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT"
     implementation 'me.fixeddev:commandflow-bukkit:0.5.2'
     implementation 'me.yushust.inject:core:0.4.5-SNAPSHOT'
 
