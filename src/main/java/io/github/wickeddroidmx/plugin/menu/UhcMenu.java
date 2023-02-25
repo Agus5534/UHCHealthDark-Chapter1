@@ -14,12 +14,8 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import team.unnamed.gui.abstraction.item.ItemClickable;
-import team.unnamed.gui.core.gui.type.GUIBuilder;
-import team.unnamed.gui.core.item.type.ItemBuilder;
-
-import javax.inject.Inject;
-import javax.inject.Named;
+import team.unnamed.gui.menu.item.ItemClickable;
+import team.unnamed.gui.menu.type.MenuInventory;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -43,165 +39,110 @@ public class UhcMenu {
     private UhcModeMenu uhcModeMenu;
 
     public Inventory getIronManMenu() {
-        return GUIBuilder.builderPaginated(OfflinePlayer.class, "IronMans - %page%")
-                .fillBorders(ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.BLACK)
-                                .setName(" ")
-                                .build())
-                        .build()
-                )
-                .setItemIfNotEntities(ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.LIGHT_GRAY)
-                                .setName("")
-                                .build())
-                        .build())
-                .setItemParser(offlinePlayer -> ItemClickable.builderCancellingEvent().setItemStack(
-                        ItemBuilder.newSkullBuilder(1)
-                                .setOwner(offlinePlayer.getName())
-                                .setName(ChatColor.GOLD + offlinePlayer.getName())
-                                .build()
-                ).build())
-                .setNextPageItem(page -> ItemClickable.builderCancellingEvent(53)
-                        .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName("Siguiente pagina - " + page)
-                                .build()
-                        )
-                        .build())
-                .setPreviousPageItem(page -> ItemClickable.builderCancellingEvent(45)
-                        .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName("Anterior pagina - " + page)
-                                .build()
-                        )
-                        .build()
-                )
-                .setEntities(ironManCache.values()
-                        .stream()
-                        .map(Bukkit::getOfflinePlayer)
-                        .collect(Collectors.toList()))
-                .setItemIfNotEntities(ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.LIGHT_GRAY_STAINED_GLASS_PANE).name(ChatUtils.formatC("&6Vacío"))).build())
-                .setBounds(10, 35)
-                .setItemsPerRow(7)
+        return MenuInventory.newPaginatedBuilder(OfflinePlayer.class, "IronMans - %page%")
+                .itemIfNoEntities(ItemClickable.onlyItem(new ItemCreator(Material.LIGHT_GRAY_STAINED_GLASS_PANE).name(" ")))
+                .entityParser(offlinePlayer -> ItemClickable.onlyItem(new ItemCreator(Material.PLAYER_HEAD).name(offlinePlayer.getName()).setSkullSkin(offlinePlayer)))
+                .nextPageItem(p -> ItemClickable.of(52, new ItemCreator(Material.ARROW).name("Siguiente página - " + p)))
+                .previousPageItem(p -> ItemClickable.of(46, new ItemCreator(Material.ARROW).name("Anterior página - " + p)))
+                .entities(ironManCache.values().stream().map(Bukkit::getOfflinePlayer).collect(Collectors.toList()))
+                .bounds(10, 35)
+                .itemsPerRow(7)
+                .fillBorders(ItemClickable.onlyItem(new ItemCreator(Material.BLACK_STAINED_GLASS_PANE).name(" ")))
                 .build();
     }
 
     public Inventory getConfigMenu() {
-        return GUIBuilder.builderStringLayout("UHC Config", 3)
-                .setLayoutLines("xxxxxxxxx",
-                                "xmxixbxex",
-                                "xxxxxxxxx")
-                .setLayoutItem('x', ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.GRAY)
-                                .setName("")
-                                .build())
-                        .build())
-                .setLayoutItem('m', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.DIAMOND_PICKAXE).name(ChatUtils.formatC("&bModalidades")))
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+        return MenuInventory.newStringLayoutBuilder("UHC Config", 3)
+                .layoutLines("xxxxxxxxx",
+                             "xmxixbxex",
+                             "xxxxxxxxx")
+                .layoutItem('x', ItemClickable.onlyItem(new ItemCreator(Material.GRAY_STAINED_GLASS_PANE).name("")))
+                .layoutItem('m', ItemClickable.builder().item(new ItemCreator(new ItemCreator(Material.DIAMOND_PICKAXE).name(ChatUtils.formatC("&bModalidades")))).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(new UhcModeMenu(modeManager, gameManager, experimentManager, ironManCache).getSelectInventory());
+                    player.openInventory(new UhcModeMenu(modeManager, gameManager, experimentManager, ironManCache).getSelectInventory());
 
-                            return true;
-                        }).build())
-                .setLayoutItem('b', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.IRON_BOOTS).name(ChatUtils.formatC("&bBordes")))
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+                    return true;
+                }).build())
+                .layoutItem('b', ItemClickable.builder().item(new ItemCreator(Material.IRON_BOOTS).name(ChatUtils.formatC("&bBordes"))).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(this.getWorldBordersMenu());
+                    player.openInventory(this.getWorldBordersMenu());
 
-                            return true;
-                        }).build())
-                .setLayoutItem('i', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.IRON_BLOCK).name(ChatUtils.formatC("&bIronMans"))
-                                .lore(
-                                        ChatUtils.formatC(String.format("&7%s restantes", gameManager.getGameState() == GameState.WAITING ? "?" : ironManCache.values().size()))
-                                ))
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+                    return true;
+                }).build())
+                .layoutItem('i',ItemClickable.builder().item(new ItemCreator(Material.IRON_BLOCK).name(ChatUtils.formatC("&bIronMans")).lore(
+                                ChatUtils.formatC(String.format("&7%s restantes", gameManager.getGameState() == GameState.WAITING ? "?" : ironManCache.values().size()))
+                )).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            if(gameManager.getGameState() == GameState.WAITING) {
-                                player.sendMessage(ChatUtils.formatComponentPrefix("La partida todavía no ha comenzado."));
-                                return true;
-                            }
+                    if(gameManager.getGameState() == GameState.WAITING) {
+                        player.sendMessage(ChatUtils.formatComponentPrefix("La partida todavía no ha comenzado."));
+                        return true;
+                    }
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(this.getIronManMenu());
+                    player.openInventory(this.getIronManMenu());
 
-                            return true;
-                        }).build())
-                .setLayoutItem('e', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.SPAWNER).name(ChatUtils.formatC("&bExperimentos")))
-                        .setAction(action -> {
-                           var player = action.getWhoClicked();
+                    return true;
+                }).build())
+                .layoutItem('e', ItemClickable.builder().item(new ItemCreator(Material.SPAWNER).name(ChatUtils.formatC("&bExperimentos"))).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            var donatorrank = WaitingStatusListeners.playerDonatorRankMap.get(player);
-                            if(donatorrank == null) { return true; }
-                            if(!donatorrank.contains(Ranks.DonatorRank.TESTER)) { return true; }
+                    var donatorrank = WaitingStatusListeners.playerDonatorRankMap.get(player);
+                    if(donatorrank == null) { return true; }
+                    if(!donatorrank.contains(Ranks.DonatorRank.TESTER)) { return true; }
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(this.getExperimentsMenu((Player) player));
-                            return true;
-                        }).build())
-                .build();
+                    player.openInventory(this.getExperimentsMenu((Player) player));
+                    return true;
+                }).build()).build();
     }
 
     public Inventory getWorldBordersMenu() {
-        return GUIBuilder.builderStringLayout("UHC WorldBorders", 1)
-                .setLayoutLines("xxaxbxcxv")
-                .setLayoutItem('x', ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.GRAY)
-                                .setName("")
-                                .build())
-                        .build())
-                .setLayoutItem('a', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.LEATHER_BOOTS).name(ChatUtils.formatC("&aBorde I"))
+        return MenuInventory.newStringLayoutBuilder("UHC WorldBorders", 1)
+                .layoutLines("xxaxbxcxv")
+                .layoutItem('x', ItemClickable.onlyItem(new ItemCreator(Material.GRAY_STAINED_GLASS_PANE).name("")))
+                .layoutItem('a', ItemClickable.onlyItem(new ItemCreator(Material.LEATHER_BOOTS).name(ChatUtils.formatC("&aBorde I"))
                         .lore(
                                 ChatUtils.formatC(String.format("&7- Tamaño: %1$sx%1$s", gameManager.getSizeWorldBorderOne())),
                                 ChatUtils.formatC(String.format("&7- Se activa: %s", formatTime(gameManager.getTimeWorldBorderOne()))),
                                 ChatUtils.formatC(String.format("&7- Delay: %ds", gameManager.getBorderDelay()))
-                        )).build())
-                .setLayoutItem('b', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.CHAINMAIL_BOOTS).name(ChatUtils.formatC("&aBorde II"))
+                        )))
+                .layoutItem('b', ItemClickable.onlyItem(new ItemCreator(Material.CHAINMAIL_BOOTS).name(ChatUtils.formatC("&aBorde II"))
                         .lore(
                                 ChatUtils.formatC(String.format("&7- Tamaño: %1$sx%1$s", gameManager.getSizeWorldBorderTwo())),
                                 ChatUtils.formatC(String.format("&7- Se activa: %s", formatTime(gameManager.getTimeWorldBorderTwo()))),
                                 ChatUtils.formatC(String.format("&7- Delay: %ds", gameManager.getBorderDelay()))
-                        )).build())
-                .setLayoutItem('c', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.IRON_BOOTS).name(ChatUtils.formatC("&aBorde III"))
+                        )))
+                .layoutItem('c', ItemClickable.onlyItem(new ItemCreator(Material.IRON_BOOTS).name(ChatUtils.formatC("&aBorde III"))
                         .lore(
                                 ChatUtils.formatC(String.format("&7- Tamaño: %1$sx%1$s", gameManager.getSizeWorldBorderThree())),
                                 ChatUtils.formatC(String.format("&7- Se activa: %s", formatTime(gameManager.getTimeWorldBorderThree()))),
                                 ChatUtils.formatC(String.format("&7- Delay: %ds", gameManager.getBorderDelay()))
-                        )).build())
-                .setLayoutItem('v', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.BARRIER).name(ChatUtils.formatC("&6Volver")))
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+                        )))
+                .layoutItem('v', ItemClickable.builder().item(new ItemCreator(Material.BARRIER).name(ChatUtils.formatC("&6Volver"))).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(this.getConfigMenu());
+                    player.openInventory(this.getConfigMenu());
 
-                            return true;
-                        }).build())
+                    return true;
+                }).build())
                 .build();
     }
 
     public Inventory getExperimentsMenu(Player player) {
-        return GUIBuilder.builderPaginated(Experiment.class, "Experimentos - %page%")
-                .fillBorders(ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.BLACK_STAINED_GLASS_PANE).name(" ")).build())
-                .setItemIfNotEntities(ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.LIGHT_GRAY_STAINED_GLASS_PANE).name(" ")).build())
-                .setItemParser(experiment -> ItemClickable.builderCancellingEvent().setItemStack(
-                        new ItemCreator(experimentManager.hasExperiment(player, experiment.getKey()) ? Material.GREEN_CONCRETE : Material.RED_CONCRETE).name(experiment.getKey()).lore(ChatUtils.formatC("&7- "+experiment.getDescription()))
-                ).setAction(action -> {
+        return MenuInventory.newPaginatedBuilder(Experiment.class, "Experimentos - %page%")
+                .itemIfNoEntities(ItemClickable.onlyItem(new ItemCreator(Material.LIGHT_GRAY_STAINED_GLASS_PANE).name(" ")))
+                .entityParser(experiment -> ItemClickable.builder().item(new ItemCreator(experimentManager.hasExperiment(player, experiment.getKey()) ? Material.GREEN_CONCRETE : Material.RED_CONCRETE).name(experiment.getKey()).lore(ChatUtils.formatC("&7- "+experiment.getDescription()))).action(action -> {
                     player.chat("/experiment " + experiment.getKey());
 
                     var item = action.getCurrentItem();
@@ -216,20 +157,12 @@ public class UhcMenu {
 
                     return true;
                 }).build())
-                .setNextPageItem(page -> ItemClickable.builder(52).setItemStack(ItemBuilder.newBuilder(Material.ARROW).setName("Siguiente pagina - " + page).build()).build())
-                .setPreviousPageItem(page -> ItemClickable.builder(46).setItemStack(ItemBuilder.newBuilder(Material.ARROW).setName("Anterior pagina - " + page).build()).build())
-                .setItemIfNotPreviousPage(ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.BLACK_STAINED_GLASS_PANE).name(" ")).build())
-                .setEntities(ExperimentManager.getExperiments())
-                .setBounds(10, 44)
-                .setItemsPerRow(7)
-                .addItem(ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.BARRIER).name(ChatUtils.formatC("&6Volver")))
-                        .setAction(action -> {
-                            player.getInventory().close();
-
-                            player.openInventory(this.getConfigMenu());
-
-                            return true;
-                        }).build(), 53)
+                .nextPageItem(p -> ItemClickable.builder(52).item(new ItemCreator(Material.ARROW).name("Siguiente página - " + p)).build())
+                .previousPageItem(p -> ItemClickable.builder(46).item(new ItemCreator(Material.ARROW).name("Anterior página - " + p)).build())
+                .itemIfNoNextPage(ItemClickable.onlyItem(new ItemCreator(Material.BLACK_STAINED_GLASS_PANE).name(" ")))
+                .entities(ExperimentManager.getExperiments())
+                .bounds(10, 44)
+                .itemsPerRow(7)
                 .build();
 
     }

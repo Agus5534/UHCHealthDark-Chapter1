@@ -616,12 +616,6 @@ public class HostCommand implements CommandClass {
                 sender.sendMessage(ChatUtils.formatComponentPrefix("&4Missing Permissions"));
                 return;
             }
-
-            if (modalityType == ModalityType.UHC) {
-                sender.openInventory(staffMenu.getUHCInventory());
-                return;
-            }
-
             sender.openInventory(staffMenu.getModeInventory(modalityType));
         }
     }

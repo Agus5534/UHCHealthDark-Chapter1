@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin.utils.items;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -239,7 +240,7 @@ public class ItemCreator extends ItemStack {
         return this;
     }
 
-    public ItemCreator setSkullSkin(Player player) {
+    public ItemCreator setSkullSkin(OfflinePlayer player) {
         final SkullMeta skullMeta = (SkullMeta) getItemMeta();
         skullMeta.setOwningPlayer(player);
         setItemMeta(skullMeta);

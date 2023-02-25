@@ -11,12 +11,14 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
-import team.unnamed.gui.abstraction.item.ItemClickable;
-import team.unnamed.gui.core.gui.type.GUIBuilder;
-import team.unnamed.gui.core.item.type.ItemBuilder;
+import team.unnamed.gui.menu.adapt.MenuInventoryWrapper;
+import team.unnamed.gui.menu.item.ItemClickable;
+import team.unnamed.gui.menu.type.MenuInventory;
+import team.unnamed.gui.menu.type.MenuInventoryBuilder;
 
 import javax.inject.Inject;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class UhcStaffModesMenu {
@@ -29,116 +31,53 @@ public class UhcStaffModesMenu {
 
     public Inventory getModeInventory(ModalityType modalityType) {
         String guiNAME = modalityType.name().toUpperCase() + "S Menu - %page%";
-        return GUIBuilder.builderPaginated(Modality.class, guiNAME)
-                .fillBorders(ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.BLACK)
-                                .setName(" ")
-                                .build())
-                        .build()
-                )
-                .setItemIfNotEntities(ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.LIGHT_GRAY)
-                                .setName("")
-                                .build())
-                        .build())
-                .setItemParser(mode -> ItemClickable.builder().setItemStack(mode.build()).setAction(event -> {
+        return MenuInventory.newPaginatedBuilder(Modality.class, guiNAME)
+                .itemIfNoEntities(ItemClickable.onlyItem(new ItemCreator(Material.LIGHT_GRAY_STAINED_GLASS_PANE).name(" ")))
+                .entityParser(modality -> ItemClickable.builder().item(modality.build()).action(event -> {
                     var ic = new ItemCreator(event.getCurrentItem());
 
-                    if(!mode.isEnabled()) {
+                    if(!modality.isEnabled()) {
                         if (modalityType == ModalityType.SCENARIO && gameManager.isScenarioLimit() && modeManager.getModesActive(ModalityType.SCENARIO).size() > 1)
                             return true;
 
-                        mode.activeMode();
+                        modality.activeMode();
 
                         var itMeta = event.getCurrentItem().getItemMeta();
                         itMeta.addEnchant(Enchantment.CHANNELING,1,false);
 
                         event.getCurrentItem().setItemMeta(itMeta);
                     } else
-                        mode.deactivateMode();
+                        modality.deactivateMode();
 
-                        ic.removeEnchantments();
+                    ic.removeEnchantments();
 
-                        event.setCurrentItem(ic);
-
-                    return true;
-                }).build())
-                .setNextPageItem(page -> ItemClickable.builder(52)
-                        .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName(ChatUtils.format("&6Siguiente página - " + page))
-                                .build()
-                        )
-                        .build())
-                .setPreviousPageItem(page -> ItemClickable.builder(46)
-                        .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName(ChatUtils.format("&6Anterior página - " + page))
-                                .build()
-                        )
-                        .build()
-                )
-                .setEntities(modeManager.getAllModes(modalityType).stream().sorted(Comparator.comparing(Modality::isEnabled)).collect(Collectors.toList()))
-                .setBounds(10, 44)
-                .setItemsPerRow(7)
-                .addItem(getClickable(modalityType, ModalityType.MODE), 0)
-                .addItem(getClickable(modalityType, ModalityType.SCENARIO), 8)
-                .addItem(getClickable(modalityType, ModalityType.SETTING), 45)
-                .addItem(getClickable(modalityType, ModalityType.TEAM), 53)
-                .build();
-    }
-
-    public Inventory getUHCInventory() {
-        return GUIBuilder.builderPaginated(Modality.class, "UHCS Menu - %page%", 3)
-                .fillBorders(ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.BLACK)
-                                .setName(" ")
-                                .build())
-                        .build()
-                )
-                .setItemIfNotEntities(ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.LIGHT_GRAY)
-                                .setName("")
-                                .build())
-                        .build())
-                .setItemParser(mode -> ItemClickable.builder().setItemStack(mode.build()).setAction(event -> {
-                    if(!mode.isEnabled())
-                        mode.activeMode();
-                    else
-                        mode.deactivateMode();
+                    event.setCurrentItem(ic);
 
                     return true;
                 }).build())
-                .setNextPageItem(page -> ItemClickable.builder(53)
-                        .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName(ChatUtils.format("&6Siguiente página - " + page))
-                                .build()
-                        )
-                        .build())
-                .setPreviousPageItem(page -> ItemClickable.builder(45)
-                        .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName(ChatUtils.format("&6Anterior página - " + page))
-                                .build()
-                        )
-                        .build()
-                )
-                .setEntities(modeManager.getAllModes(ModalityType.UHC))
-                .setBounds(10, 17)
-                .setItemsPerRow(7)
+                .nextPageItem(page -> ItemClickable.of(46, new ItemCreator(Material.ARROW).name(ChatUtils.formatC("&6Siguiente página - " + page))))
+                .previousPageItem(page -> ItemClickable.of(46, new ItemCreator(Material.ARROW).name(ChatUtils.formatC("&6Anterior página - " + page))))
+                .itemIfNoNextPage(ItemClickable.onlyItem(new ItemCreator(Material.LIGHT_GRAY_STAINED_GLASS_PANE).name(" ")))
+                .entities(modeManager.getAllModes(modalityType).stream().sorted(Comparator.comparing(Modality::isEnabled)).collect(Collectors.toList()))
+                .bounds(10, 44)
+                .itemsPerRow(7)
+                .item(this.getClickable(modalityType, ModalityType.MODE), 47)
+                .item(this.getClickable(modalityType, ModalityType.SCENARIO), 48)
+                .item(this.getClickable(modalityType, ModalityType.UHC), 49)
+                .item(this.getClickable(modalityType, ModalityType.TEAM), 50)
+                .item(this.getClickable(modalityType, ModalityType.SETTING), 51)
                 .build();
+
     }
+
 
     private ItemClickable getClickable(ModalityType actual, ModalityType modalityType) {
-        String name = (modalityType == actual ? "Recargar" : modalityType.name());
-        return ItemClickable.builder()
-                .setItemStack(new ItemCreator(Material.GREEN_STAINED_GLASS_PANE).name(ChatColor.AQUA + name))
-                .setAction(e -> {
+        String name = (modalityType == actual ? "Recargar Pestaña" : modalityType.name());
+        ItemCreator itemCreator = new ItemCreator(modalityType.getMaterial()).name(ChatColor.AQUA + name);
+        if(modalityType == actual) { itemCreator.looksEnchanted(); }
+
+        return ItemClickable.builder().item(itemCreator)
+                .action(e -> {
                     e.getWhoClicked().openInventory(getModeInventory(modalityType));
                     return true;
                 })

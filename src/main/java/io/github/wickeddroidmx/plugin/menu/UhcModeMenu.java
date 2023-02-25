@@ -11,12 +11,9 @@ import io.github.wickeddroidmx.plugin.utils.items.ItemCreator;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
-import team.unnamed.gui.abstraction.item.ItemClickable;
-import team.unnamed.gui.core.gui.type.GUIBuilder;
-import team.unnamed.gui.core.item.type.ItemBuilder;
+import team.unnamed.gui.menu.item.ItemClickable;
+import team.unnamed.gui.menu.type.MenuInventory;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,176 +30,93 @@ public class UhcModeMenu {
         this.ironManCache = ironManCache;
     }
     public Inventory getSelectInventory() {
-        return GUIBuilder
-                .builderStringLayout("Modalidades", 3)
-                .setLayoutLines(
+        return MenuInventory.newStringLayoutBuilder("Modalidades", 3)
+                .layoutLines(
                         "xxxxxxxxx",
                         "xmxsxtxcx",
                         "xxxxxxxxv"
                 )
-                .setLayoutItem('x', ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder.newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.GRAY)
-                                .setName(" ")
-                                .build())
-                        .build())
-                .setLayoutItem('m', ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder.newBuilder(Material.DIAMOND_SWORD)
-                                .setName(ChatUtils.format("&bModalidades"))
-                                .setLore((modeManager.getModesActive(ModalityType.MODE).size() >= 1) ? modeManager
-                                        .getModesActive(ModalityType.MODE)
-                                        .stream()
-                                        .map(Modality::getName)
-                                        .map(modality -> ChatUtils.format(String.format("&7- %s", modality)))
-                                        .collect(Collectors.joining())
-                                        : ChatUtils.format("&7No hay modalidades activas."))
-                                .build())
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+                .layoutItem('x', ItemClickable.onlyItem(new ItemCreator(Material.GRAY_STAINED_GLASS).name(" ")))
+                .layoutItem('m', ItemClickable.builder().item(new ItemCreator(ModalityType.MODE.getMaterial()).name(ChatUtils.formatC("&bModalidades")).lore((modeManager.getModesActive(ModalityType.MODE).size() >= 1) ? modeManager.getModesActive(ModalityType.MODE).stream().map(Modality::getName).map(modality -> ChatUtils.format(String.format("&7- %s", modality))).collect(Collectors.joining()) : ChatUtils.format("&7No hay modalidades activas."))).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            if (modeManager.getModesActive(ModalityType.MODE).size() == 0) {
-                                player.sendMessage(ChatUtils.PREFIX + "No hay ningún scenario activo.");
+                    if (modeManager.getModesActive(ModalityType.MODE).size() == 0) {
+                        player.sendMessage(ChatUtils.PREFIX + "No hay ningún scenario activo.");
 
-                                return true;
-                            }
+                        return true;
+                    }
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(getModeInventory(ModalityType.MODE));
-                            return true;
-                        })
-                        .build())
-                .setLayoutItem('s', ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder.newBuilder(Material.DIAMOND)
-                                .setName(ChatUtils.format("&eScenarios"))
-                                .setLore((modeManager.getModesActive(ModalityType.SCENARIO).size() >= 1) ? modeManager
-                                        .getModesActive(ModalityType.SCENARIO)
-                                        .stream()
-                                        .map(Modality::getName)
-                                        .map(modality -> ChatUtils.format(String.format("&7- %s", modality)))
-                                        .collect(Collectors.joining())
-                                        : ChatUtils.format("&7No hay scenarios activas."))
-                                .build())
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+                    player.openInventory(getModeInventory(ModalityType.MODE));
+                    return true;
+                }).build())
+                .layoutItem('s', ItemClickable.builder().item(new ItemCreator(ModalityType.SCENARIO.getMaterial()).name(ChatUtils.formatC("&eScenarios")).lore((modeManager.getModesActive(ModalityType.SCENARIO).size() >= 1) ? modeManager.getModesActive(ModalityType.SCENARIO).stream().map(Modality::getName).map(modality -> ChatUtils.format(String.format("&7- %s", modality))).collect(Collectors.joining()) : ChatUtils.format("&7No hay scenarios activas."))).action( action -> {
+                    var player = action.getWhoClicked();
 
-                            if (modeManager.getModesActive(ModalityType.SCENARIO).size() == 0) {
-                                player.sendMessage(ChatUtils.PREFIX + "No hay ningún scenario activo.");
+                    if (modeManager.getModesActive(ModalityType.SCENARIO).size() == 0) {
+                        player.sendMessage(ChatUtils.PREFIX + "No hay ningún scenario activo.");
 
-                                return true;
-                            }
+                        return true;
+                    }
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(getModeInventory(ModalityType.SCENARIO));
+                    player.openInventory(getModeInventory(ModalityType.SCENARIO));
 
-                            return true;
-                        })
-                        .build())
-                .setLayoutItem('t', ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder.newBuilder(Material.POPPY)
-                                .setName(ChatUtils.format("&bModalidades de equipo"))
-                                .setLore((modeManager.getModesActive(ModalityType.TEAM).size() >= 1) ? modeManager
-                                        .getModesActive(ModalityType.TEAM)
-                                        .stream()
-                                        .map(Modality::getName)
-                                        .map(modality -> ChatUtils.format(String.format("&7- %s", modality)))
-                                        .collect(Collectors.joining())
-                                        : ChatUtils.format("&7No hay modalidades de equipo activas."))
-                                .build())
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+                    return true;
+                }).build())
+                .layoutItem('t', ItemClickable.builder().item(new ItemCreator(ModalityType.TEAM.getMaterial()).name(ChatUtils.formatC("&bModalidades de equipo")).lore((modeManager.getModesActive(ModalityType.TEAM).size() >= 1) ? modeManager.getModesActive(ModalityType.TEAM).stream().map(Modality::getName).map(modality -> ChatUtils.format(String.format("&7- %s", modality))).collect(Collectors.joining()) : ChatUtils.format("&7No hay modalidades de equipo activas."))).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            if (modeManager.getModesActive(ModalityType.TEAM).size() == 0) {
-                                player.sendMessage(ChatUtils.PREFIX + "No hay ningún modo de equipo activo.");
+                    if (modeManager.getModesActive(ModalityType.TEAM).size() == 0) {
+                        player.sendMessage(ChatUtils.PREFIX + "No hay ningún modo de equipo activo.");
 
-                                return true;
-                            }
+                        return true;
+                    }
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(getModeInventory(ModalityType.TEAM));
+                    player.openInventory(getModeInventory(ModalityType.TEAM));
 
-                            return true;
-                        })
-                        .build())
-                .setLayoutItem('c', ItemClickable
-                        .builderCancellingEvent().setItemStack(ItemBuilder.newBuilder(Material.STRUCTURE_VOID)
-                                .setName(ChatUtils.format("&dSettings"))
-                                .setLore((modeManager.getModesActive(ModalityType.SETTING).size() >= 1) ? modeManager
-                                .getModesActive(ModalityType.SETTING)
-                                .stream()
-                                .map(Modality::getName)
-                                .map(modality -> ChatUtils.format(String.format("&7 - %s", modality)))
-                                .collect(Collectors.joining())
-                                : ChatUtils.format("&7No hay settings activas."))
-                                .build())
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+                    return true;
+                }).build())
+                .layoutItem('c', ItemClickable.builder().item(new ItemCreator(ModalityType.SETTING.getMaterial()).name(ChatUtils.formatC("&dSettings")).lore((modeManager.getModesActive(ModalityType.SETTING).size() >= 1) ? modeManager.getModesActive(ModalityType.SETTING).stream().map(Modality::getName).map(modality -> ChatUtils.format(String.format("&7 - %s", modality))).collect(Collectors.joining()) : ChatUtils.format("&7No hay settings activas."))).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            if (modeManager.getModesActive(ModalityType.SETTING).size() == 0) {
-                                player.sendMessage(ChatUtils.PREFIX + "No hay ninguna setting activa");
+                    if (modeManager.getModesActive(ModalityType.SETTING).size() == 0) {
+                        player.sendMessage(ChatUtils.PREFIX + "No hay ninguna setting activa");
 
-                                return true;
-                            }
+                        return true;
+                    }
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(getModeInventory(ModalityType.SETTING));
+                    player.openInventory(getModeInventory(ModalityType.SETTING));
 
-                            return true;
-                        }).build())
-                .setLayoutItem('v', ItemClickable.builderCancellingEvent().setItemStack(new ItemCreator(Material.BARRIER).name(ChatUtils.formatC("&6Volver")))
-                        .setAction(action -> {
-                            var player = action.getWhoClicked();
+                    return true;
+                }).build())
+                .layoutItem('v', ItemClickable.builder().item(new ItemCreator(Material.BARRIER).name(ChatUtils.formatC("&6Volver"))).action(action -> {
+                    var player = action.getWhoClicked();
 
-                            player.getInventory().close();
+                    player.getInventory().close();
 
-                            player.openInventory(new UhcMenu(gameManager, experimentManager, this, modeManager, ironManCache).getConfigMenu());
+                    player.openInventory(new UhcMenu(gameManager, experimentManager, this, modeManager, ironManCache).getConfigMenu());
 
-                            return true;
-                        }).build())
+                    return true;
+                }).build())
                 .build();
     }
 
     public Inventory getModeInventory(ModalityType modalityType) {
-        return GUIBuilder
-                .builderPaginated(Modality.class,  modalityType.name()+"s enabled - %page%", 6)
-                .fillBorders(ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.BLACK)
-                                .setName(" ")
-                                .build())
-                        .build()
-                )
-                .setItemIfNotEntities(ItemClickable
-                        .builderCancellingEvent()
-                        .setItemStack(ItemBuilder
-                                .newDyeItemBuilder("STAINED_GLASS_PANE", DyeColor.LIGHT_GRAY)
-                                .setName("")
-                                .build())
-                        .build())
-                .setItemParser(mode -> ItemClickable.builderCancellingEvent().setItemStack(mode.build()).build())
-                .setNextPageItem(page -> ItemClickable.builder(53)
-                        .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName("Siguiente pagina - " + page)
-                                .build()
-                        )
-                        .build())
-                .setPreviousPageItem(page -> ItemClickable.builder(45)
-                        .setItemStack(ItemBuilder.newBuilder(Material.ARROW)
-                                .setName("Anterior pagina - " + page)
-                                .build()
-                        )
-                        .build()
-                )
-                .setEntities(modeManager.getModesActive(modalityType))
-                .setBounds(10, 35)
-                .setItemsPerRow(7)
+        return MenuInventory.newPaginatedBuilder(Modality.class, modalityType.name()+"s enabled - %page%", 6)
+                .itemIfNoEntities(ItemClickable.onlyItem(new ItemCreator(Material.LIGHT_GRAY_STAINED_GLASS_PANE).name("")))
+                .entityParser(mode -> ItemClickable.builder().item(mode.build()).build())
+                .nextPageItem(p -> ItemClickable.builder(53).item(new ItemCreator(Material.ARROW).name(ChatUtils.formatC("&6Siguiente página - " + p))).build())
+                .previousPageItem(p -> ItemClickable.builder(53).item(new ItemCreator(Material.ARROW).name(ChatUtils.formatC("&6Anterior página - " + p))).build())
+                .entities(modeManager.getModesActive(modalityType))
+                .bounds(10, 35)
+                .itemsPerRow(7)
                 .build();
     }
 
