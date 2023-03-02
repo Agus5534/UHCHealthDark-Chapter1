@@ -16,7 +16,9 @@ public class PlayerAssignRankListener implements Listener {
 
         if(!ranks.contains(Ranks.StaffRank.DEVELOPER) &&
         !ranks.contains(Ranks.StaffRank.OWNER) &&
-        !ranks.contains(Ranks.StaffRank.HEAD_ADMIN)) {
+        !ranks.contains(Ranks.StaffRank.HEAD_ADMIN) &&
+        !ranks.contains(Ranks.StaffRank.ADMIN) &&
+        !ranks.contains(Ranks.StaffRank.OPERATOR)) {
             event.getPlayer().setOp(false);
 
             event.getPlayer().sendMessage(ChatUtils.formatComponentNotification(
