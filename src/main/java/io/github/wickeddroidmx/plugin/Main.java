@@ -3,6 +3,7 @@ package io.github.wickeddroidmx.plugin;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
 import io.github.wickeddroidmx.plugin.experiments.ExperimentManager;
 import io.github.wickeddroidmx.plugin.game.GameManager;
+import io.github.wickeddroidmx.plugin.menu.BiomeMenu;
 import io.github.wickeddroidmx.plugin.modalities.ModeManager;
 import io.github.wickeddroidmx.plugin.module.MainModule;
 import io.github.wickeddroidmx.plugin.player.PlayerManager;
@@ -16,6 +17,10 @@ import io.github.wickeddroidmx.plugin.utils.chat.Rank;
 import io.github.wickeddroidmx.plugin.utils.files.Configuration;
 import io.github.wickeddroidmx.plugin.utils.region.Region;
 import io.github.wickeddroidmx.plugin.utils.world.WorldGenerator;
+import kaptainwutax.biomeutils.biome.Biome;
+import kaptainwutax.biomeutils.biome.Biomes;
+import kaptainwutax.mcutils.state.Dimension;
+import kaptainwutax.mcutils.version.MCVersion;
 import me.yushust.inject.InjectAll;
 import me.yushust.inject.InjectIgnore;
 import me.yushust.inject.Injector;
@@ -59,6 +64,8 @@ public class Main extends JavaPlugin {
 
     @InjectIgnore
     private Region ARENA_FALL;
+    @InjectIgnore
+    private static BiomeMenu biomeMenu;
     private Rank rank;
 
     @Override
@@ -101,6 +108,8 @@ public class Main extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(this, ()-> clearArena(), 300L);
 
         Bukkit.getScheduler().runTask(this, ()->Bukkit.getWorlds().forEach(w -> Bukkit.getLogger().info(w.getName())));
+
+        biomeMenu = new BiomeMenu();
     }
 
     @Override
@@ -161,5 +170,9 @@ public class Main extends JavaPlugin {
 
     public Configuration getConfiguration() {
         return configuration;
+    }
+
+    public static BiomeMenu getBiomeMenu() {
+        return biomeMenu;
     }
 }

@@ -1,9 +1,11 @@
 package io.github.wickeddroidmx.plugin.utils.world;
 
 import io.github.wickeddroidmx.plugin.Main;
+import io.github.wickeddroidmx.plugin.utils.chat.ChatUtils;
 import kaptainwutax.biomeutils.source.OverworldBiomeSource;
 import kaptainwutax.mcutils.util.pos.BPos;
 import kaptainwutax.mcutils.version.MCVersion;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
 
@@ -13,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SeedSearcher {
     private final Main plugin;
-    private int trials;
+    private int trials, substring;
     private List<Biome> excludedBiomes;
     private List<Long> availableSeeds;
 
@@ -28,6 +30,7 @@ public class SeedSearcher {
         this.trials = trials;
         this.excludedBiomes = excludedBiomes;
         searched = 0;
+        substring = 0;
         this.searchRadius = searchRadius;
         this.excludedCategories = excludedCategories;
 
@@ -35,7 +38,7 @@ public class SeedSearcher {
     }
 
     public void startTask() {
-        var task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::search, 2L, 4L);
+        var task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::search, 2L, 6L);
 
         taskIDTwo = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> {
             if(searched >= trials) {
@@ -89,6 +92,23 @@ public class SeedSearcher {
 
     public int getSearched() {
         return searched;
+    }
+
+    public Component progressBar() {
+        float percentage = ((float)100 / trials) * this.getSearched();
+        String progbar = "||||||||||||||||||||||||||||||||||||||||||||||||||";
+
+        if(percentage != 0) {
+            substring = (int)percentage / 2;
+        }
+
+        String bar = (percentage < 2 ? "&r&7" : "&r&a") + progbar.substring(0, substring) + "&7" + progbar.substring(substring);
+
+        Component borderOne = ChatUtils.formatC("&7&l[");
+        Component borderTwo = ChatUtils.formatC("&7&l]");
+        Component progressBar = ChatUtils.formatC(bar);
+
+        return Component.text("").append(borderOne).append(progressBar).append(borderTwo);
     }
 
     public List<Long> getAvailableSeeds() {

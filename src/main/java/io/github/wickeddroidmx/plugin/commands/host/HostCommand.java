@@ -3,7 +3,6 @@ package io.github.wickeddroidmx.plugin.commands.host;
 import io.github.agus5534.hdbot.minecraft.events.ThreadMessageLogEvent;
 import io.github.wickeddroidmx.plugin.Main;
 import io.github.wickeddroidmx.plugin.cache.MapCache;
-import io.github.wickeddroidmx.plugin.events.game.ChangeGameTimeEvent;
 import io.github.wickeddroidmx.plugin.events.game.GameStartEvent;
 import io.github.wickeddroidmx.plugin.events.team.*;
 import io.github.wickeddroidmx.plugin.events.worldborder.WorldBorderMoveEvent;
@@ -25,7 +24,6 @@ import io.github.wickeddroidmx.plugin.poll.PollManager;
 import io.github.wickeddroidmx.plugin.schedulers.GameTask;
 import io.github.wickeddroidmx.plugin.schedulers.ScatterTask;
 import io.github.wickeddroidmx.plugin.scoreboard.UHCScoreboard;
-import io.github.wickeddroidmx.plugin.services.UhcIdLoader;
 import io.github.wickeddroidmx.plugin.teams.TeamFlags;
 import io.github.wickeddroidmx.plugin.teams.TeamManager;
 import io.github.wickeddroidmx.plugin.teams.UhcTeam;
@@ -46,7 +44,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Biome;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -1093,7 +1090,7 @@ public class HostCommand implements CommandClass {
     @Command(
             names = "world"
     )
-    @SubCommandClasses(value = {HostWorldSubCommand.BannedBiomesSubCommand.class, HostWorldSubCommand.BorderSubCommand.class})
+    @SubCommandClasses(value = {HostWorldSubCommand.SearcherSubCommand.class, HostWorldSubCommand.BorderSubCommand.class})
     public class HostWorldSubCommand implements CommandClass {
 
         @Command(names = "recreate", permission = "healthdark.host")
@@ -1115,48 +1112,6 @@ public class HostCommand implements CommandClass {
             sender.sendMessage(ChatUtils.PREFIX + "Recreando mundo... Puede demorar un tiempo.");
         }
 
-        @Command(
-                names = "search",
-                permission = "healthdark.host"
-        )
-        public void searchCommand(@Sender Player sender, @Named("trials") int trials, @Named("searchRadius") int searchRadius) {
-            if (trials < 5 || searchRadius < 32 || trials > 150 || searchRadius > 750) {
-                sender.sendMessage(ChatUtils.formatComponentPrefix("No se puede poner esta cantidad."));
-                return;
-            }
-
-            SeedSearcher seedSearcher = new SeedSearcher(plugin, trials, plugin.getWorldGenerator().getUhcWorld().getBannedBiomes(), searchRadius, plugin.getWorldGenerator().getUhcWorld().getBannedCategories());
-
-            seedSearcher.onNewSearch = () -> {
-                int percentage = (100 / trials) * seedSearcher.getSearched();
-
-                sender.sendActionBar(ChatUtils.formatC("&6Buscando seeds: &a" + percentage + "%"));
-            };
-
-            seedSearcher.onTaskEnd = () -> {
-                Bukkit.getScheduler().cancelTask(seedSearcher.taskIDTwo);
-                sender.sendActionBar(ChatUtils.formatC("&6La busqueda de seeds ha terminado"));
-
-                if (seedSearcher.getAvailableSeeds().size() == 0) {
-                    sender.sendMessage(ChatUtils.formatComponentPrefix("No se han encontrado seed disponibles!"));
-                    return;
-                }
-
-                sender.sendMessage(ChatUtils.formatC("&6Se han encontrado las siguientes seeds:"));
-
-                seedSearcher.getAvailableSeeds().forEach(s -> sender.sendMessage(
-                        ChatUtils.formatC("&a" + s).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(s))).hoverEvent(ChatUtils.formatC("&7Click para copiar!"))
-                                .append(
-                                        ChatUtils.formatC(" &6(0, 0 " + spawnBiome(s) + ")")
-                                                .hoverEvent(ChatUtils.formatC("&7Click para establecer seed"))
-                                                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/staffworld recreate " + s))
-                                )
-                ));
-            };
-
-            seedSearcher.startTask();
-        }
-
         private boolean parseLong(String s) {
             try {
                 Long.parseLong(s);
@@ -1170,102 +1125,107 @@ public class HostCommand implements CommandClass {
             return new OverworldBiomeSource(MCVersion.v1_17_1, seed).getBiome(BPos.ORIGIN).getName();
         }
 
-        @Command(names = "bannedbiomes", permission = "healthdark.host")
-        public class BannedBiomesSubCommand implements CommandClass {
+        @Command(names = "searcher", permission = "healthdark.host")
+        @SubCommandClasses({SearcherSubCommand.ConfigureSubCommand.class})
+        public class SearcherSubCommand implements CommandClass {
 
-            @Command(names = "list")
-            public void bannedBiomesCommand(@Sender Player sender) {
-                String s = String.format("Biomas bloqueados (%d): &a", plugin.getWorldGenerator().getUhcWorld().getBannedBiomes().size());
+            @Command(names = "configure", permission = "healthdark.host")
+            @SubCommandClasses({ConfigureSubCommand.BiomeSubCommand.class, ConfigureSubCommand.CategorySubCommand.class})
+            public class ConfigureSubCommand implements CommandClass {
+                @Command(names = "biome", permission = "healthdark.host")
+                public class BiomeSubCommand implements CommandClass {
+                    @Command(names = "modify")
+                    public void modifyCommand(@Sender Player sender) {
+                        sender.openInventory(Main.getBiomeMenu().bannedBiomesMenu(worldGenerator));
+                    }
 
-                for (var b : plugin.getWorldGenerator().getUhcWorld().getBannedBiomes()) {
-                    s += ", " + b.toString();
+                    @Command(names = "clear")
+                    public void clearCommand(@Sender Player sender) {
+                        plugin.getWorldGenerator().getUhcWorld().getBannedBiomes().clear();
+
+                        sender.sendMessage(ChatUtils.PREFIX + "Se han borrado los biomas bloqueados!");
+                    }
+
+                    @Command(names = "list")
+                    public void listCommand(@Sender Player sender) {
+                        StringBuilder s = new StringBuilder(String.format("Biomas bloqueados (%d): &a", plugin.getWorldGenerator().getUhcWorld().getBannedBiomes().size()));
+
+                        for (var b : plugin.getWorldGenerator().getUhcWorld().getBannedBiomes()) {
+                            s.append(", ").append(b.toString());
+                        }
+
+                        sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + s.toString().replaceFirst(", ", "")));
+                    }
                 }
 
-                sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + s.replaceFirst(", ", "")));
-            }
+                @Command(names = "category", permission = "healthdark.host")
+                public class CategorySubCommand implements CommandClass {
+                    @Command(names = "modify")
+                    public void modifyCommand(@Sender Player sender) {
+                        sender.openInventory(Main.getBiomeMenu().bannedCategoriesMenu(worldGenerator));
+                    }
 
-            @Command(names = "listcategories")
-            public void bannedCategoriesCommand(@Sender Player sender) {
-                String s = String.format("Categorías bloqueadas (%d): &a", plugin.getWorldGenerator().getUhcWorld().getBannedCategories().size());
+                    @Command(names = "clear")
+                    public void clearCommand(@Sender Player sender) {
+                        plugin.getWorldGenerator().getUhcWorld().getBannedCategories().clear();
 
-                for (var c : plugin.getWorldGenerator().getUhcWorld().getBannedCategories()) {
-                    s += ", " + c.toString();
+                        sender.sendMessage(ChatUtils.PREFIX + "Se han borrado las categorias bloqueadas!");
+                    }
+
+                    @Command(names = "list")
+                    public void listCommand(@Sender Player sender) {
+                        StringBuilder s = new StringBuilder(String.format("Categorias bloqueadas (%d): &a", plugin.getWorldGenerator().getUhcWorld().getBannedCategories().size()));
+
+                        for (var c : plugin.getWorldGenerator().getUhcWorld().getBannedCategories()) {
+                            s.append(", ").append(c.toString());
+                        }
+
+                        sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + s.toString().replaceFirst(", ", "")));
+                    }
                 }
-
-                sender.sendMessage(ChatUtils.formatC(ChatUtils.PREFIX + s.replaceFirst(", ", "")));
-            }
-
-            @Command(names = "clearcategories")
-            public void clearCategoriesCommand(@Sender Player sender) {
-                plugin.getWorldGenerator().getUhcWorld().getBannedCategories().clear();
-
-                sender.sendMessage(ChatUtils.PREFIX + "Se han borrado las categorías bloqueadas!");
-            }
-
-            @Command(names = "clear")
-            public void clearCommand(@Sender Player sender) {
-                plugin.getWorldGenerator().getUhcWorld().getBannedBiomes().clear();
-
-                sender.sendMessage(ChatUtils.PREFIX + "Se han borrado los biomas bloqueados!");
-            }
-
-            @Command(names = "add")
-            public void addCommand(@Sender Player sender, @Named("biome") Biome biome) {
-                var uhcWorld = plugin.getWorldGenerator().getUhcWorld();
-
-                if (uhcWorld.isBannedBiome(biome)) {
-                    sender.sendMessage(ChatUtils.PREFIX + "Ese bioma ya está en la lista.");
-                    return;
-                }
-
-                uhcWorld.addBannedBiomes(biome);
-
-                sender.sendMessage(ChatUtils.PREFIX + String.format("Has agregado %s como bioma baneado", biome.toString()));
-            }
-
-            @Command(names = "remove")
-            public void removeCommand(@Sender Player sender, @Named("biome") Biome biome) {
-                var uhcWorld = plugin.getWorldGenerator().getUhcWorld();
-
-                if (!uhcWorld.isBannedBiome(biome)) {
-                    sender.sendMessage(ChatUtils.PREFIX + "Ese bioma no está en la lista.");
-                    return;
-                }
-
-                uhcWorld.removeBannedBiomes(biome);
-
-                sender.sendMessage(ChatUtils.PREFIX + String.format("Has eliminado %s como bioma baneado", biome.toString()));
-            }
-
-            @Command(names = "addcategory")
-            public void addCategoryCommand(@Sender Player sender, @Named("category") kaptainwutax.biomeutils.biome.Biome.Category category) {
-                var uhcWorld = plugin.getWorldGenerator().getUhcWorld();
-
-                if (uhcWorld.isBannedCategory(category)) {
-                    sender.sendMessage(ChatUtils.PREFIX + "Esa categoria ya está en la lista.");
-                    return;
-                }
-
-                uhcWorld.addBannedCategory(category);
-
-                sender.sendMessage(ChatUtils.PREFIX + String.format("Has agregado %s como categoría baneada", category.toString()));
             }
 
             @Command(
-                    names = "removecategory"
+                    names = "start",
+                    permission = "healthdark.host"
             )
-            public void removeCategoryCommand(@Sender Player sender, @Named("category") kaptainwutax.biomeutils.biome.Biome.Category category) {
-                var uhcWorld = plugin.getWorldGenerator().getUhcWorld();
-
-                if (!uhcWorld.isBannedCategory(category)) {
-                    sender.sendMessage(ChatUtils.PREFIX + "Esa categoría no está en la lista.");
+            public void startCommand(@Sender Player sender, @Named("trials") int trials, @Named("searchRadius") int searchRadius) {
+                if (trials < 5 || searchRadius < 32 || trials > 150 || searchRadius > 750) {
+                    sender.sendMessage(ChatUtils.formatComponentPrefix("No se puede poner esta cantidad."));
                     return;
                 }
 
-                uhcWorld.removeBannedCategory(category);
+                SeedSearcher seedSearcher = new SeedSearcher(plugin, trials, plugin.getWorldGenerator().getUhcWorld().getBannedBiomes(), searchRadius, plugin.getWorldGenerator().getUhcWorld().getBannedCategories());
 
-                sender.sendMessage(ChatUtils.PREFIX + String.format("Has eliminado %s como categoría baneada", category.toString()));
+                int tsk = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, ()-> sender.sendActionBar(seedSearcher.progressBar()), 1L, 1L);
+
+                seedSearcher.onNewSearch = ()->{};
+
+                seedSearcher.onTaskEnd = () -> {
+                    Bukkit.getScheduler().cancelTask(tsk);
+                    Bukkit.getScheduler().cancelTask(seedSearcher.taskIDTwo);
+                    sender.sendActionBar(seedSearcher.progressBar());
+
+                    if (seedSearcher.getAvailableSeeds().size() == 0) {
+                        sender.sendMessage(ChatUtils.formatComponentPrefix("No se han encontrado seed disponibles!"));
+                        return;
+                    }
+
+                    sender.sendMessage(ChatUtils.formatC("&6Se han encontrado las siguientes seeds:"));
+
+                    seedSearcher.getAvailableSeeds().forEach(s -> sender.sendMessage(
+                            ChatUtils.formatC("&a" + s).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(s))).hoverEvent(ChatUtils.formatC("&7Click para copiar!"))
+                                    .append(
+                                            ChatUtils.formatC(" &6(0, 0 " + spawnBiome(s) + ")")
+                                                    .hoverEvent(ChatUtils.formatC("&7Click para establecer seed"))
+                                                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/host world recreate " + s))
+                                    )
+                    ));
+                };
+
+                seedSearcher.startTask();
             }
+
         }
 
         @Command(names = "border", permission = "healthdark.host")

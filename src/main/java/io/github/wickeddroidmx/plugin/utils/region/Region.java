@@ -16,6 +16,7 @@ public class Region {
     private double maxX, maxY, maxZ, minX, minY, minZ;
 
     public Region(Location firstPoint, Location secondPoint) {
+
         this.firstPoint = firstPoint;
         this.secondPoint = secondPoint;
 
